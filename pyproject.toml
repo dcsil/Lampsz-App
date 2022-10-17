@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "lampsz-app"
+version = "0.1.0"
+description = ""
+authors = ["Le Rong Shi <shilerong@gmail.com>"]
+readme = "README.md"
+packages = [{include = "lampsz_app"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "^4.1.2"
+flake8 = "^5.0.4"
+mypy = "^0.982"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
