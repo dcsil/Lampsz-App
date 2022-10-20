@@ -14,4 +14,4 @@ Running code style enforcement with flake8:
 
 Running type checks with mypy:
 
-    $ mypy Lampsz-App
+    $ mypy lampsz
