@@ -1,0 +1,40 @@
+name: Django CI
+
+on:
+  push:
+    branches: [ $default-branch ]
+    paths-ignore: [ "docs/**" ]
+  pull_request:
+    branches: [ $default-branch ]
+    paths-ignore: [ "docs/**" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [ 3.10 ]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+
+      - name: Install dependencies
+        run: |
+          poetry install
+
+      - name: Run pre-commit (linters/formatters)
+        uses: pre-commit/action@v2.0.3
+
+      - name: Run Test
+        run: |
+          python manage.py test
