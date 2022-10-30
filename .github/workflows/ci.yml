@@ -11,6 +11,18 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
+    services:
+      postgres:
+        image: postgres
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_PASSWORD: postgres
+
+    env:
+      # postgres://user:password@host:port/database
+      DATABASE_URL: "postgres://postgres:postgres@localhost:5432/postgres"
+
     steps:
       - uses: actions/checkout@v3
 
