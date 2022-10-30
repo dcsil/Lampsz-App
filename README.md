@@ -5,6 +5,16 @@ Source code for Lampsz platform
 
 Make sure to have the following on your host:
 - Python 3.10
+- [Poetry](https://python-poetry.org/docs/)
+- PostgresSQL 14
+
+Some Django settings are loaded through environment variables. For local development, create a `.env` file in the project directory and put the following items in:
+
+    DATABASE_URL=postgres://<username>:<password>@localhost/<database_name>
+    SECRET_KEY=test_key
+    DEBUG=True
+
+
 
 To get started with Django development:
 1. Install required Python dependencies:
@@ -22,6 +32,8 @@ To get started with Django development:
 4. To start django development server:
 
         $ python manage.py runserver
+
+And you can now access the home page by going to [127.0.0.1:8000](http://127.0.0.1:8000/)
 
 ## Linters
 
