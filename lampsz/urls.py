@@ -16,9 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from lampsz.core.views import index
+from lampsz.frontend.views import index
 
 urlpatterns = [
-    path('', index),
-    path('admin/', admin.site.urls),
+    path("", index),
+    path("admin/", admin.site.urls),
 ]

@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "lampsz.core.apps.CoreConfig",
+    "lampsz.frontend.apps.FrontendConfig",
 ]
 
 MIDDLEWARE = [
