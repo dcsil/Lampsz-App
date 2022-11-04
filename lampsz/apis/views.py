@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
@@ -8,6 +8,20 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 from lampsz.apis import models, serializers
 import uuid
+
+@api_view(['POST'])
+def company_login_view(request, *args, **kwargs):
+    if request.user.IsAuthenticated():
+        return JsonResponse({'message': 'Alreayd logged in'}, status=status.HTTP_400_BAD_REQUEST)
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        return JsonResponse({'message': 'Login successful'}, status=status.HTTP_404_NOT_FOUND)
+    else:
+        return JsonResponse({'message': 'This user either doesn\'t exist or username/password invalid'}, status=status.HTTP_404_NOT_FOUND)
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
