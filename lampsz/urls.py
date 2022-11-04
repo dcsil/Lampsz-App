@@ -16,15 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from lampsz.core.views import index
+from lampsz.frontend.views import index
 from lampsz.apis import views
 
 urlpatterns = [
     path('', index),
     path('admin/', admin.site.urls),
-    path('registration/', index),
     path('api/influencer_register', views.influencer_create_view),
     path('api/company_register', views.company_create_view),
+    path('api/company_login', views.company_login_view),
     path('api/influencer/<int:influencer_id>', views.get_influencer_view),
     path('api/company/<int:company_id>', views.get_company_view),
     path('api/user/<int:user_id>', views.get_user_view),
