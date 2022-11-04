@@ -1,16 +1,7 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import { Tab, Tabs } from '@mui/material';
 import BusinessLogin from './BusinessLogin';
 
@@ -28,8 +19,7 @@ function TabPanel(props: TabPanelProps) {
     <div
       role="tabpanel"
       hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
+      id={`login-tabpanel-${index}`}
       {...other}
     >
       {value === index && (
@@ -50,7 +40,7 @@ export default function Login() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <React.Fragment>
       <CssBaseline/>
       <Box
         sx={{
@@ -68,6 +58,6 @@ export default function Login() {
           <BusinessLogin/>
         </TabPanel>
       </Box>
-    </Container>
+    </React.Fragment>
   );
 }
