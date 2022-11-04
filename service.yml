@@ -4,7 +4,7 @@ tools:
   ci: https://github.com/dcsil/Lampsz-App/actions
 
 services:
-  production: filler
+  production: https://github.com/dcsil/Lampsz-App
 
 docs:
   getting_started: https://github.com/dcsil/Lampsz-App
