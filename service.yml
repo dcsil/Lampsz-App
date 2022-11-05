@@ -1,5 +1,5 @@
 tools:
-  exceptions: https://sentry.io/organizations/dcsil/projects/454-pmbl/?project=6742330
+  exceptions: https://sentry.io/organizations/dcsil/projects/lampsz/?project=6742330
   logging: https://service.us2.sumologic.com/ui/?appName=dcsil-team-app
   ci: https://github.com/dcsil/Lampsz-App/actions
 
