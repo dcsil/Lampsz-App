@@ -163,3 +163,4 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lampsz/frontend/static/frontend/node_modules_web-vitals_dist_web-vitals_js.main.js
+__snapshots__
