@@ -13,5 +13,5 @@ commands:
   bootstrap: script/bootstrap
   database:
     migrate: python manage.py migrate
-  server: python manage.py runserver
-  test: webpack --mode production && python manage.py test
+  server: webpack --mode production && python manage.py runserver
+  test: python manage.py test && npm test

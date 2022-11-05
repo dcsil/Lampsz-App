@@ -10,3 +10,6 @@ $SCRIPT_DIR/dependencies
 echo "==== Project Dependencies ======================================================================================="
 cd "$PROJECT_DIR" && poetry install
 cd "$PROJECT_DIR" && npm install
+
+
+cd "$PROJECT_DIR" && python manage.py migrate
