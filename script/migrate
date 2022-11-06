@@ -2,5 +2,4 @@
 
 PROJECT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. >/dev/null 2>&1 && pwd )"
 
-poetry shell
-cd "$PROJECT_DIR" && python manage.py migrate
+cd "$PROJECT_DIR" && $HOME/.local/bin/poetry run python manage.py migrate
