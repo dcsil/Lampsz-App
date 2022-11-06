@@ -15,12 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-
-from lampsz.frontend.views import index
 from lampsz.apis import urls as apis_urls
 
 urlpatterns = [
-    path('', index),
-    path('admin/', admin.site.urls),
+    path("", include("lampsz.frontend.urls")),
+    path("admin/", admin.site.urls),
     path('api/', include(apis_urls)),
 ]

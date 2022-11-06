@@ -52,4 +52,4 @@ jobs:
       - name: Run Test
         run: |
           source .venv/bin/activate
-          python manage.py test
+          python manage.py test --settings=lampsz.settings.local
