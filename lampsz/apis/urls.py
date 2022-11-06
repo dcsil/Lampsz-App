@@ -1,4 +1,4 @@
-"""lampsz URL Configuration
+"""lampsz api URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.1/topics/http/urls/
@@ -15,10 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from lampsz.apis import urls as apis_urls
+
+from lampsz.apis import views
 
 urlpatterns = [
-    path("", include("lampsz.frontend.urls")),
-    path("admin/", admin.site.urls),
-    path('api/', include(apis_urls)),
+    path('influencer_register/', views.influencer_create_view),
+    path('company_register/', views.company_create_view),
+    path('company_login/', views.company_login_view),
+    path('influencer/<int:influencer_id>', views.get_influencer_view),
+    path('company/<int:company_id>', views.get_company_view),
+    path('user/<int:user_id>', views.get_user_view),
 ]
