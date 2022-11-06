@@ -16,11 +16,10 @@ $SCRIPT_DIR/dependencies
 
 echo ""
 echo "==== Project Dependencies ======================================================================================="
-cd "$PROJECT_DIR" && poetry install
+cd "$PROJECT_DIR" && $HOME/.local/bin/poetry install
 cd "$PROJECT_DIR" && npm install
 
 
 echo ""
 echo "==== Database Migration ========================================================================================="
-poetry shell
-cd "$PROJECT_DIR" && python manage.py migrate
+$SCRIPT_DIR/migrate
