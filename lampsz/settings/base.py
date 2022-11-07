@@ -70,8 +70,16 @@ WSGI_APPLICATION = "lampsz.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {"default": env.db(default="postgres://localhost/lampsz_app")}
-
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env.str('POSTGRES_NAME', default="postgres"),
+        "USER": env.str('POSTGRES_USER', default="postgres"),
+        "PASSWORD": env.str('POSTGRES_PASSWORD', default="postgres"),
+        "HOST": env.str('POSTGRES_HOST', default="db"),  # set in docker-compose.yml
+        "PORT": env.int('POSTGRES_PORT', default=5432),  # default postgres port
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -113,3 +121,25 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Logging
+# https://docs.djangoproject.com/en/dev/ref/settings/#logging
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "%(levelname)s %(asctime)s %(module)s "
+            "%(process)d %(thread)d %(message)s"
+        }
+    },
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        }
+    },
+    "root": {"level": "INFO", "handlers": ["console"]},
+}

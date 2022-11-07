@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 PROJECT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. >/dev/null 2>&1 && pwd )"
 
 if [ ! -f "$PROJECT_DIR/.env" ]; then
@@ -8,19 +7,7 @@ if [ ! -f "$PROJECT_DIR/.env" ]; then
   cp "$PROJECT_DIR/.env.example" "$PROJECT_DIR/.env"
 fi
 
-
+# Docker Compose
 echo ""
-echo "==== System Dependencies ========================================================================================"
-$SCRIPT_DIR/dependencies
-
-
-echo ""
-echo "==== Project Dependencies ======================================================================================="
-cd "$PROJECT_DIR" && poetry install
-cd "$PROJECT_DIR" && npm install
-
-
-echo ""
-echo "==== Database Migration ========================================================================================="
-poetry shell
-cd "$PROJECT_DIR" && python manage.py migrate
+echo "==== Docker Compose ============================================================================================="
+docker-compose up -d
