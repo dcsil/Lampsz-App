@@ -140,6 +140,9 @@ cython_debug/
 
 .idea
 main.js
+node_modules_web-vitals_dist_web-vitals_js.main.js
+131.main.js
+main.js.LICENSE.txt
 
 # dependencies
 /node_modules
@@ -162,5 +165,5 @@ main.js
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-lampsz/frontend/static/frontend/node_modules_web-vitals_dist_web-vitals_js.main.js
 __snapshots__
+data
