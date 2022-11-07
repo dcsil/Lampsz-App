@@ -70,16 +70,7 @@ WSGI_APPLICATION = "lampsz.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": env.str('POSTGRES_NAME', default="postgres"),
-        "USER": env.str('POSTGRES_USER', default="postgres"),
-        "PASSWORD": env.str('POSTGRES_PASSWORD', default="postgres"),
-        "HOST": env.str('POSTGRES_HOST', default="db"),  # set in docker-compose.yml
-        "PORT": env.int('POSTGRES_PORT', default=5432),  # default postgres port
-    }
-}
+DATABASES = {"default": env.db() }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
