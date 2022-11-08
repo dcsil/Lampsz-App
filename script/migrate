@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-PROJECT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. >/dev/null 2>&1 && pwd )"
-
-cd "$PROJECT_DIR" && $HOME/.local/bin/poetry run python manage.py migrate
