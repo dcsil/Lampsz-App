@@ -1,10 +1,10 @@
 tools:
   exceptions: https://sentry.io/organizations/dcsil/projects/lampsz/?project=6742330
-  logging: https://service.us2.sumologic.com/ui/?appName=dcsil-team-app
+  logging: https://service.us2.sumologic.com/ui/?appName=lampsz
   ci: https://github.com/dcsil/Lampsz-App/actions
 
 services:
-  production: https://github.com/dcsil/Lampsz-App
+  production: https://lampsz.herokuapp.com/
 
 docs:
   getting_started: https://github.com/dcsil/Lampsz-App
