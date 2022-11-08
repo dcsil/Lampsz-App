@@ -6,4 +6,6 @@
 .pre-commit-config.yaml
 service.yml
 docs
-node_modules
+**/node_modules
+**/131.main.js
+**/main.js.LICENSE.txt
