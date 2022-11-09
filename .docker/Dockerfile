@@ -1,5 +1,5 @@
 # Python build stage
-FROM python:3.10-slim-bullseye as python-build-stage
+FROM python:3.10.6-slim as python-build-stage
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
