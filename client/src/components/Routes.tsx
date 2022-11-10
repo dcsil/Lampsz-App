@@ -3,25 +3,21 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Home from '../pages/Home'
 import Login from '../pages/Login'
 import Signup from '../pages/Signup'
+import { AuthProps } from '../utils/sharedProps'
 
-interface RouteProps {
-  auth: boolean
-  setAuth: (a: boolean) => void
-}
-
-export default function Router ({ auth, setAuth }: RouteProps): JSX.Element {
+export default function Router (props: AuthProps): JSX.Element {
   const router = createBrowserRouter([
     {
       path: '/',
-      element: <Home/>
+      element: <Home {...props}/>
     },
     {
       path: '/login',
-      element: <Login/>
+      element: <Login {...props}/>
     },
     {
       path: '/signup',
-      element: <Signup/>
+      element: <Signup {...props}/>
     }
   ])
 

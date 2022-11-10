@@ -9,15 +9,14 @@ import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
 import * as React from 'react'
+import { AuthProps } from '../../utils/sharedProps'
+import { businessLogin } from '../../actions/auth'
 
-export default function BusinessLogin (): JSX.Element {
+export default function BusinessLogin ({ setAuth }: AuthProps): JSX.Element {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
-    const data = new FormData(event.currentTarget)
-    console.log({
-      email: data.get('email'),
-      password: data.get('password')
-    })
+    // const data = new FormData(event.currentTarget)
+    businessLogin('', '', setAuth)
   }
 
   return (
@@ -75,7 +74,6 @@ export default function BusinessLogin (): JSX.Element {
           </Grid>
         </Grid>
       </Box>
-
     </Box>
   )
 }

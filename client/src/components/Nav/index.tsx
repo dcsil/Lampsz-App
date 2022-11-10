@@ -7,6 +7,7 @@ import * as React from 'react'
 import Button from '@mui/material/Button'
 import { StyledTitle } from '../shared/StyledTitle'
 import UserMenu from './UserMenu'
+import { AuthProps } from '../../utils/sharedProps'
 
 const pages = [
   { name: 'Home', href: '/' },
@@ -14,11 +15,7 @@ const pages = [
   { name: 'Register', href: '/signup' }
 ]
 
-interface NavProps {
-  auth: boolean
-}
-
-export default function Nav ({ auth }: NavProps): JSX.Element {
+export default function Nav (props: AuthProps): JSX.Element {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>): void => {
@@ -69,7 +66,7 @@ export default function Nav ({ auth }: NavProps): JSX.Element {
             </Menu>
           </Box>
 
-          {/* Nav display for smaller screens */}
+          {/* Nav display for bigger screens */}
           <StyledTitle isLg={false}/>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
@@ -84,7 +81,7 @@ export default function Nav ({ auth }: NavProps): JSX.Element {
             ))}
           </Box>
 
-          {auth && <UserMenu/>}
+          {props.auth && <UserMenu {...props}/>}
         </Toolbar>
       </Container>
     </AppBar>

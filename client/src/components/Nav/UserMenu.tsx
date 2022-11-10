@@ -1,12 +1,19 @@
 import { IconButton, Menu, MenuItem } from '@mui/material'
 import { AccountCircle } from '@mui/icons-material'
 import * as React from 'react'
+import { AuthProps } from '../../utils/sharedProps'
+import { logout } from '../../actions/auth'
 
-export default function UserMenu (): JSX.Element {
+export default function UserMenu ({ setAuth }: AuthProps): JSX.Element {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>): void => {
     setAnchorEl(event.currentTarget)
+  }
+
+  const handleLogout = (): void => {
+    logout(setAuth)
+    handleClose()
   }
 
   const handleClose = (): void => {
@@ -41,7 +48,7 @@ export default function UserMenu (): JSX.Element {
         onClose={handleClose}
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>
   )

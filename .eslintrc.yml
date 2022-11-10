@@ -18,6 +18,6 @@ ignorePatterns:
 plugins:
   - react
 rules:
-  react/no-unescaped-entity: off
+  react/no-unescaped-entities: off
 
 

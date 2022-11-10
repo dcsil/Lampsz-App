@@ -5,8 +5,9 @@ import { Tab, Tabs } from '@mui/material'
 import BusinessLogin from './BusinessLogin'
 import TabPanel from '../../components/shared/TabPanel'
 import Container from '@mui/material/Container'
+import { AuthProps } from '../../utils/sharedProps'
 
-export default function Login (): JSX.Element {
+export default function Login (props: AuthProps): JSX.Element {
   const [value, setValue] = React.useState(0)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number): void => {
@@ -29,7 +30,7 @@ export default function Login (): JSX.Element {
           <Tab label="Influencer"/>
         </Tabs>
         <TabPanel value={value} index={0}>
-          <BusinessLogin/>
+          <BusinessLogin {...props}/>
         </TabPanel>
       </Box>
     </Container>
