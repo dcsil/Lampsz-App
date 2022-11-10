@@ -3,7 +3,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import { Tab, Tabs } from "@mui/material";
 import BusinessSignup from "./BusinessSignup";
-import TabPanel from "../../components/TabPanel";
+import TabPanel from "../../components/shared/TabPanel";
 import Container from "@mui/material/Container";
 
 
