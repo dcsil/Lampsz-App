@@ -16,7 +16,7 @@ export const checkSession = (setAuth: SetState<boolean>, setUserType: SetState<U
   //     console.log(error)
   //   })
   setAuth(true)
-  setUserType(UserType.NONE)
+  setUserType(UserType.BUSINESS)
 }
 
 export const businessLogin = (email: string, password: string, setAuth: SetState<boolean>): void => {

@@ -1,4 +1,4 @@
-import { IconButton, Menu, MenuItem } from '@mui/material'
+import { IconButton, Menu, MenuItem, Typography } from '@mui/material'
 import { AccountCircle } from '@mui/icons-material'
 import * as React from 'react'
 import { AuthProps } from '../../utils/sharedProps'
@@ -24,9 +24,6 @@ export default function UserMenu ({ setAuth }: AuthProps): JSX.Element {
     <div>
       <IconButton
         size="large"
-        aria-label="account of current user"
-        aria-controls="menu-appbar"
-        aria-haspopup="true"
         onClick={handleMenu}
         color="inherit"
       >
@@ -47,8 +44,12 @@ export default function UserMenu ({ setAuth }: AuthProps): JSX.Element {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Typography textAlign="center" component="a" href="/profile">Profile</Typography>
+        </MenuItem>
+        <MenuItem onClick={handleLogout}>
+          <Typography textAlign="center" component="a" href="#">Logout</Typography>
+        </MenuItem>
       </Menu>
     </div>
   )

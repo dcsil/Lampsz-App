@@ -6,10 +6,9 @@ import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import MarketingTaskList from './MarketingTaskList'
 
-export default function BusinessHome(): JSX.Element {
+export default function BusinessHome (): JSX.Element {
   return (
     <Box sx={{ display: 'flex' }}>
-      <CssBaseline/>
       <Box
         component="main"
         sx={{

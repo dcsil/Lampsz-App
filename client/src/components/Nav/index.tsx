@@ -62,8 +62,8 @@ export default function Nav (props: AuthProps): JSX.Element {
               }}
             >
               {navItems.map((page) => (
-                <MenuItem key={page.name} href={page.href} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page.name}</Typography>
+                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center" component="a" href={page.href}>{page.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
