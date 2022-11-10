@@ -1,10 +1,9 @@
 import React from 'react';
+import BusinessHome from "../BusinessHome";
 
 function Home() {
   return (
-    <div>
-      Hello World
-    </div>
+    <BusinessHome/>
   )
 }
 

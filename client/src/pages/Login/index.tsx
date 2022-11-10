@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import { Tab, Tabs } from '@mui/material';
 import BusinessLogin from './BusinessLogin';
 import TabPanel from "../../components/TabPanel";
+import Container from "@mui/material/Container";
 
 
 export default function Login() {
@@ -14,7 +15,7 @@ export default function Login() {
   };
 
   return (
-    <React.Fragment>
+    <Container component="main" maxWidth="xs">
       <CssBaseline/>
       <Box
         sx={{
@@ -32,6 +33,6 @@ export default function Login() {
           <BusinessLogin/>
         </TabPanel>
       </Box>
-    </React.Fragment>
+    </Container>
   );
 }
