@@ -1,4 +1,7 @@
+import { SetState, UserType } from './types'
+
 export interface AuthProps {
   auth: boolean
-  setAuth: (_: boolean) => void
+  userType: UserType
+  setAuth: SetState<boolean>
 }

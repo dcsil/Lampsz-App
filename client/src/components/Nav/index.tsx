@@ -8,6 +8,7 @@ import Button from '@mui/material/Button'
 import { StyledTitle } from '../shared/StyledTitle'
 import UserMenu from './UserMenu'
 import { AuthProps } from '../../utils/sharedProps'
+import { getNavItems } from '../../utils/paths'
 
 const pages = [
   { name: 'Home', href: '/' },
@@ -25,6 +26,8 @@ export default function Nav (props: AuthProps): JSX.Element {
   const handleCloseNavMenu = (): void => {
     setAnchorElNav(null)
   }
+
+  const navItems = getNavItems(props.userType)
 
   return (
     <AppBar position="static">
@@ -58,7 +61,7 @@ export default function Nav (props: AuthProps): JSX.Element {
                 display: { xs: 'block', md: 'none' }
               }}
             >
-              {pages.map((page) => (
+              {navItems.map((page) => (
                 <MenuItem key={page.name} href={page.href} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">{page.name}</Typography>
                 </MenuItem>
@@ -69,7 +72,7 @@ export default function Nav (props: AuthProps): JSX.Element {
           {/* Nav display for bigger screens */}
           <StyledTitle isLg={false}/>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            {navItems.map((page) => (
               <Button
                 key={page.name}
                 href={page.href}

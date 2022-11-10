@@ -1,4 +1,6 @@
-export const checkSession = (setAuth: (_: boolean) => void): void => {
+import { SetState, UserType } from '../utils/types'
+
+export const checkSession = (setAuth: SetState<boolean>, setUserType: SetState<UserType>): void => {
   // const url = '/api/check-session'
 
   // fetch(url)
@@ -14,9 +16,10 @@ export const checkSession = (setAuth: (_: boolean) => void): void => {
   //     console.log(error)
   //   })
   setAuth(true)
+  setUserType(UserType.NONE)
 }
 
-export const businessLogin = (email: string, password: string, setAuth: (_: boolean) => void): void => {
+export const businessLogin = (email: string, password: string, setAuth: SetState<boolean>): void => {
   // const request = new Request('/api/company_login', {
   //   method: 'post',
   //   body: JSON.stringify({ email, password }),
@@ -38,7 +41,7 @@ export const businessLogin = (email: string, password: string, setAuth: (_: bool
   setAuth(true)
 }
 
-export const businessRegister = (email: string, username: string, password: string, setAuth: (_: boolean) => void): void => {
+export const businessRegister = (email: string, username: string, password: string, setAuth: SetState<boolean>): void => {
   // const request = new Request('/api/company_register', {
   //   method: 'post',
   //   body: JSON.stringify({ email, username, password }),
@@ -60,6 +63,6 @@ export const businessRegister = (email: string, username: string, password: stri
   setAuth(true)
 }
 
-export const logout = (setAuth: (_: boolean) => void): void => {
+export const logout = (setAuth: SetState<boolean>): void => {
   setAuth(false)
 }

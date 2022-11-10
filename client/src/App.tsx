@@ -4,6 +4,7 @@ import Routes from './components/Routes'
 import Nav from './components/Nav'
 import { blue, indigo } from '@mui/material/colors'
 import { checkSession } from './actions/auth'
+import { UserType } from './utils/types'
 
 const theme = createTheme({
   palette: {
@@ -26,17 +27,18 @@ const theme = createTheme({
 function App (): JSX.Element {
   // true if user is authenticated, otherwise false
   const [auth, setAuth] = React.useState(false)
+  const [userType, setUserType] = React.useState(UserType.NONE)
 
   useEffect(() => {
     if (!['/login', '/register'].includes(window.location.pathname)) {
-      checkSession(setAuth)
+      checkSession(setAuth, setUserType)
     }
   })
 
   return (
     <ThemeProvider theme={theme}>
-      <Nav auth={auth} setAuth={setAuth}/>
-      <Routes auth={auth} setAuth={setAuth}/>
+      <Nav auth={auth} userType={userType} setAuth={setAuth}/>
+      <Routes auth={auth} userType={userType} setAuth={setAuth}/>
     </ThemeProvider>
   )
 }
