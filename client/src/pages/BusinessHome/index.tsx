@@ -22,7 +22,6 @@ export default function BusinessHome() {
           overflow: 'auto',
         }}
       >
-        <Toolbar/>
         <Container maxWidth="lg" sx={{ mt: 6, mb: 6 }}>
           <Grid container spacing={3}>
             {/* Marketing Task List */}

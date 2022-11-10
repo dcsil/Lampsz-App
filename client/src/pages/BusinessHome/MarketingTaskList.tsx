@@ -21,7 +21,7 @@ export default function MarketingTaskList() {
   return (
     <React.Fragment>
       <PanelTitle variant="h5">Your Marketing Tasks</PanelTitle>
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" spacing={2} marginTop={3}>
         {data.map(item => <MarketingTaskCard title={item.title} description={item.description}/>)}
       </Stack>
       <Link color="primary" href="#" sx={{ mt: 3 }}>
