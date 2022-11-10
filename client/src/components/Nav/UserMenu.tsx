@@ -1,18 +1,17 @@
-import { IconButton, Menu, MenuItem } from "@mui/material";
-import { AccountCircle } from "@mui/icons-material";
-import * as React from "react";
+import { IconButton, Menu, MenuItem } from '@mui/material'
+import { AccountCircle } from '@mui/icons-material'
+import * as React from 'react'
 
+export default function UserMenu (): JSX.Element {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
-export default function UserMenu() {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const handleMenu = (event: React.MouseEvent<HTMLElement>): void => {
+    setAnchorEl(event.currentTarget)
+  }
 
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleClose = (): void => {
+    setAnchorEl(null)
+  }
 
   return (
     <div>
@@ -31,12 +30,12 @@ export default function UserMenu() {
         anchorEl={anchorEl}
         anchorOrigin={{
           vertical: 'top',
-          horizontal: 'right',
+          horizontal: 'right'
         }}
         keepMounted
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'right',
+          horizontal: 'right'
         }}
         open={Boolean(anchorEl)}
         onClose={handleClose}

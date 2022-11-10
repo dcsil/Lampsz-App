@@ -1,32 +1,33 @@
-import { IconButton, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
-import AppBar from "@mui/material/AppBar";
-import Container from "@mui/material/Container"
-import Box from '@mui/material/Box';
-import MenuIcon from '@mui/icons-material/Menu';
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import { StyledTitle } from '../shared/StyledTitle';
-import UserMenu from "./UserMenu";
-
+import { IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material'
+import AppBar from '@mui/material/AppBar'
+import Container from '@mui/material/Container'
+import Box from '@mui/material/Box'
+import MenuIcon from '@mui/icons-material/Menu'
+import * as React from 'react'
+import Button from '@mui/material/Button'
+import { StyledTitle } from '../shared/StyledTitle'
+import UserMenu from './UserMenu'
 
 const pages = [
   { name: 'Home', href: '/' },
   { name: 'Login', href: '/login' },
-  { name: 'Register', href: '/signup' },
+  { name: 'Register', href: '/signup' }
 ]
 
+interface NavProps {
+  auth: boolean
+}
 
-export default function Nav() {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [auth, setAuth] = React.useState(true);
+export default function Nav ({ auth }: NavProps): JSX.Element {
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
+  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>): void => {
+    setAnchorElNav(event.currentTarget)
+  }
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
+  const handleCloseNavMenu = (): void => {
+    setAnchorElNav(null)
+  }
 
   return (
     <AppBar position="static">
@@ -47,17 +48,17 @@ export default function Nav() {
               anchorEl={anchorElNav}
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'left',
+                horizontal: 'left'
               }}
               keepMounted
               transformOrigin={{
                 vertical: 'top',
-                horizontal: 'left',
+                horizontal: 'left'
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: 'block', md: 'none' },
+                display: { xs: 'block', md: 'none' }
               }}
             >
               {pages.map((page) => (

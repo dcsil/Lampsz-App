@@ -1,8 +1,8 @@
-import React from 'react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Routes from './components/Routes';
-import Nav from './components/Nav';
-import { blue, indigo } from "@mui/material/colors";
+import React from 'react'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import Routes from './components/Routes'
+import Nav from './components/Nav'
+import { blue, indigo } from '@mui/material/colors'
 
 const theme = createTheme({
   palette: {
@@ -20,15 +20,17 @@ const theme = createTheme({
       'sans-serif'
     ].join(',')
   }
-});
+})
 
-function App() {
+function App (): JSX.Element {
+  const [auth, setAuth] = React.useState(false)
+
   return (
     <ThemeProvider theme={theme}>
-      <Nav/>
-      <Routes/>
+      <Nav auth={auth}/>
+      <Routes auth={auth} setAuth={setAuth}/>
     </ThemeProvider>
-  );
+  )
 }
 
-export default App;
+export default App

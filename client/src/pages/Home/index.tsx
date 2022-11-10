@@ -1,10 +1,8 @@
-import React from 'react';
-import BusinessHome from "../BusinessHome";
+import React from 'react'
+import BusinessHome from '../BusinessHome'
 
-function Home() {
+export default function Home (): JSX.Element {
   return (
     <BusinessHome/>
   )
 }
-
-export default Home;
