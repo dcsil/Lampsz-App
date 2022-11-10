@@ -1,11 +1,14 @@
-import React from 'react';
+import React from 'react'
+import BusinessHome from './BusinessHome'
+import { AuthProps } from '../../utils/sharedProps'
 
-function Home() {
+export default function Home (props: AuthProps): JSX.Element {
   return (
-    <div>
-      Hello World
-    </div>
+    <React.Fragment>
+      {props.auth
+        ? <BusinessHome/>
+        : <div>Hello World</div>
+      }
+    </React.Fragment>
   )
 }
-
-export default Home;

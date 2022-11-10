@@ -1,12 +1,11 @@
-import { Typography } from '@mui/material';
-import * as React from 'react';
+import { Typography } from '@mui/material'
+import * as React from 'react'
 
 interface Props {
   isLg?: boolean
 }
 
-
-export function StyledTitle({ isLg = true }: Props) {
+export function StyledTitle ({ isLg = true }: Props): JSX.Element {
   const sx = {
     mr: 2,
     display: isLg ? { xs: 'none', md: 'flex' } : { xs: 'flex', md: 'none' },
@@ -15,12 +14,12 @@ export function StyledTitle({ isLg = true }: Props) {
     fontWeight: 700,
     letterSpacing: '.3rem',
     color: 'inherit',
-    textDecoration: 'none',
-  };
+    textDecoration: 'none'
+  }
 
   return (
     <Typography
-      variant={isLg ? "h6" : "h5"}
+      variant={isLg ? 'h6' : 'h5'}
       noWrap
       component="a"
       href="/"
