@@ -10,12 +10,6 @@ import UserMenu from './UserMenu'
 import { AuthProps } from '../../utils/sharedProps'
 import { getNavItems } from '../../utils/paths'
 
-const pages = [
-  { name: 'Home', href: '/' },
-  { name: 'Login', href: '/login' },
-  { name: 'Register', href: '/signup' }
-]
-
 export default function Nav (props: AuthProps): JSX.Element {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
 
