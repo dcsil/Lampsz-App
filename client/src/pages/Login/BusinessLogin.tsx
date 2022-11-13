@@ -12,11 +12,11 @@ import * as React from 'react'
 import { AuthProps } from '../../utils/sharedProps'
 import { businessLogin } from '../../actions/auth'
 
-export default function BusinessLogin ({ setAuth }: AuthProps): JSX.Element {
+export default function BusinessLogin ({ setAuth, setUserType }: AuthProps): JSX.Element {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
     // const data = new FormData(event.currentTarget)
-    businessLogin('', '', setAuth)
+    businessLogin('', '', setAuth, setUserType)
   }
 
   return (

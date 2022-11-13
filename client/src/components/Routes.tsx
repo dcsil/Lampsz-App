@@ -32,7 +32,7 @@ export default function Router (props: AuthProps): JSX.Element {
     },
     {
       path: '/profile',
-      element: <Profile/>
+      element: <Profile {...props}/>
     }
   ])
 

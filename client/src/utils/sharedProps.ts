@@ -4,4 +4,5 @@ export interface AuthProps {
   auth: boolean
   userType: UserType
   setAuth: SetState<boolean>
+  setUserType: SetState<UserType>
 }
