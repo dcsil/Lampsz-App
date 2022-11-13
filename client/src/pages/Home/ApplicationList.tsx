@@ -16,15 +16,15 @@ const data = [
   }
 ]
 
-export default function MarketingTaskList (): JSX.Element {
+export default function ApplicationList (): JSX.Element {
   return (
     <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-      <PanelTitle variant="h5">Your Marketing Tasks</PanelTitle>
+      <PanelTitle variant="h5">Your Applications</PanelTitle>
       <Stack direction="row" spacing={2} marginTop={3}>
         {data.map((item, index) => <MarketingTaskCard key={index} title={item.title} description={item.description}/>)}
       </Stack>
-      <Link color="primary" href="/tasks" sx={{ mt: 3 }}>
-        See all your marketing tasks
+      <Link color="primary" href="/applications" sx={{ mt: 3 }}>
+        See all your applications
       </Link>
     </Paper>
   )

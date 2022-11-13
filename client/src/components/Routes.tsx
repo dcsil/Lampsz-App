@@ -7,6 +7,8 @@ import { AuthProps } from '../utils/sharedProps'
 import Marketplace from '../pages/Marketplace'
 import Profile from '../pages/Profile'
 import MarketingTaskDetail from '../pages/MarketingTaskDetail'
+import MyApplications from '../pages/MyApplications'
+import MyMarketingTasks from '../pages/MyMarketingTasks'
 
 export default function Router (props: AuthProps): JSX.Element {
   const router = createBrowserRouter([
@@ -33,6 +35,14 @@ export default function Router (props: AuthProps): JSX.Element {
     {
       path: '/profile',
       element: <Profile {...props}/>
+    },
+    {
+      path: '/applications',
+      element: <MyApplications/>
+    },
+    {
+      path: '/tasks',
+      element: <MyMarketingTasks/>
     }
   ])
 

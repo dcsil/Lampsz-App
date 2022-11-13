@@ -2,8 +2,9 @@ import * as React from 'react'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
-import Paper from '@mui/material/Paper'
 import MarketingTaskList from './MarketingTaskList'
+import ProfileLink from './ProfileLink'
+import MarketplaceLink from './MarketplaceLink'
 
 export default function BusinessHome (): JSX.Element {
   return (
@@ -19,11 +20,17 @@ export default function BusinessHome (): JSX.Element {
     >
       <Container maxWidth="lg" sx={{ mt: 6, mb: 6 }}>
         <Grid container spacing={3}>
+          {/* Profile Link */}
+          <Grid item lg={6} xs={12}>
+            <ProfileLink/>
+          </Grid>
+          {/* Marketplace Link */}
+          <Grid item lg={6} xs={12}>
+            <MarketplaceLink/>
+          </Grid>
           {/* Marketing Task List */}
           <Grid item xs={12}>
-            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-              <MarketingTaskList/>
-            </Paper>
+            <MarketingTaskList/>
           </Grid>
         </Grid>
       </Container>

@@ -12,13 +12,13 @@ export const getNavItems = (userType: UserType): NavItem[] => {
       return [
         { name: 'Home', href: '/' },
         { name: 'Marketplace', href: '/marketplace' },
-        { name: 'Your Marketing Tasks', href: '/' }
+        { name: 'My Marketing Tasks', href: '/tasks' }
       ]
     case UserType.INFLUENCER:
       return [
         { name: 'Home', href: '/' },
         { name: 'Marketplace', href: '/marketplace' },
-        { name: 'Your Applications', href: '/' }
+        { name: 'My Applications', href: '/applications' }
       ]
   }
 }
