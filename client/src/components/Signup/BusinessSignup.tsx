@@ -80,7 +80,7 @@ export default function BusinessSignup ({ setAuth, setUserType }: AuthProps): JS
         </Button>
         <Grid container justifyContent="flex-end">
           <Grid item>
-            <Link href="/login" variant="body2">
+            <Link href="/client/src/components/Login" variant="body2">
               Already have an account? Sign in
             </Link>
           </Grid>

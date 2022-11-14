@@ -1,14 +1,14 @@
 import * as React from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Home from '../pages/Home'
-import Login from '../pages/Login'
-import Signup from '../pages/Signup'
+import Home from './Home'
+import Login from './Login'
+import Signup from './Signup'
 import { AuthProps } from '../utils/sharedProps'
-import Marketplace from '../pages/Marketplace'
-import Profile from '../pages/Profile'
-import MarketingTaskDetail from '../pages/MarketingTaskDetail'
-import MyApplications from '../pages/MyApplications'
-import MyMarketingTasks from '../pages/MyMarketingTasks'
+import Marketplace from './Marketplace'
+import Profile from './Profile'
+import MarketingTaskDetail from './MarketingTaskDetail'
+import MyApplications from './MyApplications'
+import MyMarketingTasks from './MyMarketingTasks'
 
 export default function Router (props: AuthProps): JSX.Element {
   const router = createBrowserRouter([
