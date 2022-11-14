@@ -1,43 +1,58 @@
 # Lampsz-App
+
 Source code for Lampsz platform
 
 ## Development Setup
 
 Make sure to have the following on your host:
+
 - Python 3.10
+- Node.js 18 and npm
 - [Poetry](https://python-poetry.org/docs/)
 - PostgresSQL
 
-Some Django settings are loaded through environment variables. For local development, create a `.env` file in the project directory and put the following items in:
+For UNIX system, also install the following packages:
 
-    DATABASE_URL=postgres://<username>:<password>@localhost:<port>/<db_name>
-    SECRET_KEY=test_key
-    DEBUG=True
+- build-essential 
+- libpq-dev
 
+Some Django settings are loaded through environment variables. For local
+development, copy the `.env.example` file to `.env` file in the project
+directory and fill in the content.
 
+To get started with local development:
 
-To get started with Django development:
 1. Install required Python dependencies:
 
         $ poetry install
 
-2. Activate virtual environment:
+2. Install frontend Javascript dependencies:
+
+        $ npm install
+
+3. Build frontend files:
+
+        $ npm run dev
+
+4. Activate virtual environment:
 
         $ poetry shell
 
-3. Apply Django database migrations:
+5. Apply Django database migrations:
 
         $ python manage.py migrate
 
-4. To start django development server:
+6. To start django development server:
 
         $ python manage.py runserver
 
-And you can now access the home page by going to [127.0.0.1:8000](http://127.0.0.1:8000/)
+And you can now access the home page by going
+to [127.0.0.1:8000](http://127.0.0.1:8000/)
 
 ## Linters
 
-After installing the required packages through the steps above, the pre-configured linters can be run.
+After installing the required packages through the steps above, the
+pre-configured linters can be run.
 
 ### Code Style Enforcement
 
@@ -53,7 +68,8 @@ Running type checks with mypy:
 
 ### Pre-commit
 
-All the linters have been configured into git pre-commit hooks. To utilize this, run
+All the linters have been configured into git pre-commit hooks. To utilize this,
+run
 
     $ pre-commit install
 
