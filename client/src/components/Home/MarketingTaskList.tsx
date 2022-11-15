@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Link from '@mui/material/Link'
-import PanelTitle from '../shared/PanelTitle'
-import MarketingTaskCard from '../shared/MarketingTaskCard'
+import PanelTitle from '../Shared/PanelTitle'
+import MarketingTaskCard from '../Shared/MarketingTaskCard'
 import { Stack } from '@mui/material'
 import Paper from '@mui/material/Paper'
 
