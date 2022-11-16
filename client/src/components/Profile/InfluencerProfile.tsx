@@ -46,7 +46,7 @@ export default function InfluencerProfile (): JSX.Element {
   return (
     <Box component="main" sx={containerStyle.contentBox}>
       <Container maxWidth="md" sx={containerStyle.contentContainer}>
-        <Grid container>
+        <Grid container spacing={4}>
           <Grid item xs={12}>
             <ProfileInfo items={items} name={influencerName}/>
           </Grid>
