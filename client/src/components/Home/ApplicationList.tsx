@@ -4,6 +4,7 @@ import PanelTitle from '../Shared/PanelTitle'
 import MarketingTaskCard from '../Shared/MarketingTaskCard'
 import { Stack } from '@mui/material'
 import Paper from '@mui/material/Paper'
+import { containerStyle } from '../../utils/sharedStyles'
 
 const data = [
   {
@@ -18,7 +19,7 @@ const data = [
 
 export default function ApplicationList (): JSX.Element {
   return (
-    <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+    <Paper sx={containerStyle.contentPaper}>
       <PanelTitle variant="h5">Your Applications</PanelTitle>
       <Stack direction="row" spacing={2} marginTop={3}>
         {data.map((item, index) => <MarketingTaskCard key={index} title={item.title} description={item.description}/>)}

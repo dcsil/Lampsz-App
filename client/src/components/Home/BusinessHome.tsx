@@ -5,20 +5,12 @@ import Grid from '@mui/material/Grid'
 import MarketingTaskList from './MarketingTaskList'
 import ProfileLink from './ProfileLink'
 import MarketplaceLink from './MarketplaceLink'
+import { containerStyle } from '../../utils/sharedStyles'
 
 export default function BusinessHome (): JSX.Element {
   return (
-    <Box
-      component="main"
-      sx={{
-        display: 'flex',
-        backgroundColor: (theme) => theme.palette.grey[100],
-        flexGrow: 1,
-        height: '100vh',
-        overflow: 'auto'
-      }}
-    >
-      <Container maxWidth="lg" sx={{ mt: 6, mb: 6 }}>
+    <Box component="main" sx={containerStyle.contentBox}>
+      <Container maxWidth="lg" sx={containerStyle.contentContainer}>
         <Grid container spacing={3}>
           {/* Profile Link */}
           <Grid item lg={6} xs={12}>

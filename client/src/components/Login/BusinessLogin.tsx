@@ -11,6 +11,7 @@ import Link from '@mui/material/Link'
 import * as React from 'react'
 import { AuthProps } from '../../utils/sharedProps'
 import { businessLogin } from '../../actions/auth'
+import { containerStyle } from '../../utils/sharedStyles'
 
 export default function BusinessLogin ({ setAuth, setUserType }: AuthProps): JSX.Element {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
@@ -20,13 +21,7 @@ export default function BusinessLogin ({ setAuth, setUserType }: AuthProps): JSX
   }
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
-      }}
-    >
+    <Box sx={containerStyle.centeredBox}>
       <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
         <LockOutlinedIcon/>
       </Avatar>

@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import BusinessHome from './BusinessHome'
 import { AuthProps } from '../../utils/sharedProps'
 import { UserType } from '../../utils/types'

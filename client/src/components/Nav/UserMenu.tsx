@@ -48,7 +48,7 @@ export default function UserMenu ({ setAuth }: AuthProps): JSX.Element {
           <Typography textAlign="center" component="a" href="/profile">Profile</Typography>
         </MenuItem>
         <MenuItem onClick={handleLogout}>
-          <Typography textAlign="center" component="a" href="#">Logout</Typography>
+          <Typography textAlign="center" component="a" href="/">Logout</Typography>
         </MenuItem>
       </Menu>
     </div>
