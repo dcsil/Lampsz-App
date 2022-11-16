@@ -13,7 +13,7 @@ Make sure to have the following on your host:
 
 For UNIX system, also install the following packages:
 
-- build-essential 
+- build-essential
 - libpq-dev
 
 Some Django settings are loaded through environment variables. For local
@@ -38,11 +38,15 @@ To get started with local development:
 
         $ poetry shell
 
-5. Apply Django database migrations:
+5. Export environment variable for Django settings:
+
+        $ export DJANGO_SETTINGS_MODULE=lampsz.settings.local
+
+6. Apply Django database migrations:
 
         $ python manage.py migrate
 
-6. To start django development server:
+7. To start django development server:
 
         $ python manage.py runserver
 
