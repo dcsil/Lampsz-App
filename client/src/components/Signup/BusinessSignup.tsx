@@ -9,8 +9,9 @@ import Link from '@mui/material/Link'
 import * as React from 'react'
 import { AuthProps } from '../../utils/sharedProps'
 import { businessRegister } from '../../actions/auth'
+import { containerStyle } from '../../utils/sharedStyles'
 
-export default function BusinessSignup ({ setAuth }: AuthProps): JSX.Element {
+export default function BusinessSignup ({ setAuth, setUserType }: AuthProps): JSX.Element {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -18,17 +19,11 @@ export default function BusinessSignup ({ setAuth }: AuthProps): JSX.Element {
       email: data.get('email'),
       password: data.get('password')
     })
-    businessRegister('', '', '', setAuth)
+    businessRegister('', '', '', setAuth, setUserType)
   }
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
-      }}
-    >
+    <Box sx={containerStyle.centeredBox}>
       <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
         <LockOutlinedIcon/>
       </Avatar>
@@ -80,7 +75,7 @@ export default function BusinessSignup ({ setAuth }: AuthProps): JSX.Element {
         </Button>
         <Grid container justifyContent="flex-end">
           <Grid item>
-            <Link href="/login" variant="body2">
+            <Link href="/client/src/components/Login" variant="body2">
               Already have an account? Sign in
             </Link>
           </Grid>

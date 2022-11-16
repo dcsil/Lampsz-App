@@ -39,9 +39,9 @@ function App (): JSX.Element {
 
   return (
     <ThemeProvider theme={theme}>
-      <Nav auth={auth} userType={userType} setAuth={setAuth}/>
+      <Nav auth={auth} userType={userType} setAuth={setAuth} setUserType={setUserType}/>
       <CssBaseline/>
-      <Routes auth={auth} userType={userType} setAuth={setAuth}/>
+      <Routes auth={auth} userType={userType} setAuth={setAuth} setUserType={setUserType}/>
     </ThemeProvider>
   )
 }

@@ -11,22 +11,17 @@ import Link from '@mui/material/Link'
 import * as React from 'react'
 import { AuthProps } from '../../utils/sharedProps'
 import { businessLogin } from '../../actions/auth'
+import { containerStyle } from '../../utils/sharedStyles'
 
-export default function BusinessLogin ({ setAuth }: AuthProps): JSX.Element {
+export default function BusinessLogin ({ setAuth, setUserType }: AuthProps): JSX.Element {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
     // const data = new FormData(event.currentTarget)
-    businessLogin('', '', setAuth)
+    businessLogin('', '', setAuth, setUserType)
   }
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
-      }}
-    >
+    <Box sx={containerStyle.centeredBox}>
       <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
         <LockOutlinedIcon/>
       </Avatar>
@@ -68,7 +63,7 @@ export default function BusinessLogin ({ setAuth }: AuthProps): JSX.Element {
         </Button>
         <Grid container>
           <Grid item>
-            <Link href="/signup" variant="body2">
+            <Link href="/client/src/components/Signup" variant="body2">
               Don't have an account? Sign Up
             </Link>
           </Grid>

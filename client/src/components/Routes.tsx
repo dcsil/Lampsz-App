@@ -1,12 +1,14 @@
 import * as React from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Home from '../pages/Home'
-import Login from '../pages/Login'
-import Signup from '../pages/Signup'
+import Home from './Home'
+import Login from './Login'
+import Signup from './Signup'
 import { AuthProps } from '../utils/sharedProps'
-import Marketplace from '../pages/Marketplace'
-import Profile from '../pages/Profile'
-import MarketingTaskDetail from '../pages/MarketingTaskDetail'
+import Marketplace from './Marketplace'
+import Profile from './Profile'
+import MarketingTaskDetail from './MarketingTaskDetail'
+import MyApplications from './MyApplications'
+import MyMarketingTasks from './MyMarketingTasks'
 
 export default function Router (props: AuthProps): JSX.Element {
   const router = createBrowserRouter([
@@ -32,7 +34,15 @@ export default function Router (props: AuthProps): JSX.Element {
     },
     {
       path: '/profile',
-      element: <Profile/>
+      element: <Profile {...props}/>
+    },
+    {
+      path: '/applications',
+      element: <MyApplications/>
+    },
+    {
+      path: '/tasks',
+      element: <MyMarketingTasks/>
     }
   ])
 
