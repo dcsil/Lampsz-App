@@ -10,6 +10,34 @@ import UserMenu from './UserMenu'
 import { AuthProps } from '../../utils/sharedProps'
 import { getNavItems } from '../../utils/paths'
 
+const styles = {
+  xsBox: {
+    flexGrow: 1,
+    display: {
+      xs: 'flex',
+      md: 'none'
+    }
+  },
+  lgBox: {
+    flexGrow: 1,
+    display: {
+      xs: 'none',
+      md: 'flex'
+    }
+  },
+  navButtons: {
+    my: 2,
+    color: 'white',
+    display: 'block'
+  },
+  navMenu: {
+    display: {
+      xs: 'block',
+      md: 'none'
+    }
+  }
+}
+
 export default function Nav (props: AuthProps): JSX.Element {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
 
@@ -28,8 +56,9 @@ export default function Nav (props: AuthProps): JSX.Element {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
 
+          {/* Nav display for smaller screens */}
           <StyledTitle isLg={true}/>
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={styles.xsBox}>
             <IconButton
               size="large"
               onClick={handleOpenNavMenu}
@@ -51,9 +80,7 @@ export default function Nav (props: AuthProps): JSX.Element {
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' }
-              }}
+              sx={styles.navMenu}
             >
               {navItems.map((page) => (
                 <MenuItem key={page.name} onClick={handleCloseNavMenu}>
@@ -65,13 +92,13 @@ export default function Nav (props: AuthProps): JSX.Element {
 
           {/* Nav display for bigger screens */}
           <StyledTitle isLg={false}/>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={styles.lgBox}>
             {navItems.map((page) => (
               <Button
                 key={page.name}
                 href={page.href}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={styles.navButtons}
               >
                 {page.name}
               </Button>
