@@ -46,7 +46,7 @@ const styles = {
   }
 }
 
-export default function ProfileCard ({ name, shortBio, items }: ProfileCardProps): JSX.Element {
+export default function ProfileInfo ({ name, shortBio, items }: ProfileCardProps): JSX.Element {
   return (
     <Card sx={styles.card}>
       <CardContent>

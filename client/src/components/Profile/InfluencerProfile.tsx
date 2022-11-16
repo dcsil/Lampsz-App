@@ -1,13 +1,16 @@
 import * as React from 'react'
+import { useEffect } from 'react'
 import Box from '@mui/material/Box'
 import { containerStyle } from '../../utils/sharedStyles'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
-import ProfileCard from './ProfileCard'
+import ProfileInfo from './ProfileInfo'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import BoyIcon from '@mui/icons-material/Boy'
 import SubscriptionsIcon from '@mui/icons-material/Subscriptions'
 import ThumbUpIcon from '@mui/icons-material/ThumbUp'
+import { getInfluencerProfile } from '../../actions/profile'
+import ProfileDescription from './ProfileDescription'
 
 const items = [
   {
@@ -33,12 +36,22 @@ const items = [
 ]
 
 export default function InfluencerProfile (): JSX.Element {
+  const [influencerName, setInfluencerName] = React.useState('Influencer Name')
+  const [description, setDescription] = React.useState('')
+
+  useEffect(() => {
+    getInfluencerProfile('temp', setInfluencerName, setDescription)
+  })
+
   return (
     <Box component="main" sx={containerStyle.contentBox}>
       <Container maxWidth="md" sx={containerStyle.contentContainer}>
         <Grid container>
           <Grid item xs={12}>
-            <ProfileCard items={items} name="Influencer Name"/>
+            <ProfileInfo items={items} name={influencerName}/>
+          </Grid>
+          <Grid item xs={12}>
+            <ProfileDescription description={description}/>
           </Grid>
         </Grid>
       </Container>
