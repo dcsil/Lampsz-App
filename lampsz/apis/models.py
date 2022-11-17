@@ -36,3 +36,12 @@ class Company(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class MarketingTask(models.Model):
+    company = models.ForeignKey(Company, on_delete= models.CASCADE, null=False, blank=False)
+    title = models.TextField(null=False, blank=False)
+    description = models.TextField(null=False, blank=False)
+    price = models.FloatField(null=False, blank=False)
+    postedDate = models.DateField(null=False, blank=False)
+    
