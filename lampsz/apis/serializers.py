@@ -29,13 +29,8 @@ class InfluencerSerializer(serializers.ModelSerializer):
         user_data = validated_data.pop("user")
         user = User.objects.create(**user_data)
         location_data = validated_data.pop("location")
-        location = models.Location.objects.filter(
-            location__iexact=location_data["location"]
-        )
-        location = (
-            models.Location.objects.create(location=location_data["location"])
-            if len(location) < 1
-            else location[0]
+        location = models.Location.objects.get_or_create(
+            location=location_data["location"]
         )
         influencer = models.Influencer.objects.create(
             user=user, location=location, **validated_data
@@ -55,13 +50,8 @@ class CompanySerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         location_data = validated_data.pop("location")
-        location = models.Location.objects.filter(
-            location__iexact=location_data["location"]
-        )
-        location = (
-            models.Location.objects.create(location=location_data["location"])
-            if len(location) < 1
-            else location[0]
+        location, created = models.Location.objects.get_or_create(
+            location=location_data["location"]
         )
         for key, value in validated_data.items():
             setattr(instance, key, value)
