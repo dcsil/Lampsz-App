@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 from lampsz.apis import models, serializers
+from rest_framework.parsers import JSONParser
 import uuid
 
 @api_view(['POST'])
@@ -96,3 +97,15 @@ def tiktok_auth_view(request, *args, **kwargs):
     queryString += '&state=' + csrfState;
     response['Location'] += queryString
     return response
+
+
+@api_view(['POST'])
+def create_marketing_task(request):
+    data = JSONParser().parse(request)
+    
+    serializer = serializers.MarketingTaskSerializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        return JsonResponse(serializer.data, status=201)
+    return JsonResponse(serializer.errors, status=400)
+    

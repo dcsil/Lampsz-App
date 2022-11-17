@@ -25,4 +25,6 @@ urlpatterns = [
     path('influencer/<int:influencer_id>', views.get_influencer_view),
     path('company/<int:company_id>', views.get_company_view),
     path('user/<int:user_id>', views.get_user_view),
+    path('create_task/', views.create_marketing_task),
+    
 ]
