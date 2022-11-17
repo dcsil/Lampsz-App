@@ -13,8 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import include, path
+from django.urls import path
 
 from lampsz.apis import views
 
@@ -23,7 +22,7 @@ urlpatterns = [
     path('company_register/', views.company_create_view),
     path('company_login/', views.company_login_view),
     path('influencer/<int:influencer_id>', views.get_influencer_view),
-    path('company/<int:company_id>', views.get_company_view),
+    path('company/<int:company_id>', views.company_detail_view),
     path('user/<int:user_id>', views.get_user_view),
     path('create_task/', views.create_marketing_task),
     
