@@ -9,6 +9,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 
 from lampsz.apis import models, serializers
+from rest_framework.parsers import JSONParser
+import uuid
 
 
 @api_view(["POST"])
@@ -137,12 +139,24 @@ def tiktok_auth_view(request, *args, **kwargs):
     csrfState = str(uuid.uuid1())
     url = "https://www.tiktok.com/auth/authorize/"
     response = redirect(url)
-    response.set_cookie("csrfState", csrfState, max_age=6000)
-    queryString = "?"
-    queryString += "client_key=" + CLIENT_KEY
-    queryString += "&scope=user.info.basic,video.list"
-    queryString += "&response_type=code"
-    queryString += "&redirect_uri=localhost:8000/api/redirectTT"
-    queryString += "&state=" + csrfState
-    response["Location"] += queryString
+    response.set_cookie('csrfState', csrfState, max_age=6000)
+    queryString = '?'
+    queryString += 'client_key=' + CLIENT_KEY;
+    queryString += '&scope=user.info.basic,video.list';
+    queryString += '&response_type=code';
+    queryString += '&redirect_uri=localhost:8000/api/redirectTT';
+    queryString += '&state=' + csrfState;
+    response['Location'] += queryString
     return response
+
+
+@api_view(['POST'])
+def create_marketing_task(request):
+    data = JSONParser().parse(request)
+    
+    serializer = serializers.MarketingTaskSerializer(data=data)
+    if serializer.is_valid():
+        serializer.save()
+        return JsonResponse(serializer.data, status=201)
+    return JsonResponse(serializer.errors, status=400)
+    
