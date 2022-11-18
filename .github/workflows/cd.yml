@@ -1,4 +1,4 @@
-name: Django CD
+name: Heroku Deploy
 
 on:
   push:
