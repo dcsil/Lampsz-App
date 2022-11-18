@@ -1,31 +1,34 @@
 import uuid
 
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.parsers import JSONParser
 from rest_framework.permissions import IsAuthenticated
 
 from lampsz.apis import models, serializers
-from rest_framework.parsers import JSONParser
-import uuid
 
 
 @api_view(["POST"])
-def company_login_view(request, *args, **kwargs):
+def user_login_view(request, *args, **kwargs):
     if request.user.IsAuthenticated():
         return JsonResponse(
             {"message": "Alreayd logged in"}, status=status.HTTP_400_BAD_REQUEST
         )
     username = request.POST["username"]
     password = request.POST["password"]
+    userType = request.POST["UserType"]
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
+        if userType == "INFLUENCER":
+            user_id = models.Influencer.objects.get(user_id=user.id)
+        else:
+            user_id = models.Company.objects.get(user_id=user.id)
         return JsonResponse(
-            {"message": "Login successful"}, status=status.HTTP_404_NOT_FOUND
+            {"id": user_id, "message": "Login successful"}, status=status.HTTP_200_OK
         )
     else:
         return JsonResponse(
@@ -34,9 +37,9 @@ def company_login_view(request, *args, **kwargs):
         )
 
 
-@api_view(["GET"])
+@api_view(["GET", "PUT"])
 @permission_classes([IsAuthenticated])
-def get_influencer_view(request, influencer_id, *args, **kwargs):
+def influencer_detail_view(request, influencer_id, *args, **kwargs):
     try:
         influencer = models.Influencer.objects.get(pk=influencer_id)
     except models.Influencer.DoesNotExist:
@@ -49,8 +52,24 @@ def get_influencer_view(request, influencer_id, *args, **kwargs):
             {"message": "This user is not authorized to access this data"},
             status=status.HTTP_401_UNAUTHORIZED,
         )
-    influencer_serializer = serializers.InfluencerSerializer(influencer, many=False)
-    return JsonResponse(influencer_serializer.data)
+    if request.method == "GET":
+        influencer_serializer = serializers.InfluencerSerializer(influencer, many=False)
+        return JsonResponse(influencer_serializer.data, status=status.HTTP_200_OK)
+    elif request.method == "PUT":
+        influencer_data = request.data
+        influencer_serializer = serializers.InfluencerSerializer(
+            influencer, data=influencer_data, partial=True
+        )
+        if influencer_serializer.is_valid():
+            influencer_serializer.save()
+            return JsonResponse(influencer_serializer.data)
+        else:
+            return JsonResponse(
+                influencer_serializer.errors, status=status.HTTP_400_BAD_REQUEST
+            )
+    return JsonResponse(
+        influencer_serializer.errors, status=status.HTTP_400_BAD_REQUEST
+    )
 
 
 @api_view(["GET", "PUT"])
@@ -69,7 +88,7 @@ def company_detail_view(request, company_id, *args, **kwargs):
         )
     if request.method == "GET":
         company_serializer = serializers.CompanySerializer(company, many=False)
-        return JsonResponse(company_serializer.data)
+        return JsonResponse(company_serializer.data, status=status.HTTP_200_OK)
     elif request.method == "PUT":
         company_data = request.data
         company_serializer = serializers.CompanySerializer(
@@ -83,25 +102,6 @@ def company_detail_view(request, company_id, *args, **kwargs):
                 company_serializer.errors, status=status.HTTP_400_BAD_REQUEST
             )
     return JsonResponse(company_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(["GET"])
-@permission_classes([IsAuthenticated])
-def get_user_view(request, user_id, *args, **kwargs):
-    if request.user.id != user_id:
-        return JsonResponse(
-            {"message": "This user is not authorized to access this data"},
-            status=status.HTTP_401_UNAUTHORIZED,
-        )
-    try:
-        user = User.objects.get(pk=user_id)
-    except User.DoesNotExist:
-        return JsonResponse(
-            {"message": "The Influencer does not exist"},
-            status=status.HTTP_404_NOT_FOUND,
-        )
-    user_serializer = serializers.UserSerializer(user, many=False)
-    return JsonResponse(user_serializer.data)
 
 
 @api_view(["POST"])
@@ -139,24 +139,23 @@ def tiktok_auth_view(request, *args, **kwargs):
     csrfState = str(uuid.uuid1())
     url = "https://www.tiktok.com/auth/authorize/"
     response = redirect(url)
-    response.set_cookie('csrfState', csrfState, max_age=6000)
-    queryString = '?'
-    queryString += 'client_key=' + CLIENT_KEY;
-    queryString += '&scope=user.info.basic,video.list';
-    queryString += '&response_type=code';
-    queryString += '&redirect_uri=localhost:8000/api/redirectTT';
-    queryString += '&state=' + csrfState;
-    response['Location'] += queryString
+    response.set_cookie("csrfState", csrfState, max_age=6000)
+    queryString = "?"
+    queryString += "client_key=" + CLIENT_KEY
+    queryString += "&scope=user.info.basic,video.list"
+    queryString += "&response_type=code"
+    queryString += "&redirect_uri=localhost:8000/api/redirectTT"
+    queryString += "&state=" + csrfState
+    response["Location"] += queryString
     return response
 
 
-@api_view(['POST'])
+@api_view(["POST"])
 def create_marketing_task(request):
     data = JSONParser().parse(request)
-    
+
     serializer = serializers.MarketingTaskSerializer(data=data)
     if serializer.is_valid():
         serializer.save()
         return JsonResponse(serializer.data, status=201)
     return JsonResponse(serializer.errors, status=400)
-    

@@ -18,12 +18,10 @@ from django.urls import path
 from lampsz.apis import views
 
 urlpatterns = [
-    path('influencer_register/', views.influencer_create_view),
-    path('company_register/', views.company_create_view),
-    path('company_login/', views.company_login_view),
-    path('influencer/<int:influencer_id>', views.get_influencer_view),
-    path('company/<int:company_id>', views.company_detail_view),
-    path('user/<int:user_id>', views.get_user_view),
-    path('create_task/', views.create_marketing_task),
-    
+    path("influencer_register/", views.influencer_create_view),
+    path("company_register/", views.company_create_view),
+    path("user_login/", views.user_login_view),
+    path("influencer/<int:influencer_id>", views.influencer_detail_view),
+    path("company/<int:company_id>", views.company_detail_view),
+    path("create_task/", views.create_marketing_task),
 ]
