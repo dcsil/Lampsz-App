@@ -8,11 +8,11 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.parsers import JSONParser
 from rest_framework.permissions import IsAuthenticated
 
-from lampsz.apis import models, serializers
+from lampsz.apis import models, serializers, utils
 
 
 @api_view(["POST"])
-def user_login_view(request, *args, **kwargs):
+def user_login_view(request):
     if request.user.IsAuthenticated():
         return JsonResponse(
             {"message": "Alreayd logged in"}, status=status.HTTP_400_BAD_REQUEST
@@ -23,12 +23,13 @@ def user_login_view(request, *args, **kwargs):
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
-        if userType == "INFLUENCER":
-            user_id = models.Influencer.objects.get(user_id=user.id)
+        if userType == utils.UserType.INFLUENCER:
+            infl_comp_id = models.Influencer.objects.get(user_id=user.id)
         else:
-            user_id = models.Company.objects.get(user_id=user.id)
+            infl_comp_id = models.Company.objects.get(user_id=user.id)
         return JsonResponse(
-            {"id": user_id, "message": "Login successful"}, status=status.HTTP_200_OK
+            {"id": infl_comp_id, "message": "Login successful"},
+            status=status.HTTP_200_OK,
         )
     else:
         return JsonResponse(
@@ -39,7 +40,7 @@ def user_login_view(request, *args, **kwargs):
 
 @api_view(["GET", "PUT"])
 @permission_classes([IsAuthenticated])
-def influencer_detail_view(request, influencer_id, *args, **kwargs):
+def influencer_detail_view(request, influencer_id):
     try:
         influencer = models.Influencer.objects.get(pk=influencer_id)
     except models.Influencer.DoesNotExist:
@@ -74,7 +75,7 @@ def influencer_detail_view(request, influencer_id, *args, **kwargs):
 
 @api_view(["GET", "PUT"])
 @permission_classes([IsAuthenticated])
-def company_detail_view(request, company_id, *args, **kwargs):
+def company_detail_view(request, company_id):
     try:
         company = models.Company.objects.get(pk=company_id)
     except models.Company.DoesNotExist:
@@ -105,7 +106,7 @@ def company_detail_view(request, company_id, *args, **kwargs):
 
 
 @api_view(["POST"])
-def company_create_view(request, *args, **kwargs):
+def company_create_view(request):
     user_data = request.data
     user_serializer = serializers.UserSerializer(data=user_data)
     if user_serializer.is_valid():
@@ -121,7 +122,7 @@ def company_create_view(request, *args, **kwargs):
 
 
 @api_view(["POST"])
-def influencer_create_view(request, *args, **kwargs):
+def influencer_create_view(request):
     influencer_data = request.data
     influencer_serializer = serializers.InfluencerSerializer(data=influencer_data)
     if influencer_serializer.is_valid():
