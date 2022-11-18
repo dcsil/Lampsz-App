@@ -19,16 +19,16 @@ def user_login_view(request):
         )
     username = request.POST["username"]
     password = request.POST["password"]
-    userType = request.POST["UserType"]
+    userType = request.POST["userType"]
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
         if userType == utils.UserType.INFLUENCER:
-            infl_comp_id = models.Influencer.objects.get(user_id=user.id)
+            object_id = models.Influencer.objects.get(user_id=user.id).id
         else:
-            infl_comp_id = models.Company.objects.get(user_id=user.id)
+            object_id = models.Company.objects.get(user_id=user.id).id
         return JsonResponse(
-            {"id": infl_comp_id, "message": "Login successful"},
+            {"id": object_id, "message": "Login successful"},
             status=status.HTTP_200_OK,
         )
     else:
