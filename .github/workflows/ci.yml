@@ -62,7 +62,7 @@ jobs:
 
     runs-on: ubuntu-latest
     needs: build
-    timeout: 7
+    timeout-minutes: 7
 
     steps:
       - uses: actions/checkout@v2
