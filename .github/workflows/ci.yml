@@ -3,13 +3,13 @@ name: Django CI
 on:
   pull_request:
     branches: [ "main" ]
-    paths-ignore: [ "docs/**", ".docker/**", "script/**" ]
+    paths-ignore: [ "docs/**", ".docker/**", "script/**", "README.md"]
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
 
     services:
       postgres:
