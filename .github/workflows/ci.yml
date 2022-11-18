@@ -1,9 +1,14 @@
 name: Django CI
 
 on:
+  push:
+    branches: [ "main" ]
+    paths-ignore: [ "docs/**", ".docker/**", "script/**", "README.md" ]
+
   pull_request:
     branches: [ "main" ]
-    paths-ignore: [ "docs/**", ".docker/**", "script/**", "README.md"]
+    paths-ignore: [ "docs/**", ".docker/**", "script/**", "README.md" ]
+
 
 jobs:
   build:
@@ -53,3 +58,18 @@ jobs:
         run: |
           source .venv/bin/activate
           python manage.py test --settings=lampsz.settings.local
+
+  deploy:
+
+    runs-on: ubuntu-latest
+    needs: build
+    timeout-minutes: 7
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "lampsz"
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+      - run: heroku run python manage.py migrate
