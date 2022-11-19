@@ -20,8 +20,10 @@ from lampsz.apis.views import auth, profile
 urlpatterns = [
     path("company_register/", auth.company_create_view),
     path("influencer_register/", auth.influencer_create_view),
-    path("login/", auth.user_login_view),
+    path("company_login/", auth.company_login_view),
     path("logout/", auth.user_logout),
+    path("session/", auth.get_session_view),
+    path("csrf/", auth.get_csrf),
 ]
 
 urlpatterns += [

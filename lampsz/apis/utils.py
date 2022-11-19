@@ -2,5 +2,5 @@ from enum import Enum
 
 
 class UserType(Enum):
-    INFLUENCER = 1
-    BUSINESS = 2
+    BUSINESS = 1
+    INFLUENCER = 2
