@@ -28,7 +28,7 @@ const styles = {
   }
 }
 
-export default function BusinessLogin ({ csrf, setUserType }: AuthProps): JSX.Element {
+export default function BusinessLogin ({ setUserType }: AuthProps): JSX.Element {
   const [username, setUsername] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [error, setError] = React.useState('')
@@ -41,7 +41,7 @@ export default function BusinessLogin ({ csrf, setUserType }: AuthProps): JSX.El
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
-    businessLogin(username, password, csrf, setError, setUserType)
+    businessLogin(username, password, setError, setUserType)
   }
 
   return (

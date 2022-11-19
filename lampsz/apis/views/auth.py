@@ -72,7 +72,6 @@ def influencer_create_view(request):
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def get_session_view(request):
-    print(request.session.values())
     return JsonResponse({"userType": request.session.get("userType", 0)})
 
 

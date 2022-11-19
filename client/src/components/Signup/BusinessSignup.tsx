@@ -40,7 +40,6 @@ export default function BusinessSignup ({ setUserType }: AuthProps): JSX.Element
    */
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
-    console.log(username, email, password, confPassword, error)
 
     businessRegister(username, email, password, confPassword, setError, setUserType)
   }

@@ -4,23 +4,28 @@ import axios, { AxiosError, AxiosResponse } from 'axios'
 // Constants
 const confirmPassFails = 'Password don\'t match'
 
+/**
+ * Gets one-time CSRF token from API server
+ *
+ * @param setCsrf set state function for CSRF token.
+ */
 const getCSRF = (setCsrf: any): void => {
   axios
     .get('/api/csrf/')
-    .then((response: AxiosResponse) => {
-      console.log(response.headers)
-      const csrfToken = response.headers['x-csrftoken']
-      console.log(csrfToken)
-      setCsrf(csrfToken)
-    })
+    .then((response: AxiosResponse) => setCsrf(response.headers['x-csrftoken']))
     .catch((error: AxiosError) => console.log(error))
 }
 
+/**
+ * Check user session status from API server.
+ *
+ * @param setUserType set state function for user type.
+ * @param setCsrf set state function for CSRF token.
+ */
 export const checkSession = (setUserType: CSetState<UserType>, setCsrf: CSetState<string>): void => {
   axios
     .get('/api/session/')
     .then((response: AxiosResponse) => {
-      console.log(response)
       setUserType(response.data.userType)
       if (response.data.userType === UserType.NONE) {
         getCSRF(setCsrf)
@@ -29,27 +34,35 @@ export const checkSession = (setUserType: CSetState<UserType>, setCsrf: CSetStat
     .catch((error: AxiosError) => console.log(error))
 }
 
-export const businessLogin = (username: string, password: string, csrf: string, setError: SetState<string>, setUserType: CSetState<UserType>): void => {
+/**
+ * Authenticate user by calling API server.
+ *
+ * @param username user inputted username.
+ * @param password user inputted password.
+ * @param setError set state function for error message from API server.
+ * @param setUserType set state function for user type.
+ */
+export const businessLogin = (username: string, password: string, setError: SetState<string>, setUserType: CSetState<UserType>): void => {
   axios
     .post('/api/company_login/', {
       username,
       password,
       userType: UserType.BUSINESS
-    }, {
-      headers: {
-        'X-CSRFToken': csrf
-      }
     })
-    .then((response: AxiosResponse) => {
-      console.log(response)
-      setUserType(UserType.BUSINESS)
-    })
-    .catch((error: AxiosError<ErrorData>) => {
-      console.log(error)
-      setError(error.response!.data.message)
-    })
+    .then(_ => setUserType(UserType.BUSINESS))
+    .catch((error: AxiosError<ErrorData>) => setError(error.response!.data.message))
 }
 
+/**
+ * Register user by calling API server.
+ *
+ * @param username user inputted username.
+ * @param email user inputted email.
+ * @param password user inputted password.
+ * @param confPassword user inputted confirm password.
+ * @param setError set state function for error message from API server.
+ * @param setUserType set state function for user type.
+ */
 export const businessRegister = (
   username: string,
   email: string,
@@ -66,15 +79,12 @@ export const businessRegister = (
 
   axios
     .post('/api/company_register/', {
-      email, username, password
+      email,
+      username,
+      password
     })
-    .then(() => {
-      setUserType(UserType.BUSINESS)
-    })
-    .catch((error: AxiosError<RegisterValidation>) => {
-      console.log(error)
-      setError(error.response!.data.username!.join('\n'))
-    })
+    .then(_ => setUserType(UserType.BUSINESS))
+    .catch((error: AxiosError<RegisterValidation>) => setError(error.response!.data.username!.join('\n')))
 }
 
 export const influencerLogin = (setUserType: CSetState<UserType>): void => {
@@ -83,6 +93,12 @@ export const influencerLogin = (setUserType: CSetState<UserType>): void => {
 export const influencerRegister = (setUserType: CSetState<UserType>): void => {
 }
 
+/**
+ * Logout user by calling API server
+ *
+ * @param setUserType set state function for user type.
+ * @param setCsrf set state function for CSRF token.
+ */
 export const logout = (setUserType: CSetState<UserType>, setCsrf: CSetState<string>): void => {
   axios
     .get('/api/logout/')
