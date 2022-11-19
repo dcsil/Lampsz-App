@@ -1,107 +1,94 @@
-import { SetState, UserType } from '../utils/types'
+import { CSetState, ErrorData, RegisterValidation, SetState, UserType } from '../utils/types'
+import axios, { AxiosError, AxiosResponse } from 'axios'
 
-const tempMap = new Map<string, UserType>([
-  ['0', UserType.NONE],
-  ['1', UserType.BUSINESS],
-  ['2', UserType.INFLUENCER]
-])
+// Constants
+const confirmPassFails = 'Password don\'t match'
 
-export const checkSession = (setAuth: SetState<boolean>, setUserType: SetState<UserType>): void => {
-  // const url = '/api/check-session'
+const getCSRF = (setCsrf: any): void => {
+  axios
+    .get('/api/csrf/')
+    .then((response: AxiosResponse) => {
+      console.log(response.headers)
+      const csrfToken = response.headers['x-csrftoken']
+      console.log(csrfToken)
+      setCsrf(csrfToken)
+    })
+    .catch((error: AxiosError) => console.log(error))
+}
 
-  // fetch(url)
-  //   .then(res => {
-  //     if (res.status === 200) {
-  //       return res.json()
-  //     }
-  //   })
-  //   .then(() => {
-  //     setAuth(true)
-  //   })
-  //   .catch(error => {
-  //     console.log(error)
-  //   })
-  setAuth(localStorage.getItem('auth') === 'true')
-  if (localStorage.getItem('userType') !== null) {
-    // @ts-expect-error
-    setUserType(tempMap.get(localStorage.getItem('userType')))
-  } else {
-    setUserType(UserType.NONE)
+export const checkSession = (setUserType: CSetState<UserType>, setCsrf: CSetState<string>): void => {
+  axios
+    .get('/api/session/')
+    .then((response: AxiosResponse) => {
+      console.log(response)
+      setUserType(response.data.userType)
+      if (response.data.userType === UserType.NONE) {
+        getCSRF(setCsrf)
+      }
+    })
+    .catch((error: AxiosError) => console.log(error))
+}
+
+export const businessLogin = (username: string, password: string, csrf: string, setError: SetState<string>, setUserType: CSetState<UserType>): void => {
+  axios
+    .post('/api/company_login/', {
+      username,
+      password,
+      userType: UserType.BUSINESS
+    }, {
+      headers: {
+        'X-CSRFToken': csrf
+      }
+    })
+    .then((response: AxiosResponse) => {
+      console.log(response)
+      setUserType(UserType.BUSINESS)
+    })
+    .catch((error: AxiosError<ErrorData>) => {
+      console.log(error)
+      setError(error.response!.data.message)
+    })
+}
+
+export const businessRegister = (
+  username: string,
+  email: string,
+  password: string,
+  confPassword: string,
+  setError: SetState<string>,
+  setUserType: CSetState<UserType>
+): void => {
+  // Check two passwords match
+  if (password !== confPassword) {
+    setError(confirmPassFails)
+    return
   }
+
+  axios
+    .post('/api/company_register/', {
+      email, username, password
+    })
+    .then(() => {
+      setUserType(UserType.BUSINESS)
+    })
+    .catch((error: AxiosError<RegisterValidation>) => {
+      console.log(error)
+      setError(error.response!.data.username!.join('\n'))
+    })
 }
 
-export const businessLogin = (email: string, password: string, setAuth: SetState<boolean>, setUserType: SetState<UserType>): void => {
-  // const request = new Request('/api/company_login', {
-  //   method: 'post',
-  //   body: JSON.stringify({ email, password }),
-  //   headers: {
-  //     Accept: 'application/json, text/plain, */*',
-  //     'Content-Type': 'application/json'
-  //   }
-  // })
-
-  // fetch(request)
-  //   .then(res => {
-  //     if (res.status === 200) {
-  //       return res.json();
-  //     }
-  //   })
-  //   .then(res => {
-  //     console.log(res);
-  //   })
-  localStorage.setItem('auth', 'true')
-  localStorage.setItem('userType', UserType.BUSINESS.toString())
-  setAuth(localStorage.getItem('auth') === 'true')
-  // @ts-expect-error
-  setUserType(tempMap.get(localStorage.getItem('userType')))
+export const influencerLogin = (setUserType: CSetState<UserType>): void => {
 }
 
-export const businessRegister = (email: string, username: string, password: string, setAuth: SetState<boolean>, setUserType: SetState<UserType>): void => {
-  // const request = new Request('/api/company_register', {
-  //   method: 'post',
-  //   body: JSON.stringify({ email, username, password }),
-  //   headers: {
-  //     Accept: 'application/json, text/plain, */*',
-  //     'Content-Type': 'application/json'
-  //   }
-  // })
-
-  // fetch(request)
-  //   .then(res => {
-  //     if (res.status === 200) {
-  //       return res.json();
-  //     }
-  //   })
-  //   .then(res => {
-  //     console.log(res);
-  //   })
-  localStorage.setItem('auth', 'true')
-  localStorage.setItem('userType', UserType.BUSINESS.toString())
-  setAuth(localStorage.getItem('auth') === 'true')
-  // @ts-expect-error
-  setUserType(tempMap.get(localStorage.getItem('userType')))
+export const influencerRegister = (setUserType: CSetState<UserType>): void => {
 }
 
-export const influencerLogin = (setAuth: SetState<boolean>, setUserType: SetState<UserType>): void => {
-  localStorage.setItem('auth', 'true')
-  localStorage.setItem('userType', UserType.INFLUENCER.toString())
-  setAuth(localStorage.getItem('auth') === 'true')
-  // @ts-expect-error
-  setUserType(tempMap.get(localStorage.getItem('userType')))
-}
-
-export const influencerRegister = (setAuth: SetState<boolean>, setUserType: SetState<UserType>): void => {
-  localStorage.setItem('auth', 'true')
-  localStorage.setItem('userType', UserType.INFLUENCER.toString())
-  setAuth(localStorage.getItem('auth') === 'true')
-  // @ts-expect-error
-  setUserType(tempMap.get(localStorage.getItem('userType')))
-}
-
-export const logout = (setAuth: SetState<boolean>): void => {
-  localStorage.setItem('auth', 'false')
-  localStorage.setItem('userType', UserType.NONE.toString())
-  setAuth(localStorage.getItem('auth') === 'true')
-  // @ts-expect-error
-  setUserType(tempMap.get(localStorage.getItem('userType')))
+export const logout = (setUserType: CSetState<UserType>, setCsrf: CSetState<string>): void => {
+  axios
+    .get('/api/logout/')
+    .then(() => {
+      setUserType(UserType.NONE)
+      getCSRF(setCsrf)
+    })
+    .catch(error => console.log(error))
 }

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import * as React from 'react'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Routes from './components/Routes'
 import Nav from './components/Nav'
@@ -26,24 +26,38 @@ const theme = createTheme({
   }
 })
 
-function App (): JSX.Element {
-  // true if user is authenticated, otherwise false
-  const [auth, setAuth] = React.useState(false)
-  const [userType, setUserType] = React.useState(UserType.NONE)
+interface AppStates {
+  userType: UserType
+  csrf: string
+}
 
-  useEffect(() => {
-    if (!['/login', '/signup'].includes(window.location.pathname)) {
-      checkSession(setAuth, setUserType)
-    }
-  })
+class App extends React.Component<any, AppStates> {
+  state = {
+    userType: UserType.NONE,
+    csrf: ''
+  }
 
-  return (
-    <ThemeProvider theme={theme}>
-      <Nav auth={auth} userType={userType} setAuth={setAuth} setUserType={setUserType}/>
-      <CssBaseline/>
-      <Routes auth={auth} userType={userType} setAuth={setAuth} setUserType={setUserType}/>
-    </ThemeProvider>
-  )
+  setUserType = (userType: UserType): void => {
+    this.setState({ userType })
+  }
+
+  setCsrf = (csrf: string): void => {
+    this.setState({ csrf })
+  }
+
+  componentDidMount (): void {
+    checkSession(this.setUserType, this.setCsrf)
+  }
+
+  render (): JSX.Element {
+    return (
+      <ThemeProvider theme={theme}>
+        <Nav userType={this.state.userType} setUserType={this.setUserType} csrf={this.state.csrf} setCsrf={this.setCsrf}/>
+        <CssBaseline/>
+        <Routes userType={this.state.userType} setUserType={this.setUserType} csrf={this.state.csrf} setCsrf={this.setCsrf}/>
+      </ThemeProvider>
+    )
+  }
 }
 
 export default App
