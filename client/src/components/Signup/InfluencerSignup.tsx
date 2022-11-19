@@ -6,9 +6,9 @@ import { AuthProps } from '../../utils/sharedProps'
 import { influencerRegister } from '../../actions/auth'
 import { containerStyle } from '../../utils/sharedStyles'
 
-export default function InfluencerSignup ({ setAuth, setUserType }: AuthProps): JSX.Element {
+export default function InfluencerSignup ({ setUserType }: AuthProps): JSX.Element {
   const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
-    influencerRegister(setAuth, setUserType)
+    influencerRegister(setUserType)
   }
 
   return (
