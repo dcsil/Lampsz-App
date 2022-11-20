@@ -55,6 +55,7 @@ REST_FRAMEWORK = {
 }
 
 ROOT_URLCONF = "lampsz.urls"
+AUTH_USER_MODEL = "apis.User"
 
 TEMPLATES = [
     {

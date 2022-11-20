@@ -9,7 +9,7 @@ export interface ErrorData {
 
 export interface RegisterValidation {
   username?: string[]
-  confirmPassword?: string[]
+  email?: string[]
 }
 
 export interface NavItem {

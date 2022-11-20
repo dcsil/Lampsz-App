@@ -84,7 +84,14 @@ export const businessRegister = (
       password
     })
     .then(_ => setUserType(UserType.BUSINESS))
-    .catch((error: AxiosError<RegisterValidation>) => setError(error.response!.data.username!.join('\n')))
+    .catch((error: AxiosError<RegisterValidation>) => {
+      console.log(error)
+      if (error.response!.data.username !== undefined) {
+        setError(error.response!.data.username.join('\n'))
+      } else if (error.response!.data.email !== undefined) {
+        setError(error.response!.data.email.join('\n'))
+      }
+    })
 }
 
 export const influencerLogin = (setUserType: CSetState<UserType>): void => {

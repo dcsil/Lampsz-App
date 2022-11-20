@@ -11,6 +11,7 @@ from rest_framework.decorators import (
 from rest_framework.permissions import IsAuthenticated
 
 from lampsz.apis import models, serializers
+from lampsz.apis.utils import has_unique_error
 
 
 @api_view(["POST"])
@@ -49,7 +50,7 @@ def company_create_view(request):
         return JsonResponse(company_serializer.data, status=status.HTTP_201_CREATED)
 
     errors = user_serializer.errors
-    if [error for error in errors.get("username") if error.code == "unique"]:
+    if has_unique_error("username", errors) or has_unique_error("email", errors):
         return JsonResponse(errors, status=status.HTTP_409_CONFLICT)
     else:
         return JsonResponse(errors, status=status.HTTP_400_BAD_REQUEST)
