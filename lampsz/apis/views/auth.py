@@ -13,6 +13,23 @@ from rest_framework.permissions import IsAuthenticated
 from lampsz.apis import models, serializers
 from lampsz.apis.utils import has_unique_error
 
+__all__ = [
+    "login_successful",
+    "bad_credentials",
+    "csrf_set",
+    "company_login_view",
+    "company_create_view",
+    "influencer_create_view",
+    "logout_view",
+    "get_session_view",
+    "get_csrf",
+]
+
+# Response messages
+login_successful = "Login successful"
+bad_credentials = "Incorrect username or password!"
+csrf_set = "CSRF cookie set"
+
 
 @api_view(["POST"])
 def company_login_view(request):
@@ -23,18 +40,17 @@ def company_login_view(request):
     user = authenticate(request, username=username, password=password)
     if user is None:
         return JsonResponse(
-            {"message": "Incorrect username or password!"},
-            status=status.HTTP_404_NOT_FOUND,
+            {"message": bad_credentials}, status=status.HTTP_404_NOT_FOUND
         )
 
     login(request, user)
     request.session["userType"] = user_type
     user_id = models.Company.objects.get(user_id=user.id).id
-    return JsonResponse({"id": user_id, "message": "Login successful"})
+    return JsonResponse({"id": user_id, "message": login_successful})
 
 
 @api_view(["GET"])
-def user_logout(request):
+def logout_view(request):
     logout(request)
     return JsonResponse({}, status=status.HTTP_200_OK)
 
@@ -77,6 +93,6 @@ def get_session_view(request):
 
 
 def get_csrf(request):
-    response = JsonResponse({"detail": "CSRF cookie set"})
+    response = JsonResponse({"detail": csrf_set})
     response["X-CSRFToken"] = get_token(request)
     return response

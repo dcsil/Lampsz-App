@@ -18,12 +18,14 @@ from django.urls import path
 from lampsz.apis.views import auth, profile
 
 urlpatterns = [
-    path("company_register/", auth.company_create_view),
-    path("influencer_register/", auth.influencer_create_view),
-    path("company_login/", auth.company_login_view),
-    path("logout/", auth.user_logout),
-    path("session/", auth.get_session_view),
-    path("csrf/", auth.get_csrf),
+    path("company_register/", auth.company_create_view, name="company-register"),
+    path(
+        "influencer_register/", auth.influencer_create_view, name="influencer-register"
+    ),
+    path("company_login/", auth.company_login_view, name="company-login"),
+    path("logout/", auth.logout_view, name="logout"),
+    path("session/", auth.get_session_view, name="session"),
+    path("csrf/", auth.get_csrf, name="csrf"),
 ]
 
 urlpatterns += [
