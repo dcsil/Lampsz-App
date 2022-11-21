@@ -1,3 +1,5 @@
+import * as React from 'react'
+import { useEffect } from 'react'
 import Box from '@mui/material/Box'
 import Avatar from '@mui/material/Avatar'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
@@ -6,11 +8,11 @@ import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Link from '@mui/material/Link'
-import * as React from 'react'
 import { AuthProps } from '../../utils/sharedProps'
 import { businessRegister } from '../../actions/auth'
 import { containerStyle } from '../../utils/sharedStyles'
-import { formFieldOnChange, hasError } from '../../utils/utils'
+import { formFieldOnChange, hasError, isAuthenticated } from '../../utils/utils'
+import { useNavigate } from 'react-router-dom'
 
 const styles = {
   avatar: {
@@ -26,12 +28,13 @@ const styles = {
   }
 }
 
-export default function BusinessSignup ({ setUserType }: AuthProps): JSX.Element {
+export default function BusinessSignup ({ userType, setUserType }: AuthProps): JSX.Element {
   const [username, setUsername] = React.useState('')
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [confPassword, setConfPassword] = React.useState('')
   const [error, setError] = React.useState('')
+  const navigate = useNavigate()
 
   /**
    * Handles business register form submission.
@@ -43,6 +46,13 @@ export default function BusinessSignup ({ setUserType }: AuthProps): JSX.Element
 
     businessRegister(username, email, password, confPassword, setError, setUserType)
   }
+
+  useEffect(() => {
+    // Navigate user to home page after login
+    if (isAuthenticated(userType)) {
+      navigate('/')
+    }
+  })
 
   // Component JSX
   return (

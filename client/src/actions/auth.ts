@@ -21,8 +21,9 @@ const getCSRF = (setCsrf: any): void => {
  *
  * @param setUserType set state function for user type.
  * @param setCsrf set state function for CSRF token.
+ * @param setIsReadingCookie set state function for isReadingCookie.
  */
-export const checkSession = (setUserType: CSetState<UserType>, setCsrf: CSetState<string>): void => {
+export const checkSession = (setUserType: CSetState<UserType>, setCsrf: CSetState<string>, setIsReadingCookie: CSetState<boolean>): void => {
   axios
     .get('/api/session/')
     .then((response: AxiosResponse) => {
@@ -30,6 +31,7 @@ export const checkSession = (setUserType: CSetState<UserType>, setCsrf: CSetStat
       if (response.data.userType === UserType.NONE) {
         getCSRF(setCsrf)
       }
+      setIsReadingCookie(false)
     })
     .catch((error: AxiosError) => console.log(error))
 }

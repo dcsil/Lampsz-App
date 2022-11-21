@@ -7,6 +7,7 @@ import { checkSession } from './actions/auth'
 import { UserType } from './utils/types'
 import CssBaseline from '@mui/material/CssBaseline'
 import './App.css'
+import Loading from './components/Loading'
 
 const theme = createTheme({
   palette: {
@@ -29,12 +30,14 @@ const theme = createTheme({
 interface AppStates {
   userType: UserType
   csrf: string
+  isReadingCookie: boolean
 }
 
 class App extends React.Component<any, AppStates> {
   state = {
     userType: UserType.NONE,
-    csrf: ''
+    csrf: '',
+    isReadingCookie: true
   }
 
   setUserType = (userType: UserType): void => {
@@ -45,8 +48,12 @@ class App extends React.Component<any, AppStates> {
     this.setState({ csrf })
   }
 
+  setIsReadingCookie = (isReadingCookie: boolean): void => {
+    this.setState({ isReadingCookie })
+  }
+
   componentDidMount (): void {
-    checkSession(this.setUserType, this.setCsrf)
+    checkSession(this.setUserType, this.setCsrf, this.setIsReadingCookie)
   }
 
   render (): JSX.Element {

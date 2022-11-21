@@ -9,10 +9,12 @@ import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
 import * as React from 'react'
+import { useEffect } from 'react'
 import { AuthProps } from '../../utils/sharedProps'
 import { businessLogin } from '../../actions/auth'
 import { containerStyle } from '../../utils/sharedStyles'
-import { formFieldOnChange, hasError } from '../../utils/utils'
+import { formFieldOnChange, hasError, isAuthenticated } from '../../utils/utils'
+import { useNavigate } from 'react-router-dom'
 
 const styles = {
   avatar: {
@@ -28,10 +30,11 @@ const styles = {
   }
 }
 
-export default function BusinessLogin ({ setUserType }: AuthProps): JSX.Element {
+export default function BusinessLogin ({ userType, setUserType }: AuthProps): JSX.Element {
   const [username, setUsername] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [error, setError] = React.useState('')
+  const navigate = useNavigate()
 
   /**
    * Handles business register form submission.
@@ -43,6 +46,13 @@ export default function BusinessLogin ({ setUserType }: AuthProps): JSX.Element 
 
     businessLogin(username, password, setError, setUserType)
   }
+
+  useEffect(() => {
+    // Navigate user to home page after login
+    if (isAuthenticated(userType)) {
+      navigate('/')
+    }
+  })
 
   return (
     <Box sx={containerStyle.centeredBox}>
