@@ -1,8 +1,16 @@
-import { SetState, UserType } from './types'
+import { CSetState, UserType } from './types'
+import App from '../App'
 
 export interface AuthProps {
-  auth: boolean
   userType: UserType
-  setAuth: SetState<boolean>
-  setUserType: SetState<UserType>
+  setUserType: CSetState<UserType>
+  csrf: string
+  setCsrf: CSetState<string>
+}
+
+export interface CommonProps {
+  userType: UserType
+  username: string
+  userId: string
+  appComponent: App
 }

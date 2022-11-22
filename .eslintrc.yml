@@ -19,5 +19,4 @@ plugins:
   - react
 rules:
   react/no-unescaped-entities: off
-
-
+  '@typescript-eslint/no-non-null-assertion': off

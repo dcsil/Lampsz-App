@@ -1,5 +1,9 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.db import models
+
+
+class User(AbstractUser):
+    email = models.EmailField(unique=True)
 
 
 # Filter classes
@@ -39,9 +43,10 @@ class Company(models.Model):
 
 
 class MarketingTask(models.Model):
-    company = models.ForeignKey(Company, on_delete= models.CASCADE, null=False, blank=False)
+    company = models.ForeignKey(
+        Company, on_delete=models.CASCADE, null=False, blank=False
+    )
     title = models.TextField(null=False, blank=False)
     description = models.TextField(null=False, blank=False)
     price = models.FloatField(null=False, blank=False)
     postedDate = models.DateField(null=False, blank=False)
-    

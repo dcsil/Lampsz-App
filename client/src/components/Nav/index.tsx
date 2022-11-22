@@ -8,7 +8,7 @@ import Button from '@mui/material/Button'
 import { StyledTitle } from '../Shared/StyledTitle'
 import UserMenu from './UserMenu'
 import { AuthProps } from '../../utils/sharedProps'
-import { getNavItems } from '../../utils/paths'
+import { getNavItems, isAuthenticated } from '../../utils/utils'
 
 const styles = {
   xsBox: {
@@ -105,7 +105,7 @@ export default function Nav (props: AuthProps): JSX.Element {
             ))}
           </Box>
 
-          {props.auth && <UserMenu {...props}/>}
+          {isAuthenticated(props.userType) && <UserMenu {...props}/>}
         </Toolbar>
       </Container>
     </AppBar>

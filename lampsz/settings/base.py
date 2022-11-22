@@ -47,7 +47,15 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ]
+}
+
 ROOT_URLCONF = "lampsz.urls"
+AUTH_USER_MODEL = "apis.User"
 
 TEMPLATES = [
     {
@@ -109,9 +117,7 @@ USE_TZ = True
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATIC_URL = "static/"
-STATICFILES_DIRS = [
-    ("public", "client/public")
-]
+STATICFILES_DIRS = [("public", "client/public")]
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 

@@ -4,11 +4,11 @@ import { Tab, Tabs } from '@mui/material'
 import BusinessLogin from './BusinessLogin'
 import TabPanel from '../Shared/TabPanel'
 import Container from '@mui/material/Container'
-import { AuthProps } from '../../utils/sharedProps'
+import { CommonProps } from '../../utils/sharedProps'
 import InfluencerLogin from './InfluencerLogin'
 import { containerStyle } from '../../utils/sharedStyles'
 
-export default function Login (props: AuthProps): JSX.Element {
+export default function Login (props: CommonProps): JSX.Element {
   const [value, setValue] = React.useState(0)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number): void => {

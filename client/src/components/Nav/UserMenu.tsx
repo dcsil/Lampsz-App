@@ -4,7 +4,7 @@ import * as React from 'react'
 import { AuthProps } from '../../utils/sharedProps'
 import { logout } from '../../actions/auth'
 
-export default function UserMenu ({ setAuth }: AuthProps): JSX.Element {
+export default function UserMenu ({ setUserType, setCsrf }: AuthProps): JSX.Element {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>): void => {
@@ -12,7 +12,7 @@ export default function UserMenu ({ setAuth }: AuthProps): JSX.Element {
   }
 
   const handleLogout = (): void => {
-    logout(setAuth)
+    logout(setUserType, setCsrf)
     handleClose()
   }
 

@@ -9,35 +9,72 @@ import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
 import * as React from 'react'
-import { AuthProps } from '../../utils/sharedProps'
+import { useEffect } from 'react'
+import { CommonProps } from '../../utils/sharedProps'
 import { businessLogin } from '../../actions/auth'
 import { containerStyle } from '../../utils/sharedStyles'
+import { formFieldOnChange, hasError, isAuthenticated } from '../../utils/utils'
+import { useNavigate } from 'react-router-dom'
 
-export default function BusinessLogin ({ setAuth, setUserType }: AuthProps): JSX.Element {
+const styles = {
+  avatar: {
+    m: 1,
+    bgcolor: 'secondary.main'
+  },
+  form: {
+    mt: 3
+  },
+  button: {
+    mt: 3,
+    mb: 2
+  }
+}
+
+export default function BusinessLogin ({ appComponent }: CommonProps): JSX.Element {
+  const [username, setUsername] = React.useState('')
+  const [password, setPassword] = React.useState('')
+  const [error, setError] = React.useState('')
+  const navigate = useNavigate()
+
+  /**
+   * Handles business register form submission.
+   *
+   * @param event form submission event.
+   */
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
-    // const data = new FormData(event.currentTarget)
-    businessLogin('', '', setAuth, setUserType)
+
+    businessLogin(username, password, setError, appComponent)
   }
+
+  useEffect(() => {
+    // Navigate user to home page after login
+    if (isAuthenticated(appComponent.state.userType)) {
+      navigate('/')
+    }
+  })
 
   return (
     <Box sx={containerStyle.centeredBox}>
-      <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+      <Avatar sx={styles.avatar}>
         <LockOutlinedIcon/>
       </Avatar>
       <Typography component="h1" variant="h5">
         Sign in
       </Typography>
-      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+      <Box component="form" onSubmit={handleSubmit} noValidate sx={styles.form}>
         <TextField
           margin="normal"
           required
           fullWidth
-          id="username-email"
-          label="Email Address/Username"
-          name="username-email"
-          autoComplete="email"
+          id="username"
+          label="username"
+          name="username"
+          autoComplete="username"
           autoFocus
+          error={hasError(error)}
+          value={username}
+          onChange={(event) => formFieldOnChange(event, setUsername, setError)}
         />
         <TextField
           margin="normal"
@@ -48,6 +85,10 @@ export default function BusinessLogin ({ setAuth, setUserType }: AuthProps): JSX
           type="password"
           id="password"
           autoComplete="current-password"
+          error={hasError(error)}
+          helperText={error}
+          value={password}
+          onChange={(event) => formFieldOnChange(event, setPassword, setError)}
         />
         <FormControlLabel
           control={<Checkbox value="remember" color="primary"/>}
@@ -57,7 +98,7 @@ export default function BusinessLogin ({ setAuth, setUserType }: AuthProps): JSX
           type="submit"
           fullWidth
           variant="contained"
-          sx={{ mt: 3, mb: 2 }}
+          sx={styles.button}
         >
           Sign In
         </Button>

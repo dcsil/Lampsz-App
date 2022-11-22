@@ -1,14 +1,15 @@
 import * as React from 'react'
 import BusinessHome from './BusinessHome'
-import { AuthProps } from '../../utils/sharedProps'
+import { CommonProps } from '../../utils/sharedProps'
 import { UserType } from '../../utils/types'
 import InfluencerHome from './InfluencerHome'
+import { isAuthenticated } from '../../utils/utils'
 
-export default function Home (props: AuthProps): JSX.Element {
+export default function Home (props: CommonProps): JSX.Element {
   return (
     <React.Fragment>
-      {props.auth
-        ? (props.userType === UserType.BUSINESS ? <BusinessHome/> : <InfluencerHome/>)
+      {isAuthenticated(props.userType)
+        ? (props.userType === UserType.BUSINESS ? <BusinessHome {...props}/> : <InfluencerHome {...props}/>)
         : <div>Hello World</div>
       }
     </React.Fragment>
