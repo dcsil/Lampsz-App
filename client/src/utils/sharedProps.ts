@@ -1,4 +1,5 @@
 import { CSetState, UserType } from './types'
+import App from '../App'
 
 export interface AuthProps {
   userType: UserType
@@ -9,7 +10,7 @@ export interface AuthProps {
 
 export interface CommonProps {
   userType: UserType
-  setUserType: CSetState<UserType>
   username: string
-  userId: number
+  userId: string
+  appComponent: App
 }

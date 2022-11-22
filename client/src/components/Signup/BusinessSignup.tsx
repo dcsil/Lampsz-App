@@ -28,7 +28,7 @@ const styles = {
   }
 }
 
-export default function BusinessSignup ({ userType, setUserType }: CommonProps): JSX.Element {
+export default function BusinessSignup ({ userType, appComponent }: CommonProps): JSX.Element {
   const [username, setUsername] = React.useState('')
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
@@ -44,7 +44,7 @@ export default function BusinessSignup ({ userType, setUserType }: CommonProps):
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
-    businessRegister(username, email, password, confPassword, setError, setUserType)
+    businessRegister(username, email, password, confPassword, setError, appComponent)
   }
 
   useEffect(() => {

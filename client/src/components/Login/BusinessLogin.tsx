@@ -30,7 +30,7 @@ const styles = {
   }
 }
 
-export default function BusinessLogin ({ userType, setUserType }: CommonProps): JSX.Element {
+export default function BusinessLogin ({ appComponent }: CommonProps): JSX.Element {
   const [username, setUsername] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [error, setError] = React.useState('')
@@ -44,12 +44,12 @@ export default function BusinessLogin ({ userType, setUserType }: CommonProps): 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
-    businessLogin(username, password, setError, setUserType)
+    businessLogin(username, password, setError, appComponent)
   }
 
   useEffect(() => {
     // Navigate user to home page after login
-    if (isAuthenticated(userType)) {
+    if (isAuthenticated(appComponent.state.userType)) {
       navigate('/')
     }
   })

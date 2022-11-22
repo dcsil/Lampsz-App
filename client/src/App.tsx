@@ -29,7 +29,7 @@ const theme = createTheme({
 
 interface AppStates {
   userType: UserType
-  userId: number
+  userId: string
   username: string
   csrf: string
   isReadingCookie: boolean
@@ -38,7 +38,7 @@ interface AppStates {
 class App extends React.Component<any, AppStates> {
   state = {
     userType: UserType.NONE,
-    userId: -1,
+    userId: '',
     username: '',
     csrf: '',
     isReadingCookie: true
@@ -53,7 +53,7 @@ class App extends React.Component<any, AppStates> {
   }
 
   componentDidMount (): void {
-    void Promise.all([checkSession(this.setCsrf, this)])
+    checkSession(this.setCsrf, this)
   }
 
   render (): JSX.Element {
@@ -70,9 +70,9 @@ class App extends React.Component<any, AppStates> {
           ? <Loading/>
           : <Routes
             userType={this.state.userType}
-            setUserType={this.setUserType}
             username={this.state.username}
             userId={this.state.userId}
+            appComponent={this}
           />
         }
       </ThemeProvider>

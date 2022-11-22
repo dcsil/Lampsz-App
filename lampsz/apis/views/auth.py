@@ -43,8 +43,14 @@ def company_login_view(request):
 
     login(request, user)
     request.session["userType"] = UserType.BUSINESS.value
-    user_id = models.Company.objects.get(user_id=user.id).id
-    return JsonResponse({"id": user_id, "message": login_successful})
+    return JsonResponse(
+        {
+            "userId": request.user.id,
+            "username": request.user.username,
+            "userType": request.session.get("userType", 0),
+            "message": login_successful,
+        }
+    )
 
 
 @api_view(["GET"])
@@ -58,11 +64,17 @@ def company_create_view(request):
     user_serializer = serializers.UserSerializer(data=request.data)
     if user_serializer.is_valid():
         user = user_serializer.save()
+        models.Company.objects.create(user=user)
         login(request, user)
         request.session["userType"] = UserType.BUSINESS.value
-        company = models.Company.objects.create(user=user)
-        company_serializer = serializers.CompanySerializer(company, many=False)
-        return JsonResponse(company_serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(
+            {
+                "userId": request.user.id,
+                "username": request.user.username,
+                "userType": request.session.get("userType", 0),
+            },
+            status=status.HTTP_201_CREATED,
+        )
 
     errors = user_serializer.errors
     if has_unique_error("username", errors) or has_unique_error("email", errors):

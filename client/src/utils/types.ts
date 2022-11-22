@@ -7,6 +7,12 @@ export interface ErrorData {
   message: string
 }
 
+export interface AuthResponse {
+  userId: string
+  username: string
+  userType: UserType
+}
+
 export interface RegisterValidation {
   username?: string[]
   email?: string[]
