@@ -2,11 +2,11 @@ import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import * as React from 'react'
-import { AuthProps } from '../../utils/sharedProps'
+import { CommonProps } from '../../utils/sharedProps'
 import { influencerLogin } from '../../actions/auth'
 import { containerStyle } from '../../utils/sharedStyles'
 
-export default function InfluencerLogin ({ setUserType }: AuthProps): JSX.Element {
+export default function InfluencerLogin ({ setUserType }: CommonProps): JSX.Element {
   const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
     influencerLogin(setUserType)
   }

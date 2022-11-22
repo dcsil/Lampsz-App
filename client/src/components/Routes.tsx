@@ -3,14 +3,14 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Home from './Home'
 import Login from './Login'
 import Signup from './Signup'
-import { AuthProps } from '../utils/sharedProps'
+import { CommonProps } from '../utils/sharedProps'
 import Marketplace from './Marketplace'
 import Profile from './Profile'
 import MarketingTaskDetail from './MarketingTaskDetail'
 import MyApplications from './MyApplications'
 import MyMarketingTasks from './MyMarketingTasks'
 
-export default function Router (props: AuthProps): JSX.Element {
+export default function Router (props: CommonProps): JSX.Element {
   const router = createBrowserRouter([
     { path: '/', element: <Home {...props}/> },
     { path: '/login', element: <Login {...props}/> },

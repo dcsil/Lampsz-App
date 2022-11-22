@@ -6,3 +6,10 @@ export interface AuthProps {
   csrf: string
   setCsrf: CSetState<string>
 }
+
+export interface CommonProps {
+  userType: UserType
+  setUserType: CSetState<UserType>
+  username: string
+  userId: number
+}

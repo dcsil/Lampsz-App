@@ -8,7 +8,7 @@ import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Link from '@mui/material/Link'
-import { AuthProps } from '../../utils/sharedProps'
+import { CommonProps } from '../../utils/sharedProps'
 import { businessRegister } from '../../actions/auth'
 import { containerStyle } from '../../utils/sharedStyles'
 import { formFieldOnChange, hasError, isAuthenticated } from '../../utils/utils'
@@ -28,7 +28,7 @@ const styles = {
   }
 }
 
-export default function BusinessSignup ({ userType, setUserType }: AuthProps): JSX.Element {
+export default function BusinessSignup ({ userType, setUserType }: CommonProps): JSX.Element {
   const [username, setUsername] = React.useState('')
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')

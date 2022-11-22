@@ -29,6 +29,8 @@ const theme = createTheme({
 
 interface AppStates {
   userType: UserType
+  userId: number
+  username: string
   csrf: string
   isReadingCookie: boolean
 }
@@ -36,6 +38,8 @@ interface AppStates {
 class App extends React.Component<any, AppStates> {
   state = {
     userType: UserType.NONE,
+    userId: -1,
+    username: '',
     csrf: '',
     isReadingCookie: true
   }
@@ -48,20 +52,29 @@ class App extends React.Component<any, AppStates> {
     this.setState({ csrf })
   }
 
-  setIsReadingCookie = (isReadingCookie: boolean): void => {
-    this.setState({ isReadingCookie })
-  }
-
   componentDidMount (): void {
-    checkSession(this.setUserType, this.setCsrf, this.setIsReadingCookie)
+    void Promise.all([checkSession(this.setCsrf, this)])
   }
 
   render (): JSX.Element {
     return (
       <ThemeProvider theme={theme}>
-        <Nav userType={this.state.userType} setUserType={this.setUserType} csrf={this.state.csrf} setCsrf={this.setCsrf}/>
+        <Nav
+          userType={this.state.userType}
+          setUserType={this.setUserType}
+          csrf={this.state.csrf}
+          setCsrf={this.setCsrf}
+        />
         <CssBaseline/>
-        <Routes userType={this.state.userType} setUserType={this.setUserType} csrf={this.state.csrf} setCsrf={this.setCsrf}/>
+        {this.state.isReadingCookie
+          ? <Loading/>
+          : <Routes
+            userType={this.state.userType}
+            setUserType={this.setUserType}
+            username={this.state.username}
+            userId={this.state.userId}
+          />
+        }
       </ThemeProvider>
     )
   }

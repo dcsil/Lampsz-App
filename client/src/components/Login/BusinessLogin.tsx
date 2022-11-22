@@ -10,7 +10,7 @@ import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
 import * as React from 'react'
 import { useEffect } from 'react'
-import { AuthProps } from '../../utils/sharedProps'
+import { CommonProps } from '../../utils/sharedProps'
 import { businessLogin } from '../../actions/auth'
 import { containerStyle } from '../../utils/sharedStyles'
 import { formFieldOnChange, hasError, isAuthenticated } from '../../utils/utils'
@@ -30,7 +30,7 @@ const styles = {
   }
 }
 
-export default function BusinessLogin ({ userType, setUserType }: AuthProps): JSX.Element {
+export default function BusinessLogin ({ userType, setUserType }: CommonProps): JSX.Element {
   const [username, setUsername] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [error, setError] = React.useState('')

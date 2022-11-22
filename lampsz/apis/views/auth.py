@@ -11,7 +11,7 @@ from rest_framework.decorators import (
 from rest_framework.permissions import IsAuthenticated
 
 from lampsz.apis import models, serializers
-from lampsz.apis.utils import has_unique_error
+from lampsz.apis.utils import UserType, has_unique_error
 
 __all__ = [
     "login_successful",
@@ -33,10 +33,8 @@ csrf_set = "CSRF cookie set"
 
 @api_view(["POST"])
 def company_login_view(request):
-    print(request.user)
     username = request.data.get("username")
     password = request.data.get("password")
-    user_type = request.data.get("userType")
     user = authenticate(request, username=username, password=password)
     if user is None:
         return JsonResponse(
@@ -44,7 +42,7 @@ def company_login_view(request):
         )
 
     login(request, user)
-    request.session["userType"] = user_type
+    request.session["userType"] = UserType.BUSINESS.value
     user_id = models.Company.objects.get(user_id=user.id).id
     return JsonResponse({"id": user_id, "message": login_successful})
 
@@ -61,6 +59,7 @@ def company_create_view(request):
     if user_serializer.is_valid():
         user = user_serializer.save()
         login(request, user)
+        request.session["userType"] = UserType.BUSINESS.value
         company = models.Company.objects.create(user=user)
         company_serializer = serializers.CompanySerializer(company, many=False)
         return JsonResponse(company_serializer.data, status=status.HTTP_201_CREATED)
@@ -89,7 +88,13 @@ def influencer_create_view(request):
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def get_session_view(request):
-    return JsonResponse({"userType": request.session.get("userType", 0)})
+    return JsonResponse(
+        {
+            "userId": request.user.id,
+            "username": request.user.username,
+            "userType": request.session.get("userType", 0),
+        }
+    )
 
 
 def get_csrf(request):

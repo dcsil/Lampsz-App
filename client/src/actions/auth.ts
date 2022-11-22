@@ -1,5 +1,6 @@
 import { CSetState, ErrorData, RegisterValidation, SetState, UserType } from '../utils/types'
 import axios, { AxiosError, AxiosResponse } from 'axios'
+import App from '../App'
 
 // Constants
 const confirmPassFails = 'Password don\'t match'
@@ -19,21 +20,32 @@ const getCSRF = (setCsrf: any): void => {
 /**
  * Check user session status from API server.
  *
- * @param setUserType set state function for user type.
  * @param setCsrf set state function for CSRF token.
- * @param setIsReadingCookie set state function for isReadingCookie.
+ * @param app the main app component.
  */
-export const checkSession = (setUserType: CSetState<UserType>, setCsrf: CSetState<string>, setIsReadingCookie: CSetState<boolean>): void => {
+export const checkSession = (
+  setCsrf: CSetState<string>,
+  app: App
+): void => {
   axios
     .get('/api/session/')
     .then((response: AxiosResponse) => {
-      setUserType(response.data.userType)
       if (response.data.userType === UserType.NONE) {
         getCSRF(setCsrf)
       }
-      setIsReadingCookie(false)
+      app.setState({
+        userType: response.data.userType,
+        userId: response.data.userId,
+        username: response.data.username,
+        isReadingCookie: false
+      })
     })
-    .catch((error: AxiosError) => console.log(error))
+    .catch((error: AxiosError) => {
+      console.log(error)
+      app.setState({
+        isReadingCookie: false
+      })
+    })
 }
 
 /**
@@ -46,11 +58,7 @@ export const checkSession = (setUserType: CSetState<UserType>, setCsrf: CSetStat
  */
 export const businessLogin = (username: string, password: string, setError: SetState<string>, setUserType: CSetState<UserType>): void => {
   axios
-    .post('/api/company_login/', {
-      username,
-      password,
-      userType: UserType.BUSINESS
-    })
+    .post('/api/company_login/', { username, password })
     .then(_ => setUserType(UserType.BUSINESS))
     .catch((error: AxiosError<ErrorData>) => setError(error.response!.data.message))
 }
@@ -80,14 +88,9 @@ export const businessRegister = (
   }
 
   axios
-    .post('/api/company_register/', {
-      email,
-      username,
-      password
-    })
+    .post('/api/company_register/', { email, username, password })
     .then(_ => setUserType(UserType.BUSINESS))
     .catch((error: AxiosError<RegisterValidation>) => {
-      console.log(error)
       if (error.response!.data.username !== undefined) {
         setError(error.response!.data.username.join('\n'))
       } else if (error.response!.data.email !== undefined) {
