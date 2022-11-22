@@ -1,6 +1,5 @@
 import * as React from 'react'
-import { CommonProps } from '../../utils/sharedProps'
-import { UserType } from '../../utils/types'
+import { CommonProps, UserType } from '../../utils/types'
 import BusinessProfile from './BusinessProfile'
 import InfluencerProfile from './InfluencerProfile'
 

@@ -1,7 +1,6 @@
 import * as React from 'react'
 import BusinessHome from './BusinessHome'
-import { CommonProps } from '../../utils/sharedProps'
-import { UserType } from '../../utils/types'
+import { CommonProps, UserType } from '../../utils/types'
 import InfluencerHome from './InfluencerHome'
 import { isAuthenticated } from '../../utils/utils'
 

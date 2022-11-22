@@ -4,9 +4,9 @@ import { Tab, Tabs } from '@mui/material'
 import BusinessLogin from './BusinessLogin'
 import TabPanel from '../Shared/TabPanel'
 import Container from '@mui/material/Container'
-import { CommonProps } from '../../utils/sharedProps'
 import InfluencerLogin from './InfluencerLogin'
 import { containerStyle } from '../../utils/sharedStyles'
+import { CommonProps } from '../../utils/types'
 
 export default function Login (props: CommonProps): JSX.Element {
   const [value, setValue] = React.useState(0)

@@ -62,7 +62,6 @@ class App extends React.Component<any, AppStates> {
         <Nav
           userType={this.state.userType}
           setUserType={this.setUserType}
-          csrf={this.state.csrf}
           setCsrf={this.setCsrf}
         />
         <CssBaseline/>

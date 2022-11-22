@@ -8,11 +8,11 @@ import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Link from '@mui/material/Link'
-import { CommonProps } from '../../utils/sharedProps'
 import { businessRegister } from '../../actions/auth'
 import { containerStyle } from '../../utils/sharedStyles'
 import { formFieldOnChange, hasError, isAuthenticated } from '../../utils/utils'
 import { useNavigate } from 'react-router-dom'
+import { CommonProps } from '../../utils/types'
 
 const styles = {
   avatar: {

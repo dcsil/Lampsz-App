@@ -10,11 +10,11 @@ import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
 import * as React from 'react'
 import { useEffect } from 'react'
-import { CommonProps } from '../../utils/sharedProps'
 import { businessLogin } from '../../actions/auth'
 import { containerStyle } from '../../utils/sharedStyles'
 import { formFieldOnChange, hasError, isAuthenticated } from '../../utils/utils'
 import { useNavigate } from 'react-router-dom'
+import { CommonProps } from '../../utils/types'
 
 const styles = {
   avatar: {

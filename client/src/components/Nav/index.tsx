@@ -7,8 +7,8 @@ import * as React from 'react'
 import Button from '@mui/material/Button'
 import { StyledTitle } from '../Shared/StyledTitle'
 import UserMenu from './UserMenu'
-import { AuthProps } from '../../utils/sharedProps'
 import { getNavItems, isAuthenticated } from '../../utils/utils'
+import { CSetState, UserType } from '../../utils/types'
 
 const styles = {
   xsBox: {
@@ -38,7 +38,13 @@ const styles = {
   }
 }
 
-export default function Nav (props: AuthProps): JSX.Element {
+interface NavProps {
+  userType: UserType
+  setUserType: CSetState<UserType>
+  setCsrf: CSetState<string>
+}
+
+export default function Nav ({ userType, setUserType, setCsrf }: NavProps): JSX.Element {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>): void => {
@@ -49,7 +55,7 @@ export default function Nav (props: AuthProps): JSX.Element {
     setAnchorElNav(null)
   }
 
-  const navItems = getNavItems(props.userType)
+  const navItems = getNavItems(userType)
 
   return (
     <AppBar position="static">
@@ -105,7 +111,7 @@ export default function Nav (props: AuthProps): JSX.Element {
             ))}
           </Box>
 
-          {isAuthenticated(props.userType) && <UserMenu {...props}/>}
+          {isAuthenticated(userType) && <UserMenu setUserType={setUserType} setCsrf={setCsrf}/>}
         </Toolbar>
       </Container>
     </AppBar>

@@ -6,7 +6,7 @@ import ApplicationList from './ApplicationList'
 import ProfileLink from './ProfileLink'
 import MarketplaceLink from './MarketplaceLink'
 import { containerStyle } from '../../utils/sharedStyles'
-import { CommonProps } from '../../utils/sharedProps'
+import { CommonProps } from '../../utils/types'
 
 export default function InfluencerHome ({ username }: CommonProps): JSX.Element {
   return (
