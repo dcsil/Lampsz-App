@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useEffect } from 'react'
 import { createBrowserRouter, Navigate, RouterProvider, useLocation } from 'react-router-dom'
 import Home from './Home'
 import Login from './Login'
@@ -9,7 +10,9 @@ import MarketingTaskDetail from './MarketingTaskDetail'
 import MyApplications from './MyApplications'
 import MyMarketingTasks from './MyMarketingTasks'
 import { isAuthenticated } from '../utils/utils'
-import { CommonProps, UserType } from '../utils/types'
+import { UserType } from '../utils/types'
+import useAuth from '../hooks/AuthHook'
+import Loading from './Loading'
 
 /**
  * Gates given child component by redirecting unauthenticated or unauthorized
@@ -19,23 +22,14 @@ import { CommonProps, UserType } from '../utils/types'
  * @param currUserType the current user type that is logged in.
  * @param reqUserType the required user type to access the page.
  */
-function RequireAuth (
-  {
-    children,
-    currUserType,
-    reqUserType
-  }: {
-    children: JSX.Element
-    currUserType: UserType
-    reqUserType?: UserType
-  }
-): JSX.Element {
+function RequireAuth ({ children, reqUserType }: { children: JSX.Element, reqUserType?: UserType }): JSX.Element {
   const location = useLocation()
+  const auth = useAuth()
 
-  if (!isAuthenticated(currUserType)) {
+  if (!isAuthenticated(auth.userType)) {
     return <Navigate to="/login" state={{ from: location }} replace/>
   }
-  return (reqUserType === undefined || reqUserType === currUserType)
+  return (reqUserType === undefined || reqUserType === auth.userType)
     ? children
     : <Navigate to="/" replace/>
 }
@@ -47,36 +41,43 @@ function RequireAuth (
  * @param children the child component to render.
  * @param userType the current user type.
  */
-function AuthRoutes ({ children, userType }: { children: JSX.Element, userType: UserType }): JSX.Element {
-  if (isAuthenticated(userType)) {
+function AuthRoutes ({ children }: { children: JSX.Element }): JSX.Element {
+  const auth = useAuth()
+  if (isAuthenticated(auth.userType)) {
     return <Navigate to="/" replace/>
   }
   return children
 }
 
-export default function Router (props: CommonProps): JSX.Element {
+export default function Router (): JSX.Element {
+  const auth = useAuth()
+
+  useEffect(() => {
+    auth.session()
+  }, [])
+
   const router = createBrowserRouter([
-    { path: '/', element: <Home {...props}/> },
+    { path: '/', element: <Home/> },
     {
       path: '/login',
       element: (
-        <AuthRoutes userType={props.userType}>
-          <Login {...props}/>
+        <AuthRoutes>
+          <Login/>
         </AuthRoutes>
       )
     },
     {
       path: '/signup',
       element: (
-        <AuthRoutes userType={props.userType}>
-          <Signup {...props}/>
+        <AuthRoutes>
+          <Signup/>
         </AuthRoutes>
       )
     },
     {
       path: '/marketplace',
       element: (
-        <RequireAuth currUserType={props.userType}>
+        <RequireAuth>
           <Marketplace/>
         </RequireAuth>
       )
@@ -84,7 +85,7 @@ export default function Router (props: CommonProps): JSX.Element {
     {
       path: '/marketplace/:taskId',
       element: (
-        <RequireAuth currUserType={props.userType}>
+        <RequireAuth>
           <MarketingTaskDetail/>
         </RequireAuth>
       )
@@ -92,15 +93,15 @@ export default function Router (props: CommonProps): JSX.Element {
     {
       path: '/profile',
       element: (
-        <RequireAuth currUserType={props.userType}>
-          <Profile {...props}/>
+        <RequireAuth>
+          <Profile/>
         </RequireAuth>
       )
     },
     {
       path: '/applications',
       element: (
-        <RequireAuth currUserType={props.userType} reqUserType={UserType.INFLUENCER}>
+        <RequireAuth reqUserType={UserType.INFLUENCER}>
           <MyApplications/>
         </RequireAuth>
       )
@@ -108,12 +109,12 @@ export default function Router (props: CommonProps): JSX.Element {
     {
       path: '/tasks',
       element: (
-        <RequireAuth currUserType={props.userType} reqUserType={UserType.BUSINESS}>
+        <RequireAuth reqUserType={UserType.BUSINESS}>
           <MyMarketingTasks/>
         </RequireAuth>
       )
     }
   ])
 
-  return <RouterProvider router={router}/>
+  return auth.isReadingCookie ? <Loading/> : <RouterProvider router={router}/>
 }

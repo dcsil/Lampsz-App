@@ -3,9 +3,8 @@ import Box from '@mui/material/Box'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import { containerStyle } from '../../utils/sharedStyles'
-import { CommonProps } from '../../utils/types'
 
-export default function InfluencerSignup ({ appComponent }: CommonProps): JSX.Element {
+export default function InfluencerSignup (): JSX.Element {
   const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
     // influencerRegister(setUserType)
   }

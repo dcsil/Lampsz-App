@@ -8,11 +8,10 @@ import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Link from '@mui/material/Link'
-import { businessRegister } from '../../actions/auth'
 import { containerStyle } from '../../utils/sharedStyles'
 import { formFieldOnChange, hasError, isAuthenticated } from '../../utils/utils'
 import { useNavigate } from 'react-router-dom'
-import { CommonProps } from '../../utils/types'
+import useAuth from '../../hooks/AuthHook'
 
 const styles = {
   avatar: {
@@ -28,13 +27,14 @@ const styles = {
   }
 }
 
-export default function BusinessSignup ({ userType, appComponent }: CommonProps): JSX.Element {
+export default function BusinessSignup (): JSX.Element {
   const [username, setUsername] = React.useState('')
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [confPassword, setConfPassword] = React.useState('')
   const [error, setError] = React.useState('')
   const navigate = useNavigate()
+  const auth = useAuth()
 
   /**
    * Handles business register form submission.
@@ -44,12 +44,13 @@ export default function BusinessSignup ({ userType, appComponent }: CommonProps)
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
-    businessRegister(username, email, password, confPassword, setError, appComponent)
+    // businessRegister(username, email, password, confPassword, setError, )
+    auth.register(username, email, password, confPassword, setError)
   }
 
   useEffect(() => {
     // Navigate user to home page after login
-    if (isAuthenticated(userType)) {
+    if (isAuthenticated(auth.userType)) {
       navigate('/')
     }
   })

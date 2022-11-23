@@ -2,25 +2,18 @@ import { IconButton, Menu, MenuItem, Typography } from '@mui/material'
 import { AccountCircle } from '@mui/icons-material'
 import * as React from 'react'
 import { logout } from '../../actions/auth'
-import { CSetState, UserType } from '../../utils/types'
+import useAuth from '../../hooks/AuthHook'
 
-export default function UserMenu (
-  {
-    setUserType,
-    setCsrf
-  }: {
-    setUserType: CSetState<UserType>
-    setCsrf: CSetState<string>
-  }
-): JSX.Element {
+export default function UserMenu (): JSX.Element {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const auth = useAuth()
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>): void => {
     setAnchorEl(event.currentTarget)
   }
 
   const handleLogout = (): void => {
-    logout(setUserType, setCsrf)
+    logout(auth.setUserType, auth.setCsrf)
     handleClose()
   }
 

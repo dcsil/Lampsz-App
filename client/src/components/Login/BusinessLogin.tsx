@@ -10,11 +10,10 @@ import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
 import * as React from 'react'
 import { useEffect } from 'react'
-import { businessLogin } from '../../actions/auth'
 import { containerStyle } from '../../utils/sharedStyles'
 import { formFieldOnChange, hasError, isAuthenticated } from '../../utils/utils'
 import { useNavigate } from 'react-router-dom'
-import { CommonProps } from '../../utils/types'
+import useAuth from '../../hooks/AuthHook'
 
 const styles = {
   avatar: {
@@ -30,11 +29,12 @@ const styles = {
   }
 }
 
-export default function BusinessLogin ({ appComponent }: CommonProps): JSX.Element {
+export default function BusinessLogin (): JSX.Element {
   const [username, setUsername] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [error, setError] = React.useState('')
   const navigate = useNavigate()
+  const auth = useAuth()
 
   /**
    * Handles business register form submission.
@@ -44,12 +44,14 @@ export default function BusinessLogin ({ appComponent }: CommonProps): JSX.Eleme
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
-    businessLogin(username, password, setError, appComponent)
+    // businessLogin(username, password, setError, appComponent)
+    auth.login(username, password, setError)
   }
 
   useEffect(() => {
+    console.log(auth)
     // Navigate user to home page after login
-    if (isAuthenticated(appComponent.state.userType)) {
+    if (isAuthenticated(auth.userType)) {
       navigate('/')
     }
   })

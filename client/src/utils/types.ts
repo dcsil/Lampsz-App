@@ -10,7 +10,6 @@ export interface CommonProps {
   userType: UserType
   username: string
   userId: string
-  appComponent: App
 }
 
 // HTTP request/response data

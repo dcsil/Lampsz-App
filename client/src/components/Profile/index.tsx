@@ -1,12 +1,15 @@
 import * as React from 'react'
-import { CommonProps, UserType } from '../../utils/types'
+import { UserType } from '../../utils/types'
 import BusinessProfile from './BusinessProfile'
 import InfluencerProfile from './InfluencerProfile'
+import useAuth from '../../hooks/AuthHook'
 
-export default function Profile (props: CommonProps): JSX.Element {
+export default function Profile (): JSX.Element {
+  const auth = useAuth()
+
   return (
     <React.Fragment>
-      {props.userType === UserType.BUSINESS
+      {auth.userType === UserType.BUSINESS
         ? <BusinessProfile/>
         : <InfluencerProfile/>
       }
