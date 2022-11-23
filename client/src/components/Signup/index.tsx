@@ -4,11 +4,10 @@ import { Tab, Tabs } from '@mui/material'
 import BusinessSignup from './BusinessSignup'
 import TabPanel from '../Shared/TabPanel'
 import Container from '@mui/material/Container'
-import { CommonProps } from '../../utils/sharedProps'
 import InfluencerSignup from './InfluencerSignup'
 import { containerStyle } from '../../utils/sharedStyles'
 
-export default function Signup (props: CommonProps): JSX.Element {
+export default function Signup (): JSX.Element {
   const [value, setValue] = React.useState(0)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number): void => {
@@ -23,10 +22,10 @@ export default function Signup (props: CommonProps): JSX.Element {
           <Tab label="Influencer"/>
         </Tabs>
         <TabPanel value={value} index={0}>
-          <BusinessSignup {...props}/>
+          <BusinessSignup/>
         </TabPanel>
         <TabPanel index={value} value={1}>
-          <InfluencerSignup {...props}/>
+          <InfluencerSignup/>
         </TabPanel>
       </Box>
     </Container>

@@ -7,8 +7,8 @@ import * as React from 'react'
 import Button from '@mui/material/Button'
 import { StyledTitle } from '../Shared/StyledTitle'
 import UserMenu from './UserMenu'
-import { AuthProps } from '../../utils/sharedProps'
 import { getNavItems, isAuthenticated } from '../../utils/utils'
+import useAuth from '../../hooks/AuthHook'
 
 const styles = {
   xsBox: {
@@ -38,8 +38,9 @@ const styles = {
   }
 }
 
-export default function Nav (props: AuthProps): JSX.Element {
+export default function Nav (): JSX.Element {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
+  const auth = useAuth()
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>): void => {
     setAnchorElNav(event.currentTarget)
@@ -49,7 +50,7 @@ export default function Nav (props: AuthProps): JSX.Element {
     setAnchorElNav(null)
   }
 
-  const navItems = getNavItems(props.userType)
+  const navItems = getNavItems(auth.userType)
 
   return (
     <AppBar position="static">
@@ -105,7 +106,7 @@ export default function Nav (props: AuthProps): JSX.Element {
             ))}
           </Box>
 
-          {isAuthenticated(props.userType) && <UserMenu {...props}/>}
+          {isAuthenticated(auth.userType) && <UserMenu/>}
         </Toolbar>
       </Container>
     </AppBar>

@@ -4,11 +4,10 @@ import { Tab, Tabs } from '@mui/material'
 import BusinessLogin from './BusinessLogin'
 import TabPanel from '../Shared/TabPanel'
 import Container from '@mui/material/Container'
-import { CommonProps } from '../../utils/sharedProps'
 import InfluencerLogin from './InfluencerLogin'
 import { containerStyle } from '../../utils/sharedStyles'
 
-export default function Login (props: CommonProps): JSX.Element {
+export default function Login (): JSX.Element {
   const [value, setValue] = React.useState(0)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number): void => {
@@ -23,10 +22,10 @@ export default function Login (props: CommonProps): JSX.Element {
           <Tab label="Influencer"/>
         </Tabs>
         <TabPanel value={value} index={0}>
-          <BusinessLogin {...props}/>
+          <BusinessLogin/>
         </TabPanel>
         <TabPanel index={value} value={1}>
-          <InfluencerLogin {...props}/>
+          <InfluencerLogin/>
         </TabPanel>
       </Box>
     </Container>

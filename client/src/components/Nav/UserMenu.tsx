@@ -1,19 +1,16 @@
 import { IconButton, Menu, MenuItem, Typography } from '@mui/material'
 import { AccountCircle } from '@mui/icons-material'
 import * as React from 'react'
-import { AuthProps } from '../../utils/sharedProps'
-import { logout } from '../../actions/auth'
+import useAuth from '../../hooks/AuthHook'
+import { useNavigate } from 'react-router-dom'
 
-export default function UserMenu ({ setUserType, setCsrf }: AuthProps): JSX.Element {
+export default function UserMenu (): JSX.Element {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const auth = useAuth()
+  const navigate = useNavigate()
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>): void => {
     setAnchorEl(event.currentTarget)
-  }
-
-  const handleLogout = (): void => {
-    logout(setUserType, setCsrf)
-    handleClose()
   }
 
   const handleClose = (): void => {
@@ -47,8 +44,11 @@ export default function UserMenu ({ setUserType, setCsrf }: AuthProps): JSX.Elem
         <MenuItem onClick={handleClose}>
           <Typography textAlign="center" component="a" href="/profile">Profile</Typography>
         </MenuItem>
-        <MenuItem onClick={handleLogout}>
-          <Typography textAlign="center" component="a" href="/">Logout</Typography>
+        <MenuItem onClick={() => {
+          auth.logout(() => navigate('/'))
+          handleClose()
+        }}>
+          <Typography textAlign="center" component="a">Logout</Typography>
         </MenuItem>
       </Menu>
     </div>

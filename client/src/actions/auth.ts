@@ -1,6 +1,5 @@
-import { AuthResponse, CSetState, ErrorData, RegisterValidation, SetState, UserType } from '../utils/types'
+import { AuthCallback, AuthResponse, ErrorData, RegisterValidation, SetState, UserType } from '../utils/types'
 import axios, { AxiosError, AxiosResponse } from 'axios'
-import App from '../App'
 
 // Constants
 const confirmPassFails = 'Password don\'t match'
@@ -10,10 +9,10 @@ const confirmPassFails = 'Password don\'t match'
  *
  * @param setCsrf set state function for CSRF token.
  */
-const getCSRF = (setCsrf: any): void => {
+const getCSRF = (setCsrf: SetState<string>): void => {
   axios
     .get('/api/csrf/')
-    .then((response: AxiosResponse) => setCsrf(response.headers['x-csrftoken']))
+    .then((response: AxiosResponse) => setCsrf(response.headers['x-csrftoken']!))
     .catch((error: AxiosError) => console.log(error))
 }
 
@@ -21,27 +20,22 @@ const getCSRF = (setCsrf: any): void => {
  * Check user session status from API server.
  *
  * @param setCsrf set state function for CSRF token.
- * @param app the main app component.
+ * @param callback
  */
-export const checkSession = (setCsrf: CSetState<string>, app: App): void => {
+export const checkSession = (
+  setCsrf: SetState<string>,
+  callback: AuthCallback
+): void => {
   axios
     .get('/api/session/')
     .then((response: AxiosResponse<AuthResponse>) => {
       if (response.data.userType === UserType.NONE) {
         getCSRF(setCsrf)
       }
-      app.setState({
-        userType: response.data.userType,
-        userId: response.data.userId,
-        username: response.data.username,
-        isReadingCookie: false
-      })
+      callback(response.data.username, response.data.userId, response.data.userType)
     })
-    .catch((error: AxiosError) => {
-      console.log(error)
-      app.setState({
-        isReadingCookie: false
-      })
+    .catch(_ => {
+      callback('', '', UserType.NONE)
     })
 }
 
@@ -51,24 +45,22 @@ export const checkSession = (setCsrf: CSetState<string>, app: App): void => {
  * @param username user inputted username.
  * @param password user inputted password.
  * @param setError set state function for error message from API server.
- * @param app the main app component.
+ * @param callback
  */
-export const businessLogin = (username: string, password: string, setError: SetState<string>, app: App): void => {
+export const businessLoginAction = (
+  username: string,
+  password: string,
+  setError: SetState<string>,
+  callback: AuthCallback
+): void => {
   axios
     .post('/api/company_login/', { username, password })
     .then((response: AxiosResponse<AuthResponse>) => {
-      app.setState({
-        userType: response.data.userType,
-        userId: response.data.userId,
-        username: response.data.username,
-        isReadingCookie: false
-      })
+      callback(response.data.username, response.data.userId, response.data.userType)
     })
     .catch((error: AxiosError<ErrorData>) => {
       setError(error.response!.data.message)
-      app.setState({
-        isReadingCookie: false
-      })
+      callback('', '', UserType.NONE)
     })
 }
 
@@ -80,15 +72,15 @@ export const businessLogin = (username: string, password: string, setError: SetS
  * @param password user inputted password.
  * @param confPassword user inputted confirm password.
  * @param setError set state function for error message from API server.
- * @param app the main app component.
+ * @param callback
  */
-export const businessRegister = (
+export const businessRegisterAction = (
   username: string,
   email: string,
   password: string,
   confPassword: string,
   setError: SetState<string>,
-  app: App
+  callback: AuthCallback
 ): void => {
   // Check two passwords match
   if (password !== confPassword) {
@@ -99,12 +91,7 @@ export const businessRegister = (
   axios
     .post('/api/company_register/', { email, username, password })
     .then((response: AxiosResponse<AuthResponse>) => {
-      app.setState({
-        userType: response.data.userType,
-        userId: response.data.userId,
-        username: response.data.username,
-        isReadingCookie: false
-      })
+      callback(response.data.username, response.data.userId, response.data.userType)
     })
     .catch((error: AxiosError<RegisterValidation>) => {
       if (error.response!.data.username !== undefined) {
@@ -112,30 +99,28 @@ export const businessRegister = (
       } else if (error.response!.data.email !== undefined) {
         setError(error.response!.data.email.join('\n'))
       }
-      app.setState({
-        isReadingCookie: false
-      })
+      callback('', '', UserType.NONE)
     })
 }
 
-export const influencerLogin = (setUserType: CSetState<UserType>): void => {
+export const influencerLogin = (setUserType: SetState<UserType>): void => {
 }
 
-export const influencerRegister = (setUserType: CSetState<UserType>): void => {
+export const influencerRegister = (setUserType: SetState<UserType>): void => {
 }
 
 /**
  * Logout user by calling API server
  *
- * @param setUserType set state function for user type.
  * @param setCsrf set state function for CSRF token.
+ * @param callback
  */
-export const logout = (setUserType: CSetState<UserType>, setCsrf: CSetState<string>): void => {
+export const logoutAction = (setCsrf: SetState<string>, callback: VoidFunction): void => {
   axios
     .get('/api/logout/')
     .then(() => {
-      setUserType(UserType.NONE)
       getCSRF(setCsrf)
+      callback()
     })
     .catch(error => console.log(error))
 }

@@ -20,3 +20,5 @@ plugins:
 rules:
   react/no-unescaped-entities: off
   '@typescript-eslint/no-non-null-assertion': off
+  '@typescript-eslint/strict-boolean-expressions': off
+  n/no-callback-literal: off
