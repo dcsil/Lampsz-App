@@ -13,6 +13,21 @@ import { isAuthenticated } from '../utils/utils'
 import { UserType } from '../utils/types'
 import useAuth from '../hooks/AuthHook'
 import Loading from './Loading'
+import Nav from './Nav'
+
+/**
+ * Simple wrapper components that adds Nav bar on top.
+ *
+ * @param children the child component to render.
+ */
+function NavWrapper ({ children }: { children: JSX.Element }): JSX.Element {
+  return (
+    <React.Fragment>
+      <Nav/>
+      {children}
+    </React.Fragment>
+  )
+}
 
 /**
  * Gates given child component by redirecting unauthenticated or unauthorized
@@ -30,7 +45,7 @@ function RequireAuth ({ children, reqUserType }: { children: JSX.Element, reqUse
     return <Navigate to="/login" state={{ from: location }} replace/>
   }
   return (reqUserType === undefined || reqUserType === auth.userType)
-    ? children
+    ? <NavWrapper>{children}</NavWrapper>
     : <Navigate to="/" replace/>
 }
 
@@ -46,7 +61,7 @@ function AuthRoutes ({ children }: { children: JSX.Element }): JSX.Element {
   if (isAuthenticated(auth.userType)) {
     return <Navigate to="/" replace/>
   }
-  return children
+  return <NavWrapper>{children}</NavWrapper>
 }
 
 export default function Router (): JSX.Element {
@@ -57,7 +72,14 @@ export default function Router (): JSX.Element {
   }, [])
 
   const router = createBrowserRouter([
-    { path: '/', element: <Home/> },
+    {
+      path: '/',
+      element: (
+        <NavWrapper>
+          <Home/>
+        </NavWrapper>
+      )
+    },
     {
       path: '/login',
       element: (

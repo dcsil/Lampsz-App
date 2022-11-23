@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { useEffect } from 'react'
 import Box from '@mui/material/Box'
 import Avatar from '@mui/material/Avatar'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
@@ -9,7 +8,7 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Link from '@mui/material/Link'
 import { containerStyle } from '../../utils/sharedStyles'
-import { formFieldOnChange, hasError, isAuthenticated } from '../../utils/utils'
+import { formFieldOnChange, hasError } from '../../utils/utils'
 import { useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/AuthHook'
 
@@ -44,16 +43,8 @@ export default function BusinessSignup (): JSX.Element {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
-    // businessRegister(username, email, password, confPassword, setError, )
-    auth.register(username, email, password, confPassword, setError)
+    auth.businessRegister(username, email, password, confPassword, setError, () => navigate('/'))
   }
-
-  useEffect(() => {
-    // Navigate user to home page after login
-    if (isAuthenticated(auth.userType)) {
-      navigate('/')
-    }
-  })
 
   // Component JSX
   return (

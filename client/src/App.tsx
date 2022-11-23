@@ -2,7 +2,6 @@ import * as React from 'react'
 import { ReactElement } from 'react'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Routes from './components/Routes'
-import Nav from './components/Nav'
 import { blue, indigo } from '@mui/material/colors'
 import CssBaseline from '@mui/material/CssBaseline'
 import './App.css'
@@ -30,7 +29,6 @@ function App (): ReactElement {
   return (
     <ThemeProvider theme={theme}>
       <AuthProvider>
-        <Nav/>
         <CssBaseline/>
         <Routes/>
       </AuthProvider>

@@ -1,4 +1,4 @@
-import { AuthResponse, CSetState, ErrorData, RegisterValidation, SetState, UserType } from '../utils/types'
+import { AuthCallback, AuthResponse, ErrorData, RegisterValidation, SetState, UserType } from '../utils/types'
 import axios, { AxiosError, AxiosResponse } from 'axios'
 
 // Constants
@@ -20,13 +20,11 @@ const getCSRF = (setCsrf: SetState<string>): void => {
  * Check user session status from API server.
  *
  * @param setCsrf set state function for CSRF token.
+ * @param callback
  */
 export const checkSession = (
   setCsrf: SetState<string>,
-  setUsername: SetState<string>,
-  setUserType: SetState<UserType>,
-  setUserId: SetState<string>,
-  setIsReadingCookie: SetState<boolean>
+  callback: AuthCallback
 ): void => {
   axios
     .get('/api/session/')
@@ -34,13 +32,10 @@ export const checkSession = (
       if (response.data.userType === UserType.NONE) {
         getCSRF(setCsrf)
       }
-      setUserType(response.data.userType)
-      setUserId(response.data.userId)
-      setUsername(response.data.username)
-      setIsReadingCookie(false)
+      callback(response.data.username, response.data.userId, response.data.userType)
     })
     .catch(_ => {
-      setIsReadingCookie(false)
+      callback('', '', UserType.NONE)
     })
 }
 
@@ -50,27 +45,22 @@ export const checkSession = (
  * @param username user inputted username.
  * @param password user inputted password.
  * @param setError set state function for error message from API server.
+ * @param callback
  */
-export const businessLogin = (
+export const businessLoginAction = (
   username: string,
   password: string,
   setError: SetState<string>,
-  setUsername: SetState<string>,
-  setUserType: SetState<UserType>,
-  setUserId: SetState<string>,
-  setIsReadingCookie: SetState<boolean>
+  callback: AuthCallback
 ): void => {
   axios
     .post('/api/company_login/', { username, password })
     .then((response: AxiosResponse<AuthResponse>) => {
-      setUserType(response.data.userType)
-      setUserId(response.data.userId)
-      setUsername(response.data.username)
-      setIsReadingCookie(false)
+      callback(response.data.username, response.data.userId, response.data.userType)
     })
     .catch((error: AxiosError<ErrorData>) => {
       setError(error.response!.data.message)
-      setIsReadingCookie(false)
+      callback('', '', UserType.NONE)
     })
 }
 
@@ -82,17 +72,15 @@ export const businessLogin = (
  * @param password user inputted password.
  * @param confPassword user inputted confirm password.
  * @param setError set state function for error message from API server.
+ * @param callback
  */
-export const businessRegister = (
+export const businessRegisterAction = (
   username: string,
   email: string,
   password: string,
   confPassword: string,
   setError: SetState<string>,
-  setUsername: SetState<string>,
-  setUserType: SetState<UserType>,
-  setUserId: SetState<string>,
-  setIsReadingCookie: SetState<boolean>
+  callback: AuthCallback
 ): void => {
   // Check two passwords match
   if (password !== confPassword) {
@@ -103,10 +91,7 @@ export const businessRegister = (
   axios
     .post('/api/company_register/', { email, username, password })
     .then((response: AxiosResponse<AuthResponse>) => {
-      setUserType(response.data.userType)
-      setUserId(response.data.userId)
-      setUsername(response.data.username)
-      setIsReadingCookie(false)
+      callback(response.data.username, response.data.userId, response.data.userType)
     })
     .catch((error: AxiosError<RegisterValidation>) => {
       if (error.response!.data.username !== undefined) {
@@ -114,28 +99,28 @@ export const businessRegister = (
       } else if (error.response!.data.email !== undefined) {
         setError(error.response!.data.email.join('\n'))
       }
-      setIsReadingCookie(false)
+      callback('', '', UserType.NONE)
     })
 }
 
-export const influencerLogin = (setUserType: CSetState<UserType>): void => {
+export const influencerLogin = (setUserType: SetState<UserType>): void => {
 }
 
-export const influencerRegister = (setUserType: CSetState<UserType>): void => {
+export const influencerRegister = (setUserType: SetState<UserType>): void => {
 }
 
 /**
  * Logout user by calling API server
  *
- * @param setUserType set state function for user type.
  * @param setCsrf set state function for CSRF token.
+ * @param callback
  */
-export const logout = (setUserType: SetState<UserType>, setCsrf: SetState<string>): void => {
+export const logoutAction = (setCsrf: SetState<string>, callback: VoidFunction): void => {
   axios
     .get('/api/logout/')
     .then(() => {
-      setUserType(UserType.NONE)
       getCSRF(setCsrf)
+      callback()
     })
     .catch(error => console.log(error))
 }
