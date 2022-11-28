@@ -15,17 +15,19 @@ Including another URLconf
 """
 from django.urls import path
 
-from lampsz.apis.views import auth, profile
+from lampsz.apis.views import auth, oauth, profile
 
 urlpatterns = [
-    path("company_register/", auth.company_create_view, name="company-register"),
-    path(
-        "influencer_register/", auth.influencer_create_view, name="influencer-register"
-    ),
-    path("company_login/", auth.company_login_view, name="company-login"),
+    path("register/", auth.register_view, name="register"),
+    path("login/", auth.login_view, name="login"),
     path("logout/", auth.logout_view, name="logout"),
     path("session/", auth.get_session_view, name="session"),
     path("csrf/", auth.get_csrf, name="csrf"),
+]
+
+urlpatterns += [
+    path("authorize/<int:user_id>", oauth.authorize, name="authorize"),
+    path("oauth2callback/", oauth.oauth2callback, name="oauth2callback"),
 ]
 
 urlpatterns += [

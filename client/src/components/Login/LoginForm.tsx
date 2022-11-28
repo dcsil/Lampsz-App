@@ -28,7 +28,7 @@ const styles = {
   }
 }
 
-export default function BusinessLogin (): JSX.Element {
+export default function LoginForm (): JSX.Element {
   const [username, setUsername] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [error, setError] = React.useState('')
@@ -45,7 +45,7 @@ export default function BusinessLogin (): JSX.Element {
     event.preventDefault()
 
     const from = location.state?.from?.pathname || '/'
-    auth.businessLogin(username, password, setError, () => {
+    auth.login(username, password, setError, () => {
       navigate(from, { replace: true })
     })
   }
@@ -100,7 +100,7 @@ export default function BusinessLogin (): JSX.Element {
         </Button>
         <Grid container>
           <Grid item>
-            <Link href="/client/src/components/Signup" variant="body2">
+            <Link href="/signup" variant="body2">
               Don't have an account? Sign Up
             </Link>
           </Grid>

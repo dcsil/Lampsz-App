@@ -32,10 +32,10 @@ export const checkSession = (
       if (response.data.userType === UserType.NONE) {
         getCSRF(setCsrf)
       }
-      callback(response.data.username, response.data.userId, response.data.userType)
+      callback(response.data.username, response.data.userId, response.data.userType, true)
     })
     .catch(_ => {
-      callback('', '', UserType.NONE)
+      callback('', '', UserType.NONE, false)
     })
 }
 
@@ -47,20 +47,20 @@ export const checkSession = (
  * @param setError set state function for error message from API server.
  * @param callback
  */
-export const businessLoginAction = (
+export const loginAction = (
   username: string,
   password: string,
   setError: SetState<string>,
   callback: AuthCallback
 ): void => {
   axios
-    .post('/api/company_login/', { username, password })
+    .post('/api/login/', { username, password })
     .then((response: AxiosResponse<AuthResponse>) => {
-      callback(response.data.username, response.data.userId, response.data.userType)
+      callback(response.data.username, response.data.userId, response.data.userType, false)
     })
     .catch((error: AxiosError<ErrorData>) => {
       setError(error.response!.data.message)
-      callback('', '', UserType.NONE)
+      callback('', '', UserType.NONE, true)
     })
 }
 
@@ -71,14 +71,16 @@ export const businessLoginAction = (
  * @param email user inputted email.
  * @param password user inputted password.
  * @param confPassword user inputted confirm password.
+ * @param userType the type of user registering.
  * @param setError set state function for error message from API server.
  * @param callback
  */
-export const businessRegisterAction = (
+export const registerAction = (
   username: string,
   email: string,
   password: string,
   confPassword: string,
+  userType: UserType,
   setError: SetState<string>,
   callback: AuthCallback
 ): void => {
@@ -89,9 +91,9 @@ export const businessRegisterAction = (
   }
 
   axios
-    .post('/api/company_register/', { email, username, password })
+    .post('/api/register/', { email, username, password, is_influencer: userType === UserType.INFLUENCER })
     .then((response: AxiosResponse<AuthResponse>) => {
-      callback(response.data.username, response.data.userId, response.data.userType)
+      callback(response.data.username, response.data.userId, response.data.userType, false)
     })
     .catch((error: AxiosError<RegisterValidation>) => {
       if (error.response!.data.username !== undefined) {
@@ -99,14 +101,8 @@ export const businessRegisterAction = (
       } else if (error.response!.data.email !== undefined) {
         setError(error.response!.data.email.join('\n'))
       }
-      callback('', '', UserType.NONE)
+      callback('', '', UserType.NONE, true)
     })
-}
-
-export const influencerLogin = (setUserType: SetState<UserType>): void => {
-}
-
-export const influencerRegister = (setUserType: SetState<UserType>): void => {
 }
 
 /**

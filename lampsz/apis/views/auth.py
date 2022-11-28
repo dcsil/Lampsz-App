@@ -17,9 +17,8 @@ __all__ = [
     "login_successful",
     "bad_credentials",
     "csrf_set",
-    "company_login_view",
-    "company_create_view",
-    "influencer_create_view",
+    "login_view",
+    "register_view",
     "logout_view",
     "get_session_view",
     "get_csrf",
@@ -32,7 +31,7 @@ csrf_set = "CSRF cookie set"
 
 
 @api_view(["POST"])
-def company_login_view(request):
+def login_view(request):
     username = request.data.get("username")
     password = request.data.get("password")
     user = authenticate(request, username=username, password=password)
@@ -42,12 +41,12 @@ def company_login_view(request):
         )
 
     login(request, user)
-    request.session["userType"] = UserType.BUSINESS.value
+    request.session["userType"] = user.get_user_type()
     return JsonResponse(
         {
             "userId": request.user.id,
             "username": request.user.username,
-            "userType": request.session.get("userType", 0),
+            "userType": request.session.get("userType", UserType.NONE),
             "message": login_successful,
         }
     )
@@ -60,19 +59,17 @@ def logout_view(request):
 
 
 @api_view(["POST"])
-def company_create_view(request):
+def register_view(request):
+    is_influencer = request.data.get("is_influencer")
     user_serializer = serializers.UserSerializer(data=request.data)
     if user_serializer.is_valid():
         user = user_serializer.save()
-        models.Company.objects.create(user=user)
-        login(request, user)
-        request.session["userType"] = UserType.BUSINESS.value
+        if not is_influencer:
+            models.Company.objects.create(user=user)
+
+        # Pass in user ID and username to help with other register steps
         return JsonResponse(
-            {
-                "userId": request.user.id,
-                "username": request.user.username,
-                "userType": request.session.get("userType", 0),
-            },
+            {"userId": user.id, "username": user.username, "userType": UserType.NONE},
             status=status.HTTP_201_CREATED,
         )
 
@@ -83,19 +80,6 @@ def company_create_view(request):
         return JsonResponse(errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(["POST"])
-def influencer_create_view(request):
-    influencer_data = request.data
-    influencer_serializer = serializers.InfluencerSerializer(data=influencer_data)
-    if influencer_serializer.is_valid():
-        influencer = influencer_serializer.save()
-        login(request, influencer.user)
-        return JsonResponse(influencer_serializer.data, status=status.HTTP_201_CREATED)
-    return JsonResponse(
-        influencer_serializer.errors, status=status.HTTP_400_BAD_REQUEST
-    )
-
-
 @api_view(["GET"])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
@@ -104,11 +88,12 @@ def get_session_view(request):
         {
             "userId": request.user.id,
             "username": request.user.username,
-            "userType": request.session.get("userType", 0),
+            "userType": request.session.get("userType", UserType.NONE),
         }
     )
 
 
+@api_view(["GET"])
 def get_csrf(request):
     response = JsonResponse({"detail": csrf_set})
     response["X-CSRFToken"] = get_token(request)

@@ -1,6 +1,6 @@
 import { AuthCallback, SetState, UserType } from '../utils/types'
 import * as React from 'react'
-import { businessLoginAction, businessRegisterAction, checkSession, logoutAction } from '../actions/auth'
+import { loginAction, checkSession, logoutAction, registerAction } from '../actions/auth'
 
 export interface AuthContextType {
   // States
@@ -13,12 +13,13 @@ export interface AuthContextType {
   setCsrf: SetState<string>
   setUserType: SetState<UserType>
   // Custom functions
-  businessLogin: (loginUsername: string, password: string, setError: SetState<string>, callback: VoidFunction) => void
-  businessRegister: (
+  login: (loginUsername: string, password: string, setError: SetState<string>, callback: VoidFunction) => void
+  register: (
     newUsername: string,
     email: string,
     password: string,
     confPassword: string,
+    userType: UserType,
     setError: SetState<string>,
     callback: VoidFunction
   ) => void
@@ -41,19 +42,19 @@ export function AuthProvider ({ children }: { children: React.ReactNode }): JSX.
    * @param callback callback called after success API server call (e.g., use for navigation).
    */
   const createAuthCallback = (callback?: VoidFunction): AuthCallback => {
-    return (username: string, userId: string, userType: UserType): void => {
+    return (username: string, userId: string, userType: UserType, hasError: boolean): void => {
       setUsername(username)
       setUserId(userId)
       setUserType(userType)
       setIsReadingCookie(false)
-      if (callback) {
+      if (callback && !hasError) {
         callback()
       }
     }
   }
 
   /**
-   * Wrapper around business login API server call that automatically updates
+   * Wrapper around login API server call that automatically updates
    * authenticated user data.
    *
    * @param loginUsername user inputted username.
@@ -61,30 +62,32 @@ export function AuthProvider ({ children }: { children: React.ReactNode }): JSX.
    * @param setError set state function for error message from API server.
    * @param callback callback called after success API server call (e.g., use for navigation).
    */
-  const businessLogin = (loginUsername: string, password: string, setError: SetState<string>, callback: VoidFunction): void => {
-    businessLoginAction(loginUsername, password, setError, createAuthCallback(callback))
+  const login = (loginUsername: string, password: string, setError: SetState<string>, callback: VoidFunction): void => {
+    loginAction(loginUsername, password, setError, createAuthCallback(callback))
   }
 
   /**
-   * Wrapper around business login API server call that automatically updates
+   * Wrapper around register API server call that automatically updates
    * authenticated user data.
    *
    * @param newUsername user inputted new username.
    * @param email user inputted email for new account.
    * @param password user inputted new password.
    * @param confPassword user inputted confirm password.
+   * @param userType the type of user registering.
    * @param setError set state function for error message from API server.
    * @param callback callback called after success API server call (e.g., use for navigation).
    */
-  const businessRegister = (
+  const register = (
     newUsername: string,
     email: string,
     password: string,
     confPassword: string,
+    userType: UserType,
     setError: SetState<string>,
     callback: VoidFunction
   ): void => {
-    businessRegisterAction(newUsername, email, password, confPassword, setError, createAuthCallback(callback))
+    registerAction(newUsername, email, password, confPassword, userType, setError, createAuthCallback(callback))
   }
 
   /**
@@ -113,7 +116,7 @@ export function AuthProvider ({ children }: { children: React.ReactNode }): JSX.
   // APIs provided by the hook
   const states = { username, userType, userId, csrf, isReadingCookie }
   const setStates = { setCsrf, setUserType }
-  const custom = { businessLogin, businessRegister, session, logout }
+  const custom = { login, register, session, logout }
   const value = { ...states, ...setStates, ...custom }
 
   return (
