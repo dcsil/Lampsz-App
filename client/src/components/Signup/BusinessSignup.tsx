@@ -37,7 +37,7 @@ export default function BusinessSignup (): JSX.Element {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
-    auth.register(username, email, password, confPassword, UserType.BUSINESS, setError, () => navigate('/login'))
+    auth.register(username, email, password, confPassword, UserType.BUSINESS, setError, () => navigate('/'))
   }
 
   return (

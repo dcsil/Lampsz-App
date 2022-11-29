@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from rest_framework.utils import json
 
-from lampsz.apis.models import Company, Influencer, User
+from lampsz.apis.models import Company, User
 from lampsz.apis.utils import UserType
 from lampsz.apis.views.auth import bad_credentials
 
@@ -16,14 +16,7 @@ class TestLogin(APITestCase):
             password="correct",
             is_influencer=False,
         )
-        self.influencer_user = User.objects.create_user(
-            username="test_i",
-            email="test_i@email.com",
-            password="correct",
-            is_influencer=True,
-        )
         Company.objects.create(user=self.company_user)
-        Influencer.objects.create(user=self.influencer_user, location="CA")
 
     def tearDown(self) -> None:
         self.client.logout()
@@ -39,20 +32,7 @@ class TestLogin(APITestCase):
         response_data = json.loads(response.content)
         self.assertEqual(response_data.get("userId"), self.company_user.id)
         self.assertEqual(response_data.get("username"), self.company_user.username)
-        self.assertEqual(self.client.session["userType"], UserType.BUSINESS)
-
-    def test_influencer_login_successful(self) -> None:
-        """
-        Ensure influencer login succeeds when credentials are correct.
-        """
-        url = reverse("login")
-        data = {"username": "test_i", "password": "correct"}
-        response = self.client.post(url, data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        response_data = json.loads(response.content)
-        self.assertEqual(response_data.get("userId"), self.influencer_user.id)
-        self.assertEqual(response_data.get("username"), self.influencer_user.username)
-        self.assertEqual(self.client.session["userType"], UserType.INFLUENCER)
+        self.assertEqual(self.client.session["user_type"], UserType.BUSINESS)
 
     def test_company_login_incorrect_credentials(self) -> None:
         """
@@ -104,36 +84,18 @@ class TestRegister(APITestCase):
             User.objects.get(username="test_c")
         except User.DoesNotExist:
             self.fail("User with username 'test' should be in queryset.")
-
-    def test_influencer_register_successful(self) -> None:
-        """
-        Ensure influencer register succeeds when all the provided values are valid.
-        """
-        url = reverse("register")
-        data = {
-            "username": "test_i",
-            "email": "test_i@email.com",
-            "password": "correct",
-            "is_influencer": False,
-        }
-        response = self.client.post(url, data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Influencer.objects.count(), 0)
-        self.assertEqual(User.objects.count(), 2)
-        try:
-            User.objects.get(username="test_i")
-        except User.DoesNotExist:
-            self.fail("User with username 'test' should be in queryset.")
+        self.assertEqual(self.client.session["user_type"], UserType.BUSINESS)
 
     def test_company_register_duplicate_username(self) -> None:
         """
         Ensure register fails when provided username already exists.
         """
-        url = reverse("company-register")
+        url = reverse("register")
         data = {
             "username": "company",
             "email": "test2@email.com",
             "password": "correct",
+            "is_influencer": False,
         }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
@@ -151,8 +113,13 @@ class TestRegister(APITestCase):
         """
         Ensure register fails when provided email already exists.
         """
-        url = reverse("company-register")
-        data = {"username": "test", "email": "test@email.com", "password": "correct"}
+        url = reverse("register")
+        data = {
+            "username": "test",
+            "email": "test@email.com",
+            "password": "correct",
+            "is_influencer": False,
+        }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
         validation_error = json.loads(response.content)

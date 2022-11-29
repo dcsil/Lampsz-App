@@ -61,10 +61,14 @@ def register_view(request):
     if user_serializer.is_valid():
         user = user_serializer.save()
         models.Company.objects.create(user=user)
+        login_user(request, user)
 
-        # Pass in user ID and username to help with other register steps
         return JsonResponse(
-            {"userId": "", "username": "", "userType": UserType.NONE},
+            {
+                "userId": request.user.id,
+                "username": request.user.username,
+                "userType": request.session.get("user_type", UserType.NONE),
+            },
             status=status.HTTP_201_CREATED,
         )
 
