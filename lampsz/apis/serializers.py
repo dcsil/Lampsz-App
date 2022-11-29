@@ -24,7 +24,16 @@ class InfluencerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Influencer
-        fields = ["id", "user", "location", "categories", "tiktokUsername", "about"]
+        fields = [
+            "id",
+            "user",
+            "location",
+            "categories",
+            "thumbnail_url",
+            "home_page",
+            "description",
+            "platform",
+        ]
         depth = 2
 
     def create(self, validated_data):

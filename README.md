@@ -20,6 +20,8 @@ Some Django settings are loaded through environment variables. For local
 development, copy the `.env.example` file to `.env` file in the project
 directory and fill in the content.
 
+Also obtain the `client_secret.json` file from Google developer console.
+
 To get started with local development:
 
 1. Install required Python dependencies:
@@ -41,6 +43,8 @@ To get started with local development:
 5. Export environment variable for Django settings:
 
         $ export DJANGO_SETTINGS_MODULE=lampsz.settings.local
+        $ export OAUTHLIB_RELAX_TOKEN_SCOPE=1
+        $ export OAUTHLIB_INSECURE_TRANSPORT=1
 
 6. Apply Django database migrations:
 

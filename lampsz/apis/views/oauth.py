@@ -1,6 +1,8 @@
+from django.conf import settings
 from django.shortcuts import redirect
 from django.urls import reverse
 from google_auth_oauthlib.flow import Flow
+from oauthlib.oauth2 import AccessDeniedError
 
 from lampsz.apis.models import Influencer, User
 from lampsz.apis.services import (
@@ -11,7 +13,6 @@ from lampsz.apis.services import (
 )
 
 # Constants
-CLIENT_SECRETS_FILE = "client_secret_dev.json"
 SCOPES = [
     "https://www.googleapis.com/auth/youtube.readonly",
     "https://www.googleapis.com/auth/userinfo.email",
@@ -20,7 +21,9 @@ SCOPES = [
 
 
 def authorize(request):
-    flow = Flow.from_client_secrets_file(CLIENT_SECRETS_FILE, scopes=SCOPES)
+    flow = Flow.from_client_secrets_file(
+        settings.GOOGLE_CLIENT_SECRETS_FILE, scopes=SCOPES
+    )
 
     flow.redirect_uri = request.build_absolute_uri(reverse("oauth2callback"))
     # Generate URL for request to Google's OAuth 2.0 server.
@@ -39,13 +42,17 @@ def authorize(request):
 def oauth2callback(request):
     state = request.session["state"]
     flow = Flow.from_client_secrets_file(
-        CLIENT_SECRETS_FILE, scopes=SCOPES, state=state
+        settings.GOOGLE_CLIENT_SECRETS_FILE, scopes=SCOPES, state=state
     )
     flow.redirect_uri = request.build_absolute_uri(reverse("oauth2callback"))
 
     # Use the authorization server's response to fetch the OAuth 2.0 tokens.
     authorization_response = request.build_absolute_uri().replace("http", "https")
-    flow.fetch_token(authorization_response=authorization_response)
+    try:
+        flow.fetch_token(authorization_response=authorization_response)
+    except AccessDeniedError:
+        # Redirect back to login page if user doesn't give consent
+        return redirect("/login")
 
     # Store credentials in the session.
     # ACTION ITEM: In a production app, you likely want to save these
