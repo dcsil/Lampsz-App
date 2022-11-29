@@ -24,6 +24,7 @@ jobs:
     env:
       # postgres://user:password@host:port/database
       DATABASE_URL: "postgres://postgres:postgres@localhost:5432/postgres"
+      GOOGLE_CLIENT_SECRETS_FILE: "dummy.json"
 
     steps:
       - uses: actions/checkout@v3
@@ -55,4 +56,3 @@ jobs:
         run: |
           source .venv/bin/activate
           python manage.py test --settings=lampsz.settings.local
-
