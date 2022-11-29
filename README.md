@@ -20,7 +20,7 @@ Some Django settings are loaded through environment variables. For local
 development, copy the `.env.example` file to `.env` file in the project
 directory and fill in the content.
 
-Also obtain the `client_secret.json` file from Google developer console.
+Also obtain the `client_secret.json` file from Google developer console and update the `GOOGLE_CLIENT_SECRETS` field with the content of the file.
 
 To get started with local development:
 
