@@ -14,7 +14,6 @@ from lampsz.apis import models, serializers
 from lampsz.apis.utils import UserType, has_unique_error
 
 __all__ = [
-    "login_successful",
     "bad_credentials",
     "csrf_set",
     "login_view",
@@ -25,7 +24,6 @@ __all__ = [
 ]
 
 # Response messages
-login_successful = "Login successful"
 bad_credentials = "Incorrect username or password!"
 csrf_set = "CSRF cookie set"
 
@@ -41,13 +39,12 @@ def login_view(request):
         )
 
     login(request, user)
-    request.session["userType"] = user.get_user_type()
+    request.session["user_type"] = user.get_user_type()
     return JsonResponse(
         {
             "userId": request.user.id,
             "username": request.user.username,
-            "userType": request.session.get("userType", UserType.NONE),
-            "message": login_successful,
+            "userType": request.session.get("user_type", UserType.NONE),
         }
     )
 
@@ -88,7 +85,7 @@ def get_session_view(request):
         {
             "userId": request.user.id,
             "username": request.user.username,
-            "userType": request.session.get("userType", UserType.NONE),
+            "userType": request.session.get("user_type", UserType.NONE),
         }
     )
 
