@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
-import MarketplaceTaskCard from '../Shared/MarketplaceTaskCard'
+import MarketingTaskCard from '../Shared/MarketingTaskCard'
 import Grid from '@mui/material/Grid'
 
 const data = [
@@ -61,7 +61,7 @@ export default function Marketplace (): JSX.Element {
             {data.map((item, index) =>
             (
                 <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4}>
-                    <MarketplaceTaskCard title={item.title} description={item.description} height = '300' />
+                    <MarketingTaskCard title={item.title} description={item.description} height = '400' />
                 </Grid>
             )
             )}

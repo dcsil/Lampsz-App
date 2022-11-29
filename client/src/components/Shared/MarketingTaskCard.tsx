@@ -9,14 +9,15 @@ import Typography from '@mui/material/Typography'
 interface MarketingTaskCardProp {
   title: string
   description: string
+  height: string
 }
 
-export default function MarketingTaskCard ({ title, description }: MarketingTaskCardProp): JSX.Element {
+export default function MarketingTaskCard ({ title, description, height}: MarketingTaskCardProp): JSX.Element {
   return (
-    <Card sx={{ width: 250 }}>
+    <Card sx={{ width: '100%' }}>
       <CardMedia
         component="img"
-        height="140"
+        height={height}
         image="/static/images/cards/contemplative-reptile.jpg"
         alt="green iguana"
       />
