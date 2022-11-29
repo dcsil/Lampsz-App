@@ -1,6 +1,3 @@
-import Avatar from '@mui/material/Avatar'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import FormControlLabel from '@mui/material/FormControlLabel'
@@ -50,7 +47,7 @@ export default function BusinessLogin (): JSX.Element {
   return (
     <Box sx={containerStyle.centeredBox}>
       <AuthTitle title="Business Login"/>
-      <Box component="form" onSubmit={handleSubmit} noValidate>
+      <Box component="form" onSubmit={handleSubmit}>
         <TextField
           margin="normal"
           required
