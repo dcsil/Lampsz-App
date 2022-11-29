@@ -23,7 +23,7 @@ jobs:
     env:
       # postgres://user:password@host:port/database
       DATABASE_URL: "postgres://postgres:postgres@localhost:5432/postgres"
-      GOOGLE_CLIENT_SECRETS_FILE: "dummy.json"
+      GOOGLE_CLIENT_SECRETS: "{}"
 
     steps:
       - uses: actions/checkout@v3
