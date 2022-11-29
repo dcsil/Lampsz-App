@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import IntEnum
 
 from rest_framework.exceptions import ErrorDetail
 
@@ -7,7 +7,8 @@ ValidationErrors = dict[str, list[ErrorDetail]]
 
 
 # Enums
-class UserType(Enum):
+class UserType(IntEnum):
+    NONE = 0
     BUSINESS = 1
     INFLUENCER = 2
 

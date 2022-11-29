@@ -1,6 +1,3 @@
-import Avatar from '@mui/material/Avatar'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import FormControlLabel from '@mui/material/FormControlLabel'
@@ -9,18 +6,15 @@ import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
 import * as React from 'react'
-import { containerStyle } from '../../utils/sharedStyles'
-import { formFieldOnChange, hasError } from '../../utils/utils'
+import { containerStyle, formFieldOnChange, hasError } from '../../utils/utils'
 import { useLocation, useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/AuthHook'
+import AuthTitle from '../Shared/AuthTitle'
 
 const styles = {
   avatar: {
     m: 1,
     bgcolor: 'secondary.main'
-  },
-  form: {
-    mt: 3
   },
   button: {
     mt: 3,
@@ -45,20 +39,15 @@ export default function BusinessLogin (): JSX.Element {
     event.preventDefault()
 
     const from = location.state?.from?.pathname || '/'
-    auth.businessLogin(username, password, setError, () => {
+    auth.login(username, password, setError, () => {
       navigate(from, { replace: true })
     })
   }
 
   return (
     <Box sx={containerStyle.centeredBox}>
-      <Avatar sx={styles.avatar}>
-        <LockOutlinedIcon/>
-      </Avatar>
-      <Typography component="h1" variant="h5">
-        Sign in
-      </Typography>
-      <Box component="form" onSubmit={handleSubmit} noValidate sx={styles.form}>
+      <AuthTitle title="Business Login"/>
+      <Box component="form" onSubmit={handleSubmit}>
         <TextField
           margin="normal"
           required
@@ -100,7 +89,7 @@ export default function BusinessLogin (): JSX.Element {
         </Button>
         <Grid container>
           <Grid item>
-            <Link href="/client/src/components/Signup" variant="body2">
+            <Link href="/signup" variant="body2">
               Don't have an account? Sign Up
             </Link>
           </Grid>

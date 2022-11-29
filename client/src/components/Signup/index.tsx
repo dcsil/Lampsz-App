@@ -5,7 +5,7 @@ import BusinessSignup from './BusinessSignup'
 import TabPanel from '../Shared/TabPanel'
 import Container from '@mui/material/Container'
 import InfluencerSignup from './InfluencerSignup'
-import { containerStyle } from '../../utils/sharedStyles'
+import { containerStyle } from '../../utils/utils'
 
 export default function Signup (): JSX.Element {
   const [value, setValue] = React.useState(0)

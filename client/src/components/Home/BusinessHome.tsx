@@ -5,8 +5,8 @@ import Grid from '@mui/material/Grid'
 import MarketingTaskList from './MarketingTaskList'
 import ProfileLink from './ProfileLink'
 import MarketplaceLink from './MarketplaceLink'
-import { containerStyle } from '../../utils/sharedStyles'
 import useAuth from '../../hooks/AuthHook'
+import { containerStyle } from '../../utils/utils'
 
 export default function BusinessHome (): JSX.Element {
   const auth = useAuth()

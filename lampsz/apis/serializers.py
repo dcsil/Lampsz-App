@@ -12,7 +12,7 @@ class LocationSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", "password", "email"]
+        fields = ["id", "username", "password", "email", "is_influencer"]
 
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)
@@ -24,7 +24,16 @@ class InfluencerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Influencer
-        fields = ["id", "user", "location", "categories", "tiktokUsername", "about"]
+        fields = [
+            "id",
+            "user",
+            "location",
+            "categories",
+            "thumbnail_url",
+            "home_page",
+            "description",
+            "platform",
+        ]
         depth = 2
 
     def create(self, validated_data):

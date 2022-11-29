@@ -1,18 +1,24 @@
-import Avatar from '@mui/material/Avatar'
-import Button from '@mui/material/Button'
-import Box from '@mui/material/Box'
 import * as React from 'react'
-import { containerStyle } from '../../utils/sharedStyles'
+import GoogleButton from 'react-google-button'
+import Box from '@mui/material/Box'
+import AuthTitle from '../Shared/AuthTitle'
+import { containerStyle, handleGoogleSync } from '../../utils/utils'
+
+const styles = {
+  googleButton: {
+    width: '100%'
+  }
+}
 
 export default function InfluencerLogin (): JSX.Element {
-  const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
-    // influencerLogin(setUserType)
-  }
-
   return (
     <Box sx={containerStyle.centeredBox}>
-      <Avatar alt="tiktok logo" src="/static/public/tiktok.png"/>
-      <Button onClick={handleClick} size="small" sx={{ marginTop: 1 }}>Login With TikTok</Button>
+      <AuthTitle title="Influencer Login"/>
+      <GoogleButton
+        onClick={handleGoogleSync}
+        label="Google Login"
+        style={styles.googleButton}
+      />
     </Box>
   )
 }

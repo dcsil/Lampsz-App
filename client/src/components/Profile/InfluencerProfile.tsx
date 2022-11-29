@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { useEffect } from 'react'
 import Box from '@mui/material/Box'
-import { containerStyle } from '../../utils/sharedStyles'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import ProfileInfo from './ProfileInfo'
@@ -11,6 +10,7 @@ import SubscriptionsIcon from '@mui/icons-material/Subscriptions'
 import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 import { getInfluencerProfile } from '../../actions/profile'
 import ProfileDescription from './ProfileDescription'
+import { containerStyle } from '../../utils/utils'
 
 const items = [
   {

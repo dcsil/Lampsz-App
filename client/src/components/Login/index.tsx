@@ -1,11 +1,12 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
-import { Tab, Tabs } from '@mui/material'
 import BusinessLogin from './BusinessLogin'
-import TabPanel from '../Shared/TabPanel'
 import Container from '@mui/material/Container'
+import Tabs from '@mui/material/Tabs'
+import Tab from '@mui/material/Tab'
+import TabPanel from '../Shared/TabPanel'
 import InfluencerLogin from './InfluencerLogin'
-import { containerStyle } from '../../utils/sharedStyles'
+import { containerStyle } from '../../utils/utils'
 
 export default function Login (): JSX.Element {
   const [value, setValue] = React.useState(0)

@@ -2,7 +2,7 @@ import React from 'react'
 
 // Types
 export type SetState<T> = React.Dispatch<React.SetStateAction<T>>
-export type AuthCallback = (username: string, userId: string, userType: UserType) => void
+export type AuthCallback = (username: string, userId: string, userType: UserType, hasError: boolean) => void
 
 // HTTP request/response data
 export interface ErrorData {

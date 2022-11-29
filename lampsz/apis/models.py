@@ -1,9 +1,17 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.translation import gettext_lazy as _
+
+from lampsz.apis.utils import UserType
 
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
+    is_influencer = models.BooleanField()
+
+    def get_user_type(self):
+        """Returns UserType enum for current user."""
+        return UserType.INFLUENCER if self.is_influencer else UserType.BUSINESS
 
 
 # Filter classes
@@ -19,11 +27,18 @@ class Category(models.Model):
 
 
 class Influencer(models.Model):
+    class SocialPlatform(models.TextChoices):
+        YOUTUBE = "YT", _("Youtube")
+
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    platform = models.CharField(
+        max_length=10, choices=SocialPlatform.choices, default=SocialPlatform.YOUTUBE
+    )
+    description = models.TextField()
+    home_page = models.URLField(blank=True)
+    thumbnail_url = models.URLField(blank=True)
+    location = models.CharField(max_length=100)
     categories = models.ManyToManyField(Category, blank=True)
-    tiktokUsername = models.CharField(null=False, blank=False, max_length=20)
-    about = models.TextField()
 
     def __str__(self):
         return self.user.username

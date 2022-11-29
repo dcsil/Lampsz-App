@@ -1,26 +1,20 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
-import Avatar from '@mui/material/Avatar'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import Typography from '@mui/material/Typography'
+import { UserType } from '../../utils/types'
+import { useNavigate } from 'react-router-dom'
+import { containerStyle, formFieldOnChange, hasError } from '../../utils/utils'
+import AuthTitle from '../Shared/AuthTitle'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Link from '@mui/material/Link'
-import { containerStyle } from '../../utils/sharedStyles'
-import { formFieldOnChange, hasError } from '../../utils/utils'
-import { useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/AuthHook'
 
 const styles = {
-  avatar: {
-    m: 1,
-    bgcolor: 'secondary.main'
-  },
   form: {
     mt: 3
   },
-  button: {
+  signinButton: {
     mt: 3,
     mb: 2
   }
@@ -32,8 +26,8 @@ export default function BusinessSignup (): JSX.Element {
   const [password, setPassword] = React.useState('')
   const [confPassword, setConfPassword] = React.useState('')
   const [error, setError] = React.useState('')
-  const navigate = useNavigate()
   const auth = useAuth()
+  const navigate = useNavigate()
 
   /**
    * Handles business register form submission.
@@ -43,18 +37,13 @@ export default function BusinessSignup (): JSX.Element {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
-    auth.businessRegister(username, email, password, confPassword, setError, () => navigate('/'))
+    auth.register(username, email, password, confPassword, UserType.BUSINESS, setError, () => navigate('/'))
   }
 
-  // Component JSX
   return (
     <Box sx={containerStyle.centeredBox}>
-      <Avatar sx={styles.avatar}>
-        <LockOutlinedIcon/>
-      </Avatar>
-      <Typography component="h1" variant="h5">
-        Business Sign up
-      </Typography>
+      <AuthTitle title="Business Sign up"/>
+
       <Box component="form" onSubmit={handleSubmit} sx={styles.form}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -117,7 +106,7 @@ export default function BusinessSignup (): JSX.Element {
           type="submit"
           fullWidth
           variant="contained"
-          sx={styles.button}
+          sx={styles.signinButton}
         >
           Sign Up
         </Button>

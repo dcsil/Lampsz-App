@@ -2,7 +2,7 @@ import * as React from 'react'
 import Paper from '@mui/material/Paper'
 import { Stack, Typography } from '@mui/material'
 import Button from '@mui/material/Button'
-import { containerStyle } from '../../utils/sharedStyles'
+import { containerStyle } from '../../utils/utils'
 
 export default function MarketplaceLink (): JSX.Element {
   return (
