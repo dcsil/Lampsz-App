@@ -3,7 +3,12 @@ from django.urls import reverse
 from google_auth_oauthlib.flow import Flow
 
 from lampsz.apis.models import Influencer, User
-from lampsz.apis.services import credentials_to_dict, get_youtube_channel_details
+from lampsz.apis.services import (
+    credentials_to_dict,
+    get_google_user_info,
+    get_youtube_channel_details,
+    login_user,
+)
 
 # Constants
 CLIENT_SECRETS_FILE = "client_secret_dev.json"
@@ -14,7 +19,7 @@ SCOPES = [
 ]
 
 
-def authorize(request, user_id: int):
+def authorize(request):
     flow = Flow.from_client_secrets_file(CLIENT_SECRETS_FILE, scopes=SCOPES)
 
     flow.redirect_uri = request.build_absolute_uri(reverse("oauth2callback"))
@@ -28,7 +33,6 @@ def authorize(request, user_id: int):
         include_granted_scopes="true",
     )
     request.session["state"] = state
-    request.session["curr_user_id"] = user_id
     return redirect(authorization_url)
 
 
@@ -49,12 +53,26 @@ def oauth2callback(request):
     credentials = flow.credentials
     request.session["credentials"] = credentials_to_dict(credentials)
 
-    # Get Youtube channel detail
+    # Get Google user info and Youtube channel detail
+    user_info = get_google_user_info(credentials)
     channel_detail = get_youtube_channel_details(credentials)
 
-    # Get or create new user and influencer object
+    # Log user in if user associated with the Google account already exists,
+    # else create a new user
+    user = User.objects.filter(username=user_info["id"]).first()
+    if user is not None:
+        login_user(request, user)
+        return redirect("/")
+
+    user = User.objects.create_user(
+        username=user_info["id"], email=user_info["email"], is_influencer=True
+    )
+    user.save()
+
+    # We assume if user object doesn't exist, then it's corresponding
+    # influencer object doesn't exist either
     influencer = Influencer.objects.create(
-        user=User.objects.get(id=request.session["curr_user_id"]),
+        user=user,
         description=channel_detail["description"],
         home_page=channel_detail["channel_url"],
         thumbnail_url=channel_detail["thumbnail"],
@@ -62,4 +80,5 @@ def oauth2callback(request):
     )
     influencer.save()
 
-    return redirect("/login")
+    login_user(request, user)
+    return redirect("/")

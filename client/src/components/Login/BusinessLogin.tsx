@@ -9,18 +9,15 @@ import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
 import * as React from 'react'
-import { containerStyle } from '../../utils/sharedStyles'
-import { formFieldOnChange, hasError } from '../../utils/utils'
+import { containerStyle, formFieldOnChange, hasError } from '../../utils/utils'
 import { useLocation, useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/AuthHook'
+import AuthTitle from '../Shared/AuthTitle'
 
 const styles = {
   avatar: {
     m: 1,
     bgcolor: 'secondary.main'
-  },
-  form: {
-    mt: 3
   },
   button: {
     mt: 3,
@@ -28,7 +25,7 @@ const styles = {
   }
 }
 
-export default function LoginForm (): JSX.Element {
+export default function BusinessLogin (): JSX.Element {
   const [username, setUsername] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [error, setError] = React.useState('')
@@ -52,13 +49,8 @@ export default function LoginForm (): JSX.Element {
 
   return (
     <Box sx={containerStyle.centeredBox}>
-      <Avatar sx={styles.avatar}>
-        <LockOutlinedIcon/>
-      </Avatar>
-      <Typography component="h1" variant="h5">
-        Sign in
-      </Typography>
-      <Box component="form" onSubmit={handleSubmit} noValidate sx={styles.form}>
+      <AuthTitle title="Business Login"/>
+      <Box component="form" onSubmit={handleSubmit} noValidate>
         <TextField
           margin="normal"
           required

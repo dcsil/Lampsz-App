@@ -1,6 +1,35 @@
 import { NavItem, SetState, UserType } from './types'
 import * as React from 'react'
 
+export const containerStyle = {
+  contentBox: {
+    display: 'flex',
+    flexGrow: 1,
+    height: '100vh',
+    overflow: 'auto'
+  },
+  centeredBox: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  centeredPaper: {
+    p: 2,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  contentPaper: {
+    p: 2,
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  contentContainer: {
+    mt: 6,
+    mb: 6
+  }
+}
+
 /**
  * Return { name, href } NavItem list given user type
  *
@@ -53,3 +82,10 @@ export const formFieldOnChange = (
  * Utility function to determine whether there is error or not.
  */
 export const hasError = (error: string): boolean => error !== ''
+
+/**
+ * Utility function that redirect user to Google OAuth page.
+ */
+export const handleGoogleSync = (): void => {
+  (window as Window).location = `${window.location.origin}/api/authorize/`
+}

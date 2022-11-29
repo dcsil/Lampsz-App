@@ -1,8 +1,8 @@
 import * as React from 'react'
-import Box from '@mui/material/Box'
 import GoogleButton from 'react-google-button'
-import { containerStyle, handleGoogleSync } from '../../utils/utils'
+import Box from '@mui/material/Box'
 import AuthTitle from '../Shared/AuthTitle'
+import { containerStyle, handleGoogleSync } from '../../utils/utils'
 
 const styles = {
   googleButton: {
@@ -10,13 +10,13 @@ const styles = {
   }
 }
 
-export default function InfluencerSignup (): JSX.Element {
+export default function InfluencerLogin (): JSX.Element {
   return (
     <Box sx={containerStyle.centeredBox}>
-      <AuthTitle title="Influencer Sign up"/>
+      <AuthTitle title="Influencer Login"/>
       <GoogleButton
         onClick={handleGoogleSync}
-        label="Sync with Google"
+        label="Google Login"
         style={styles.googleButton}
       />
     </Box>

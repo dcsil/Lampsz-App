@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, logout
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
 from rest_framework import status
@@ -11,6 +11,7 @@ from rest_framework.decorators import (
 from rest_framework.permissions import IsAuthenticated
 
 from lampsz.apis import models, serializers
+from lampsz.apis.services import login_user
 from lampsz.apis.utils import UserType, has_unique_error
 
 __all__ = [
@@ -38,8 +39,7 @@ def login_view(request):
             {"message": bad_credentials}, status=status.HTTP_404_NOT_FOUND
         )
 
-    login(request, user)
-    request.session["user_type"] = user.get_user_type()
+    login_user(request, user)
     return JsonResponse(
         {
             "userId": request.user.id,
@@ -57,16 +57,14 @@ def logout_view(request):
 
 @api_view(["POST"])
 def register_view(request):
-    is_influencer = request.data.get("is_influencer")
     user_serializer = serializers.UserSerializer(data=request.data)
     if user_serializer.is_valid():
         user = user_serializer.save()
-        if not is_influencer:
-            models.Company.objects.create(user=user)
+        models.Company.objects.create(user=user)
 
         # Pass in user ID and username to help with other register steps
         return JsonResponse(
-            {"userId": user.id, "username": user.username, "userType": UserType.NONE},
+            {"userId": "", "username": "", "userType": UserType.NONE},
             status=status.HTTP_201_CREATED,
         )
 

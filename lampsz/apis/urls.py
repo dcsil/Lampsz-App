@@ -26,7 +26,7 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-    path("authorize/<int:user_id>", oauth.authorize, name="authorize"),
+    path("authorize/", oauth.authorize, name="authorize"),
     path("oauth2callback/", oauth.oauth2callback, name="oauth2callback"),
 ]
 

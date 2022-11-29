@@ -1,13 +1,27 @@
 from typing import Any
 
+from django.contrib.auth import login
+from django.core.handlers.wsgi import WSGIRequest
 from google.auth.credentials import Credentials
 from googleapiclient.discovery import build
+
+from lampsz.apis.models import User
 
 # Constants
 YOUTUBE_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
 OAUTH_SERVICE_NAME = "oauth2"
 OAUTH_API_VERSION = "v2"
+
+
+def login_user(request: WSGIRequest, user: User) -> None:
+    """Simple helper function that logs user in and update session content.
+
+    :param request: request the view received.
+    :param user: the user being logged in.
+    """
+    login(request, user)
+    request.session["user_type"] = user.get_user_type()
 
 
 def credentials_to_dict(credentials: Credentials) -> dict[str, str]:

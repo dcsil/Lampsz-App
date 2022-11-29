@@ -4,7 +4,7 @@ import PanelTitle from '../Shared/PanelTitle'
 import MarketingTaskCard from '../Shared/MarketingTaskCard'
 import { Stack } from '@mui/material'
 import Paper from '@mui/material/Paper'
-import { containerStyle } from '../../utils/sharedStyles'
+import { containerStyle } from '../../utils/utils'
 
 const data = [
   {
