@@ -51,10 +51,10 @@ jobs:
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: |
           poetry install --no-interaction --no-root
-          poetry shell
 
       - name: Run Test
         run: |
+          source .venv/bin/activate
           coverage run --source='.' manage.py test --settings=lampsz.settings.local
 
       - name: Publish code coverage to codeclimate
