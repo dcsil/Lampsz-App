@@ -7,6 +7,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn'
 import FactoryIcon from '@mui/icons-material/Factory'
 import ProfileInfo from './ProfileInfo'
 import ProfileDescription from './ProfileDescription'
+import { containerStyle } from '../../utils/utils'
 
 const styles = {
   infoContainer:{
@@ -45,7 +46,7 @@ export default function BusinessProfile ({company}: any): JSX.Element {
             <ProfileInfo user={company}/>
           </Grid>
           <Grid item xs={4}>
-            <ProfileDescription description={company.about}/>
+            <ProfileDescription description={company.description}/>
           </Grid>
         </Grid>
       </div>

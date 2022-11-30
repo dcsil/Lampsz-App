@@ -2,7 +2,6 @@ import * as React from 'react'
 import { useEffect } from 'react'
 import {useParams} from "react-router-dom"
 import Box from '@mui/material/Box'
-import { containerStyle } from '../../utils/sharedStyles'
 import Grid from '@mui/material/Grid'
 import ProfileInfo from './ProfileInfo'
 import useAuth from '../../hooks/AuthHook'
@@ -34,7 +33,7 @@ export default function InfluencerProfile ({influencer}: any): JSX.Element {
             <ProfileInfo user={influencer}/>
           </Grid>
           <Grid item xs={4}>
-            <ProfileDescription description={influencer.about}/>
+            <ProfileDescription description={influencer.description}/>
           </Grid>
         </Grid>
       </div>
