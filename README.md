@@ -59,6 +59,11 @@ To get started with local development:
 And you can now access the home page by going
 to [127.0.0.1:8000](http://127.0.0.1:8000/)
 
+To run Django tests with coverage:
+
+      $ coverage run --source='.' manage.py test
+
+
 ## Linters
 
 After installing the required packages through the steps above, the
