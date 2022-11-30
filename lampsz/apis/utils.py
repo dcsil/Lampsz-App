@@ -25,3 +25,11 @@ def has_unique_error(field: str, errors: ValidationErrors) -> bool:
         return False
 
     return len([error for error in errors.get(field) if error.code == "unique"]) > 0
+
+
+def ensure_https_url(url: str) -> str:
+    """Returns the url if it already uses HTTPS, otherwise add HTTPS."""
+    if url.startswith("https://"):
+        return url
+
+    return url.replace("http", "https")
