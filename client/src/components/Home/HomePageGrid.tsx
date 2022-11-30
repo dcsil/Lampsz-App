@@ -1,14 +1,13 @@
 import * as React from 'react'
-import Box from '@mui/material/Box'
-import Container from '@mui/material/Container'
+import { containerStyle } from '../../utils/utils'
 import Grid from '@mui/material/Grid'
-import MarketingTaskList from './MarketingTaskList'
 import ProfileLink from './ProfileLink'
 import MarketplaceLink from './MarketplaceLink'
-import { containerStyle } from '../../utils/sharedStyles'
+import Container from '@mui/material/Container'
 import useAuth from '../../hooks/AuthHook'
+import Box from '@mui/material/Box'
 
-export default function BusinessHome (): JSX.Element {
+export default function HomePageGrid ({ listComp }: { listComp: JSX.Element }): JSX.Element {
   const auth = useAuth()
 
   return (
@@ -23,9 +22,8 @@ export default function BusinessHome (): JSX.Element {
           <Grid item lg={6} xs={12}>
             <MarketplaceLink/>
           </Grid>
-          {/* Marketing Task List */}
           <Grid item xs={12}>
-            <MarketingTaskList/>
+            {listComp}
           </Grid>
         </Grid>
       </Container>

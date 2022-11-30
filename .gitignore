@@ -168,3 +168,4 @@ yarn-error.log*
 __snapshots__
 data
 staticfiles
+client_secret.json

@@ -5,7 +5,6 @@ import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import FactoryIcon from '@mui/icons-material/Factory'
-import { containerStyle } from '../../utils/sharedStyles'
 import ProfileInfo from './ProfileInfo'
 import ProfileDescription from './ProfileDescription'
 

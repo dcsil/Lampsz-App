@@ -7,6 +7,7 @@ import Grid from '@mui/material/Grid'
 import ProfileInfo from './ProfileInfo'
 import useAuth from '../../hooks/AuthHook'
 import ProfileDescription from './ProfileDescription'
+import { containerStyle } from '../../utils/utils'
 
 const styles = {
   infoContainer:{

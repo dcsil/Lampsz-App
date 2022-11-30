@@ -1,4 +1,6 @@
 # Lampsz-App
+<a href="https://codeclimate.com/repos/6348a9d30d3b0937b1017e79/maintainability"><img src="https://api.codeclimate.com/v1/badges/fefdef0a14382b0e1d4a/maintainability" /></a>
+<a href="https://codeclimate.com/repos/6348a9d30d3b0937b1017e79/test_coverage"><img src="https://api.codeclimate.com/v1/badges/fefdef0a14382b0e1d4a/test_coverage" /></a>
 
 Source code for Lampsz platform
 
@@ -19,6 +21,8 @@ For UNIX system, also install the following packages:
 Some Django settings are loaded through environment variables. For local
 development, copy the `.env.example` file to `.env` file in the project
 directory and fill in the content.
+
+Also obtain the `client_secret.json` file from Google developer console and update the `GOOGLE_CLIENT_SECRETS` field with the content of the file.
 
 To get started with local development:
 
@@ -41,6 +45,8 @@ To get started with local development:
 5. Export environment variable for Django settings:
 
         $ export DJANGO_SETTINGS_MODULE=lampsz.settings.local
+        $ export OAUTHLIB_RELAX_TOKEN_SCOPE=1
+        $ export OAUTHLIB_INSECURE_TRANSPORT=1
 
 6. Apply Django database migrations:
 
@@ -52,6 +58,11 @@ To get started with local development:
 
 And you can now access the home page by going
 to [127.0.0.1:8000](http://127.0.0.1:8000/)
+
+To run Django tests with coverage:
+
+      $ coverage run --source='.' manage.py test
+
 
 ## Linters
 

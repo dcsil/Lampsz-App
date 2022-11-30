@@ -1,11 +1,12 @@
 name: Django CI
 
 on:
-
+  push:
+    branches: [ "main" ]
+    paths-ignore: [ "docs/**", ".docker/**", "script/**", "README.md" ]
   pull_request:
     branches: [ "main" ]
     paths-ignore: [ "docs/**", ".docker/**", "script/**", "README.md" ]
-
 
 jobs:
   build:
@@ -24,6 +25,7 @@ jobs:
     env:
       # postgres://user:password@host:port/database
       DATABASE_URL: "postgres://postgres:postgres@localhost:5432/postgres"
+      GOOGLE_CLIENT_SECRETS: "{}"
 
     steps:
       - uses: actions/checkout@v3
@@ -49,10 +51,17 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root
+        run: |
+          poetry install --no-interaction --no-root
 
       - name: Run Test
         run: |
           source .venv/bin/activate
-          python manage.py test --settings=lampsz.settings.local
+          coverage run --source='.' manage.py test --settings=lampsz.settings.local
 
+      - name: Publish code coverage to codeclimate
+        uses: paambaati/codeclimate-action@v3.2.0
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageCommand: poetry run coverage xml

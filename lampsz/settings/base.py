@@ -31,7 +31,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "lampsz.core.apps.CoreConfig",
     "lampsz.apis.apps.ApisConfig",
     "lampsz.frontend.apps.FrontendConfig",
 ]
@@ -56,6 +55,7 @@ REST_FRAMEWORK = {
 
 ROOT_URLCONF = "lampsz.urls"
 AUTH_USER_MODEL = "apis.User"
+GOOGLE_CLIENT_SECRETS = env.json("GOOGLE_CLIENT_SECRETS")
 
 TEMPLATES = [
     {
