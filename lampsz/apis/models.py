@@ -24,6 +24,10 @@ class Influencer(models.Model):
     categories = models.ManyToManyField(Category, blank=True)
     tiktokUsername = models.CharField(null=False, blank=False, max_length=20)
     about = models.TextField()
+    age = models.IntegerField(default=18)
+    subscribers = models.IntegerField(default=0)
+    likes = models.IntegerField(default=0)
+    shortBio = models.TextField(default="")
 
     def __str__(self):
         return self.user.username
@@ -37,6 +41,7 @@ class Company(models.Model):
     categories = models.ManyToManyField(Category, blank=True)
     founded = models.DateField(null=True, blank=True)
     about = models.TextField(null=True, blank=True)
+    shortBio = models.TextField(default="")
 
     def __str__(self):
         return self.user.username

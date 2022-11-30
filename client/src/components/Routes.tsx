@@ -5,7 +5,7 @@ import Home from './Home'
 import Login from './Login'
 import Signup from './Signup'
 import Marketplace from './Marketplace'
-import Profile from './Profile'
+import {Profile} from './Profile'
 import MarketingTaskDetail from './MarketingTaskDetail'
 import MyApplications from './MyApplications'
 import MyMarketingTasks from './MyMarketingTasks'
@@ -110,6 +110,14 @@ export default function Router (): JSX.Element {
         <RequireAuth>
           <MarketingTaskDetail/>
         </RequireAuth>
+      )
+    },
+    {
+      path: '/profile/:userId',
+      element:(
+        <NavWrapper>
+          <Profile/>
+        </NavWrapper>
       )
     },
     {

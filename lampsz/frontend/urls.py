@@ -5,9 +5,12 @@ urls = [
     "",
     "login",
     "signup",
+    "profile/<int:userId>",
     "profile",
     "marketplace",
     "marketplace/<int:taskId>",
+    "infProfile/<str:username>",
+    "busProfile/<str:username>",
     "applications",
     "tasks",
 ]

@@ -8,6 +8,7 @@ ValidationErrors = dict[str, list[ErrorDetail]]
 
 # Enums
 class UserType(Enum):
+    NONE = 0
     BUSINESS = 1
     INFLUENCER = 2
 
