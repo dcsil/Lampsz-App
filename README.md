@@ -1,4 +1,6 @@
 # Lampsz-App
+<a href="https://codeclimate.com/repos/6348a9d30d3b0937b1017e79/maintainability"><img src="https://api.codeclimate.com/v1/badges/fefdef0a14382b0e1d4a/maintainability" /></a>
+<a href="https://codeclimate.com/repos/6348a9d30d3b0937b1017e79/test_coverage"><img src="https://api.codeclimate.com/v1/badges/fefdef0a14382b0e1d4a/test_coverage" /></a>
 
 Source code for Lampsz platform
 
