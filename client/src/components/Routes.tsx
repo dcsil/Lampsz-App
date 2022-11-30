@@ -65,6 +65,14 @@ const router = createBrowserRouter([
     )
   },
   {
+    path: '/profile/:userId',
+    element:(
+      <NavWrapper>
+        <Profile/>
+      </NavWrapper>
+    )
+  },
+  {
     path: '/profile',
     element: (
       <RequireAuth>
@@ -148,88 +156,3 @@ function AuthRoutes ({ children }: { children: JSX.Element }): JSX.Element {
   }
   return <NavWrapper>{children}</NavWrapper>
 }
-export default function Router (): JSX.Element {
-  const auth = useAuth()
-
-  useEffect(() => {
-    auth.session()
-  }, [])
-
-  const router = createBrowserRouter([
-    {
-      path: '/',
-      element: (
-        <NavWrapper>
-          <Home/>
-        </NavWrapper>
-      )
-    },
-    {
-      path: '/login',
-      element: (
-        <AuthRoutes>
-          <Login/>
-        </AuthRoutes>
-      )
-    },
-    {
-      path: '/signup',
-      element: (
-        <AuthRoutes>
-          <Signup/>
-        </AuthRoutes>
-      )
-    },
-    {
-      path: '/marketplace',
-      element: (
-        <RequireAuth>
-          <Marketplace/>
-        </RequireAuth>
-      )
-    },
-    {
-      path: '/marketplace/:taskId',
-      element: (
-        <RequireAuth>
-          <MarketingTaskDetail/>
-        </RequireAuth>
-      )
-    },
-    {
-      path: '/profile/:userId',
-      element:(
-        <NavWrapper>
-          <Profile/>
-        </NavWrapper>
-      )
-    },
-    {
-      path: '/profile',
-      element: (
-        <RequireAuth>
-          <Profile/>
-        </RequireAuth>
-      )
-    },
-    {
-      path: '/applications',
-      element: (
-        <RequireAuth reqUserType={UserType.INFLUENCER}>
-          <MyApplications/>
-        </RequireAuth>
-      )
-    },
-    {
-      path: '/tasks',
-      element: (
-        <RequireAuth reqUserType={UserType.BUSINESS}>
-          <MyMarketingTasks/>
-        </RequireAuth>
-      )
-    }
-  ])
-
-  return auth.isReadingCookie ? <Loading/> : <RouterProvider router={router}/>
-}
-
