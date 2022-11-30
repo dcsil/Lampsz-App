@@ -11,6 +11,7 @@ from lampsz.apis.services import (
     get_youtube_channel_details,
     login_user,
 )
+from lampsz.apis.utils import ensure_https_url
 
 
 def authorize(request):
@@ -24,8 +25,8 @@ def oauth2callback(request):
     try:
         state = request.session["state"]
         redirect_uri = request.build_absolute_uri(reverse("oauth2callback"))
-        response_uri = request.build_absolute_uri().replace("http", "https")
-        credentials = get_access_token(redirect_uri, response_uri, state)
+        response_url = ensure_https_url(request.build_absolute_uri())
+        credentials = get_access_token(redirect_uri, response_url, state)
     except AccessDeniedError:
         # Redirect back to login page if user doesn't give consent
         return redirect("/login")
