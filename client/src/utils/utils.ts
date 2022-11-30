@@ -1,5 +1,4 @@
-import { NavItem, SetState, UserType } from './types'
-import * as React from 'react'
+import { FormFieldEvent, NavItem, SetState, UserType } from './types'
 
 export const containerStyle = {
   contentBox: {
@@ -63,19 +62,19 @@ export const isAuthenticated = (userType: UserType): boolean => {
 }
 
 /**
- * Handles form field value change.
+ * Returns a functions that handles form field value change.
  *
- * @param event form field value change event.
  * @param setField state update function for form field.
  * @param setError state update function for error message.
  */
 export const formFieldOnChange = (
-  event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
   setField: SetState<string>,
   setError: SetState<string>
-): void => {
-  setError('')
-  setField(event.target.value)
+): (event: FormFieldEvent) => void => {
+  return (event) => {
+    setError('')
+    setField(event.target.value)
+  }
 }
 
 /**

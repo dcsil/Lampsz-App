@@ -57,7 +57,7 @@ export default function BusinessSignup (): JSX.Element {
               autoFocus
               error={hasError(error)}
               value={username}
-              onChange={(event) => formFieldOnChange(event, setUsername, setError)}
+              onChange={formFieldOnChange(setUsername, setError)}
             />
           </Grid>
           <Grid item xs={12}>
@@ -70,7 +70,7 @@ export default function BusinessSignup (): JSX.Element {
               autoComplete="email"
               error={hasError(error)}
               value={email}
-              onChange={(event) => formFieldOnChange(event, setEmail, setError)}
+              onChange={formFieldOnChange(setEmail, setError)}
             />
           </Grid>
           <Grid item xs={12}>
@@ -84,7 +84,7 @@ export default function BusinessSignup (): JSX.Element {
               autoComplete="new-password"
               error={hasError(error)}
               value={password}
-              onChange={(event) => formFieldOnChange(event, setPassword, setError)}
+              onChange={formFieldOnChange(setPassword, setError)}
             />
           </Grid>
           <Grid item xs={12}>
@@ -98,7 +98,7 @@ export default function BusinessSignup (): JSX.Element {
               error={hasError(error)}
               helperText={error}
               value={confPassword}
-              onChange={(event) => formFieldOnChange(event, setConfPassword, setError)}
+              onChange={formFieldOnChange(setConfPassword, setError)}
             />
           </Grid>
         </Grid>
