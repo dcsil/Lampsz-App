@@ -51,10 +51,13 @@ jobs:
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install --no-interaction --no-root
 
-      - name: Run Test & publish code coverage
+      - name: Run Test
+        run:
+          coverage run --source='.' manage.py test --settings=lampsz.settings.local
+
+      - name: Publish code coverage to codeclimate
         uses: paambaati/codeclimate-action@v3.2.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
-          coverageCommand: |
-            coverage run --source='.' manage.py test --settings=lampsz.settings.local
+          coverageCommand: coverage xml
