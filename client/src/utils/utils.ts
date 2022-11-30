@@ -81,10 +81,3 @@ export const formFieldOnChange = (
  * Utility function to determine whether there is error or not.
  */
 export const hasError = (error: string): boolean => error !== ''
-
-/**
- * Utility function that redirect user to Google OAuth page.
- */
-export const handleGoogleSync = (): void => {
-  (window as Window).location = `${window.location.origin}/api/authorize/`
-}

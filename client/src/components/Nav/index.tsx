@@ -54,25 +54,15 @@ function NavMenu (
     <React.Fragment>
       <StyledTitle isLg={true}/>
       <Box sx={styles.xsBox}>
-        <IconButton
-          size="large"
-          onClick={handleOpenNavMenu}
-          color="inherit"
-        >
+        <IconButton size="large" onClick={handleOpenNavMenu} color="inherit">
           <MenuIcon/>
         </IconButton>
         <Menu
           id="menu-appbar"
           anchorEl={anchorElNav}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left'
-          }}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
           keepMounted
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left'
-          }}
+          transformOrigin={{ vertical: 'top', horizontal: 'left' }}
           open={Boolean(anchorElNav)}
           onClose={handleCloseNavMenu}
           sx={styles.navMenu}
