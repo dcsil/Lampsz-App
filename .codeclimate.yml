@@ -30,7 +30,7 @@ checks:
       threshold: 25
   similar-code:
     config:
-      threshold: 50
+      threshold: 75
 
 
 exclude_patterns:
