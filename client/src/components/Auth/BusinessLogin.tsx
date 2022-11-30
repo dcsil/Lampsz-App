@@ -6,7 +6,7 @@ import * as React from 'react'
 import { containerStyle, formFieldOnChange, hasError } from '../../utils/utils'
 import { useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/AuthHook'
-import AuthTitle from '../Shared/AuthTitle'
+import AuthTitle from './AuthTitle'
 import { FormTextField } from '../Shared/FormTextField'
 
 const styles = {

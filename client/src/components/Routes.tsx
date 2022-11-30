@@ -2,8 +2,6 @@ import * as React from 'react'
 import { useEffect } from 'react'
 import { createBrowserRouter, Navigate, RouterProvider, useLocation } from 'react-router-dom'
 import Home from './Home'
-import Login from './Login'
-import Signup from './Signup'
 import Marketplace from './Marketplace'
 import Profile from './Profile'
 import MarketingTaskDetail from './MarketingTaskDetail'
@@ -14,6 +12,10 @@ import { UserType } from '../utils/types'
 import useAuth from '../hooks/AuthHook'
 import Loading from './Loading'
 import Nav from './Nav'
+import BusinessSignup from './Auth/BusinessSignup'
+import InfluencerAuthTab from './Auth/InfluencerAuthTab'
+import AuthTabs from './Auth/AuthTabs'
+import BusinessLogin from './Auth/BusinessLogin'
 
 const router = createBrowserRouter([
   {
@@ -28,7 +30,10 @@ const router = createBrowserRouter([
     path: '/login',
     element: (
       <AuthRoutes>
-        <Login/>
+        <AuthTabs
+          businessComp={<BusinessLogin/>}
+          influencerComp={<InfluencerAuthTab label="Google Login"/>}
+        />
       </AuthRoutes>
     )
   },
@@ -36,7 +41,10 @@ const router = createBrowserRouter([
     path: '/signup',
     element: (
       <AuthRoutes>
-        <Signup/>
+        <AuthTabs
+          businessComp={<BusinessSignup/>}
+          influencerComp={<InfluencerAuthTab label="Sync with Google"/>}
+        />
       </AuthRoutes>
     )
   },
