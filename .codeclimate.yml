@@ -28,9 +28,7 @@ checks:
 
 
 exclude_patterns:
-- "**/migrations/"
 - "script/"
-- "**/settings/"
 - ".github/"
 - "**/tests/"
 - "**/static/"
