@@ -2,8 +2,6 @@ import * as React from 'react'
 import { useEffect } from 'react'
 import { createBrowserRouter, Navigate, RouterProvider, useLocation } from 'react-router-dom'
 import Home from './Home'
-import Login from './Login'
-import Signup from './Signup'
 import Marketplace from './Marketplace'
 import Profile from './Profile'
 import MarketingTaskDetail from './MarketingTaskDetail'
@@ -14,6 +12,93 @@ import { UserType } from '../utils/types'
 import useAuth from '../hooks/AuthHook'
 import Loading from './Loading'
 import Nav from './Nav'
+import BusinessSignup from './Auth/BusinessSignup'
+import InfluencerAuthTab from './Auth/InfluencerAuthTab'
+import AuthTabs from './Auth/AuthTabs'
+import BusinessLogin from './Auth/BusinessLogin'
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: (
+      <NavWrapper>
+        <Home/>
+      </NavWrapper>
+    )
+  },
+  {
+    path: '/login',
+    element: (
+      <AuthRoutes>
+        <AuthTabs
+          businessComp={<BusinessLogin/>}
+          influencerComp={<InfluencerAuthTab label="Google Login"/>}
+        />
+      </AuthRoutes>
+    )
+  },
+  {
+    path: '/signup',
+    element: (
+      <AuthRoutes>
+        <AuthTabs
+          businessComp={<BusinessSignup/>}
+          influencerComp={<InfluencerAuthTab label="Sync with Google"/>}
+        />
+      </AuthRoutes>
+    )
+  },
+  {
+    path: '/marketplace',
+    element: (
+      <RequireAuth>
+        <Marketplace/>
+      </RequireAuth>
+    )
+  },
+  {
+    path: '/marketplace/:taskId',
+    element: (
+      <RequireAuth>
+        <MarketingTaskDetail/>
+      </RequireAuth>
+    )
+  },
+  {
+    path: '/profile',
+    element: (
+      <RequireAuth>
+        <Profile/>
+      </RequireAuth>
+    )
+  },
+  {
+    path: '/applications',
+    element: (
+      <RequireAuth reqUserType={UserType.INFLUENCER}>
+        <MyApplications/>
+      </RequireAuth>
+    )
+  },
+  {
+    path: '/tasks',
+    element: (
+      <RequireAuth reqUserType={UserType.BUSINESS}>
+        <MyMarketingTasks/>
+      </RequireAuth>
+    )
+  }
+])
+
+export default function Router (): JSX.Element {
+  const auth = useAuth()
+
+  useEffect(() => {
+    auth.session()
+  }, [])
+
+  return auth.isReadingCookie ? <Loading/> : <RouterProvider router={router}/>
+}
 
 /**
  * Simple wrapper components that adds Nav bar on top.
@@ -62,81 +147,4 @@ function AuthRoutes ({ children }: { children: JSX.Element }): JSX.Element {
     return <Navigate to="/" replace/>
   }
   return <NavWrapper>{children}</NavWrapper>
-}
-
-export default function Router (): JSX.Element {
-  const auth = useAuth()
-
-  useEffect(() => {
-    auth.session()
-  }, [])
-
-  const router = createBrowserRouter([
-    {
-      path: '/',
-      element: (
-        <NavWrapper>
-          <Home/>
-        </NavWrapper>
-      )
-    },
-    {
-      path: '/login',
-      element: (
-        <AuthRoutes>
-          <Login/>
-        </AuthRoutes>
-      )
-    },
-    {
-      path: '/signup',
-      element: (
-        <AuthRoutes>
-          <Signup/>
-        </AuthRoutes>
-      )
-    },
-    {
-      path: '/marketplace',
-      element: (
-        <RequireAuth>
-          <Marketplace/>
-        </RequireAuth>
-      )
-    },
-    {
-      path: '/marketplace/:taskId',
-      element: (
-        <RequireAuth>
-          <MarketingTaskDetail/>
-        </RequireAuth>
-      )
-    },
-    {
-      path: '/profile',
-      element: (
-        <RequireAuth>
-          <Profile/>
-        </RequireAuth>
-      )
-    },
-    {
-      path: '/applications',
-      element: (
-        <RequireAuth reqUserType={UserType.INFLUENCER}>
-          <MyApplications/>
-        </RequireAuth>
-      )
-    },
-    {
-      path: '/tasks',
-      element: (
-        <RequireAuth reqUserType={UserType.BUSINESS}>
-          <MyMarketingTasks/>
-        </RequireAuth>
-      )
-    }
-  ])
-
-  return auth.isReadingCookie ? <Loading/> : <RouterProvider router={router}/>
 }

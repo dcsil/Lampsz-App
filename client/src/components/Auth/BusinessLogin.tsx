@@ -1,15 +1,13 @@
 import Box from '@mui/material/Box'
-import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
 import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
 import * as React from 'react'
 import { containerStyle, formFieldOnChange, hasError } from '../../utils/utils'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/AuthHook'
-import AuthTitle from '../Shared/AuthTitle'
+import AuthTitle from './AuthTitle'
+import { FormTextField } from '../Shared/FormTextField'
 
 const styles = {
   avatar: {
@@ -27,7 +25,6 @@ export default function BusinessLogin (): JSX.Element {
   const [password, setPassword] = React.useState('')
   const [error, setError] = React.useState('')
   const navigate = useNavigate()
-  const location = useLocation()
   const auth = useAuth()
 
   /**
@@ -38,9 +35,8 @@ export default function BusinessLogin (): JSX.Element {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
-    const from = location.state?.from?.pathname || '/'
     auth.login(username, password, setError, () => {
-      navigate(from, { replace: true })
+      navigate('/', { replace: true })
     })
   }
 
@@ -48,43 +44,25 @@ export default function BusinessLogin (): JSX.Element {
     <Box sx={containerStyle.centeredBox}>
       <AuthTitle title="Business Login"/>
       <Box component="form" onSubmit={handleSubmit}>
-        <TextField
-          margin="normal"
-          required
-          fullWidth
+        <FormTextField
           id="username"
-          label="username"
-          name="username"
+          label="Username"
+          error={hasError(error)}
           autoComplete="username"
           autoFocus
-          error={hasError(error)}
           value={username}
-          onChange={(event) => formFieldOnChange(event, setUsername, setError)}
+          onChange={formFieldOnChange(setUsername, setError)}
         />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label="Password"
-          type="password"
+        <FormTextField
           id="password"
-          autoComplete="current-password"
+          label="Password"
           error={hasError(error)}
-          helperText={error}
+          autoComplete="current-password"
           value={password}
-          onChange={(event) => formFieldOnChange(event, setPassword, setError)}
+          type="password"
+          onChange={formFieldOnChange(setPassword, setError)}
         />
-        <FormControlLabel
-          control={<Checkbox value="remember" color="primary"/>}
-          label="Remember me"
-        />
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={styles.button}
-        >
+        <Button type="submit" fullWidth variant="contained" sx={styles.button}>
           Sign In
         </Button>
         <Grid container>

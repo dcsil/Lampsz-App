@@ -1,14 +1,13 @@
 import * as React from 'react'
-import Container from '@mui/material/Container'
+import { containerStyle } from '../../utils/utils'
 import Grid from '@mui/material/Grid'
-import Box from '@mui/material/Box'
-import ApplicationList from './ApplicationList'
 import ProfileLink from './ProfileLink'
 import MarketplaceLink from './MarketplaceLink'
+import Container from '@mui/material/Container'
 import useAuth from '../../hooks/AuthHook'
-import { containerStyle } from '../../utils/utils'
+import Box from '@mui/material/Box'
 
-export default function InfluencerHome (): JSX.Element {
+export default function HomePageGrid ({ listComp }: { listComp: JSX.Element }): JSX.Element {
   const auth = useAuth()
 
   return (
@@ -23,9 +22,8 @@ export default function InfluencerHome (): JSX.Element {
           <Grid item lg={6} xs={12}>
             <MarketplaceLink/>
           </Grid>
-          {/* Applications List */}
           <Grid item xs={12}>
-            <ApplicationList/>
+            {listComp}
           </Grid>
         </Grid>
       </Container>

@@ -1,13 +1,13 @@
 import * as React from 'react'
-import Box from '@mui/material/Box'
 import { Tab, Tabs } from '@mui/material'
-import BusinessSignup from './BusinessSignup'
 import TabPanel from '../Shared/TabPanel'
-import Container from '@mui/material/Container'
-import InfluencerSignup from './InfluencerSignup'
 import { containerStyle } from '../../utils/utils'
+import Container from '@mui/material/Container'
+import Box from '@mui/material/Box'
 
-export default function Signup (): JSX.Element {
+export default function AuthTabs (
+  { businessComp, influencerComp }: { businessComp: JSX.Element, influencerComp: JSX.Element }
+): JSX.Element {
   const [value, setValue] = React.useState(0)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number): void => {
@@ -22,10 +22,10 @@ export default function Signup (): JSX.Element {
           <Tab label="Influencer"/>
         </Tabs>
         <TabPanel value={value} index={0}>
-          <BusinessSignup/>
+          {businessComp}
         </TabPanel>
         <TabPanel index={value} value={1}>
-          <InfluencerSignup/>
+          {influencerComp}
         </TabPanel>
       </Box>
     </Container>

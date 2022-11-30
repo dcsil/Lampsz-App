@@ -65,6 +65,9 @@ class TestRegister(APITestCase):
         )
         Company.objects.create(user=self.company_user)
 
+    def tearDown(self) -> None:
+        self.client.logout()
+
     def test_company_register_successful(self) -> None:
         """
         Ensure company register succeeds when all the provided values are valid.
@@ -130,3 +133,35 @@ class TestRegister(APITestCase):
         )
         self.assertEqual(User.objects.count(), 1)
         self.assertEqual(Company.objects.count(), 1)
+
+
+class TestGetSession(APITestCase):
+    def setUp(self) -> None:
+        self.company_user = User.objects.create_user(
+            username="company",
+            email="test@email.com",
+            password="correct",
+            is_influencer=False,
+        )
+        Company.objects.create(user=self.company_user)
+
+    def test_get_session_when_unauthenticated(self) -> None:
+        """
+        Ensures get session fails when user is not authenticated.
+        """
+        url = reverse("session")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_get_session_after_login(self) -> None:
+        """
+        Ensures get session succeeds with proper data when user is logged in.
+        """
+        self.client.login(username=self.company_user.username, password="correct")
+
+        url = reverse("session")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = json.loads(response.content)
+        self.assertEqual(response_data.get("userType"), 0)
+        self.assertEqual(response_data.get("username"), "company")
