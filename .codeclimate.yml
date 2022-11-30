@@ -27,10 +27,10 @@ checks:
       threshold: 4
   identical-code:
     config:
-      threshold: 10
+      threshold: 25
   similar-code:
     config:
-      threshold: 10
+      threshold: 50
 
 
 exclude_patterns:
