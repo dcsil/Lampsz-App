@@ -49,6 +49,7 @@ export default function BusinessLogin (): JSX.Element {
           label="Username"
           error={hasError(error)}
           autoComplete="username"
+          autoFocus
           value={username}
           onChange={formFieldOnChange(setUsername, setError)}
         />

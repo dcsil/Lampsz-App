@@ -5,10 +5,10 @@ import { useNavigate } from 'react-router-dom'
 import { containerStyle, formFieldOnChange, hasError } from '../../utils/utils'
 import AuthTitle from '../Shared/AuthTitle'
 import Grid from '@mui/material/Grid'
-import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Link from '@mui/material/Link'
 import useAuth from '../../hooks/AuthHook'
+import { FormTextField } from '../Shared/FormTextField'
 
 const styles = {
   form: {
@@ -43,71 +43,28 @@ export default function BusinessSignup (): JSX.Element {
   return (
     <Box sx={containerStyle.centeredBox}>
       <AuthTitle title="Business Sign up"/>
-
       <Box component="form" onSubmit={handleSubmit} sx={styles.form}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <TextField
-              name="username"
-              required
-              fullWidth
-              id="username"
-              label="Username"
-              autoComplete="username"
-              autoFocus
-              error={hasError(error)}
-              value={username}
-              onChange={formFieldOnChange(setUsername, setError)}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              error={hasError(error)}
-              value={email}
-              onChange={formFieldOnChange(setEmail, setError)}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="new-password"
-              error={hasError(error)}
-              value={password}
-              onChange={formFieldOnChange(setPassword, setError)}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
-              name="confirm-password"
-              label="Confirm Password"
-              type="password"
-              id="confirm-password"
-              error={hasError(error)}
-              helperText={error}
-              value={confPassword}
-              onChange={formFieldOnChange(setConfPassword, setError)}
-            />
-          </Grid>
-        </Grid>
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={styles.signinButton}
-        >
+        <FormTextField
+          id="username" label="Username" autoComplete="username"
+          error={hasError(error)} autoFocus value={username}
+          onChange={formFieldOnChange(setUsername, setError)}
+        />
+        <FormTextField
+          id="email" label="Email Address" autoComplete="email"
+          error={hasError(error)} value={email}
+          onChange={formFieldOnChange(setEmail, setError)}
+        />
+        <FormTextField
+          id="password" label="Password" autoComplete="new-password" type="password"
+          error={hasError(error)} value={password}
+          onChange={formFieldOnChange(setPassword, setError)}
+        />
+        <FormTextField
+          id="confirm-password" label="Confirm Password" type="password"
+          error={hasError(error)} value={confPassword}
+          onChange={formFieldOnChange(setConfPassword, setError)}
+        />
+        <Button type="submit" fullWidth variant="contained" sx={styles.signinButton}>
           Sign Up
         </Button>
         <Grid container justifyContent="flex-end">
