@@ -38,6 +38,79 @@ const styles = {
   }
 }
 
+function NavMenu (
+  {
+    handleCloseNavMenu, handleOpenNavMenu, anchorElNav
+  }: {
+    handleCloseNavMenu: VoidFunction
+    handleOpenNavMenu: (event: React.MouseEvent<HTMLElement>) => void
+    anchorElNav: null | HTMLElement
+  }
+): JSX.Element {
+  const auth = useAuth()
+  const navItems = getNavItems(auth.userType)
+
+  return (
+    <React.Fragment>
+      <StyledTitle isLg={true}/>
+      <Box sx={styles.xsBox}>
+        <IconButton
+          size="large"
+          onClick={handleOpenNavMenu}
+          color="inherit"
+        >
+          <MenuIcon/>
+        </IconButton>
+        <Menu
+          id="menu-appbar"
+          anchorEl={anchorElNav}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left'
+          }}
+          keepMounted
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left'
+          }}
+          open={Boolean(anchorElNav)}
+          onClose={handleCloseNavMenu}
+          sx={styles.navMenu}
+        >
+          {navItems.map((page) => (
+            <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+              <Typography textAlign="center" component="a" href={page.href}>{page.name}</Typography>
+            </MenuItem>
+          ))}
+        </Menu>
+      </Box>
+    </React.Fragment>
+  )
+}
+
+function NavBar ({ handleCloseNavMenu }: { handleCloseNavMenu: VoidFunction }): JSX.Element {
+  const auth = useAuth()
+  const navItems = getNavItems(auth.userType)
+
+  return (
+    <React.Fragment>
+      <StyledTitle isLg={false}/>
+      <Box sx={styles.lgBox}>
+        {navItems.map((page) => (
+          <Button
+            key={page.name}
+            href={page.href}
+            onClick={handleCloseNavMenu}
+            sx={styles.navButtons}
+          >
+            {page.name}
+          </Button>
+        ))}
+      </Box>
+    </React.Fragment>
+  )
+}
+
 export default function Nav (): JSX.Element {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
   const auth = useAuth()
@@ -50,61 +123,20 @@ export default function Nav (): JSX.Element {
     setAnchorElNav(null)
   }
 
-  const navItems = getNavItems(auth.userType)
-
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
 
           {/* Nav display for smaller screens */}
-          <StyledTitle isLg={true}/>
-          <Box sx={styles.xsBox}>
-            <IconButton
-              size="large"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon/>
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left'
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left'
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={styles.navMenu}
-            >
-              {navItems.map((page) => (
-                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center" component="a" href={page.href}>{page.name}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+          <NavMenu
+            handleCloseNavMenu={handleCloseNavMenu}
+            handleOpenNavMenu={handleOpenNavMenu}
+            anchorElNav={anchorElNav}
+          />
 
           {/* Nav display for bigger screens */}
-          <StyledTitle isLg={false}/>
-          <Box sx={styles.lgBox}>
-            {navItems.map((page) => (
-              <Button
-                key={page.name}
-                href={page.href}
-                onClick={handleCloseNavMenu}
-                sx={styles.navButtons}
-              >
-                {page.name}
-              </Button>
-            ))}
-          </Box>
+          <NavBar handleCloseNavMenu={handleCloseNavMenu}/>
 
           {isAuthenticated(auth.userType) && <UserMenu/>}
         </Toolbar>

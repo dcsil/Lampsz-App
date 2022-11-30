@@ -8,10 +8,11 @@ interface FormTextFieldProps {
   error: boolean
   value: string
   autoComplete?: string
+  type?: string
   onChange: (event: FormFieldEvent) => void
 }
 
-export function FormTextField ({ id, label, error, value, autoComplete, onChange }: FormTextFieldProps): JSX.Element {
+export function FormTextField ({ id, label, error, value, autoComplete, type, onChange }: FormTextFieldProps): JSX.Element {
   return (
     <TextField
       margin="normal"
@@ -22,6 +23,7 @@ export function FormTextField ({ id, label, error, value, autoComplete, onChange
       name={id}
       autoComplete={autoComplete}
       autoFocus
+      type={type}
       error={error}
       value={value}
       onChange={onChange}
