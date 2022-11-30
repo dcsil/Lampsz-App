@@ -31,7 +31,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "lampsz.core.apps.CoreConfig",
     "lampsz.apis.apps.ApisConfig",
     "lampsz.frontend.apps.FrontendConfig",
 ]
