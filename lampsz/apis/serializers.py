@@ -64,8 +64,7 @@ class PublicInfluencerSerializer(serializers.ModelSerializer):
             "user",
             "location",
             "categories",
-            "tiktokUsername",
-            "about",
+            "description",
             "subscribers",
             "age",
             "likes",
@@ -85,7 +84,7 @@ class PublicCompanySerializer(serializers.ModelSerializer):
             "location",
             "categories",
             "founded",
-            "about",
+            "description",
             "shortBio",
         ]
 
