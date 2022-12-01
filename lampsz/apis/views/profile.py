@@ -12,14 +12,14 @@ from lampsz.apis import models, serializers, utils
 def public_user_detail(request, user_id):
     try:
         user = models.User.objects.get(id=user_id)
-        influencers = models.Influencer.objects.filter(user=user)
-        companies = models.Company.objects.filter(user=user)
-        if len(influencers) > 0:
+        if user.is_influencer:
             userType = utils.UserType.INFLUENCER
-            influencer = influencers[0]
+            influencers = models.Influencer.objects.filter(user=user)
+            influencer = influencers.first()
         else:
             userType = utils.UserType.BUSINESS
-            company = companies[0]
+            companies = models.Company.objects.filter(user=user)
+            company = companies.first()
     except models.Influencer.DoesNotExist or models.Company.DoesNotExist or models.User.DoesNotExist:
         return JsonResponse(
             {"message": "The User does not exist"},

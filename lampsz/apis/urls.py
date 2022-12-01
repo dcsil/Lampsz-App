@@ -33,9 +33,6 @@ urlpatterns += [
 urlpatterns += [
     path("profile/<int:user_id>", profile.public_user_detail),
     path("influencer/<int:influencer_id>", profile.influencer_detail_view),
-    path(
-        "influencerProfile/<str:influencer_username>", profile.public_influencer_detail
-    ),
     path("company/<int:company_id>", profile.company_detail_view),
     path("create_task/", profile.create_marketing_task),
 ]

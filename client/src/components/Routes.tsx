@@ -67,9 +67,9 @@ const router = createBrowserRouter([
   {
     path: '/profile/:userId',
     element:(
-      <NavWrapper>
+      <RequireAuth>
         <Profile/>
-      </NavWrapper>
+      </RequireAuth>
     )
   },
   {

@@ -39,7 +39,6 @@ class Influencer(models.Model):
     thumbnail_url = models.URLField(blank=True)
     location = models.CharField(max_length=100)
     categories = models.ManyToManyField(Category, blank=True)
-    tiktokUsername = models.CharField(null=False, blank=False, max_length=20)
     age = models.IntegerField(default=18)
     subscribers = models.IntegerField(default=0)
     likes = models.IntegerField(default=0)
