@@ -32,7 +32,7 @@ export default function UserMenu (): JSX.Element {
         onClose={handleClose}
       >
         <MenuItem onClick={handleClose}>
-          <Typography textAlign="center" component="a" href="/profile">Profile</Typography>
+          <Typography textAlign="center" component="a" href={`/profile/${auth.userId}`}>Profile</Typography>
         </MenuItem>
         <MenuItem onClick={() => {
           auth.logout(() => navigate('/'))

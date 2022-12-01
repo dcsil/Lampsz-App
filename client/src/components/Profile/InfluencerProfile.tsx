@@ -26,7 +26,7 @@ const styles = {
   }
 }
 
-export default function InfluencerProfile ({influencer}: any): JSX.Element {
+export default function InfluencerProfile ({influencer, userId}: any): JSX.Element {
   const auth = useAuth()
   const [editMode, setEditMode] = React.useState(false)
   const items = ["Location", "Industry", "Description"]
@@ -46,7 +46,7 @@ export default function InfluencerProfile ({influencer}: any): JSX.Element {
     flipEditMode()
   }
   return (
-    <Container component="main" maxWidth="lg">
+    <Container component="main" maxWidth="lg" sx={containerStyle.contentContainer}>
     <Box sx={containerStyle.contentBox}>
       <div style={styles.infoContainer}>
         <Grid container spacing={4} direction="column">
@@ -62,7 +62,7 @@ export default function InfluencerProfile ({influencer}: any): JSX.Element {
         <p>Youtube video lists</p>
       </div>
     </Box>
-    {editMode? <div><button onClick={editRequest}>Save</button><button onClick={flipEditMode}>Cancel</button></div>:<button onClick={flipEditMode}>Edit</button>}
+    {userId === auth.userId && (editMode? <div><button onClick={editRequest}>Save</button><button onClick={flipEditMode}>Cancel</button></div>:<button onClick={flipEditMode}>Edit</button>)}
     </Container>
   )
 }

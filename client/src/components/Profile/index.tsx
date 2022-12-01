@@ -21,8 +21,8 @@ export function Profile (): JSX.Element{
       return (
     <React.Fragment>
       {user.userType === UserType.BUSINESS
-        ? <BusinessProfile company={user}/>
-        : <InfluencerProfile influencer={user}/>
+        ? <BusinessProfile company={user} userId={userId}/>
+        : <InfluencerProfile influencer={user} userId={userId}/>
       }
     </React.Fragment>
   )

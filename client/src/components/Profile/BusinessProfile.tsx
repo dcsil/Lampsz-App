@@ -40,13 +40,12 @@ const items = [
   }
 ]
 
-export default function BusinessProfile ({company}: any): JSX.Element {
+export default function BusinessProfile ({company, userId}: any): JSX.Element {
   const auth = useAuth()
   const [editMode, setEditMode] = React.useState(false)
   const items = ["Location", "Industry", "Description"]
   function flipEditMode(){
     setEditMode(!editMode)
-
   }
   function editRequest(){
     items.forEach((item:string)=>{
@@ -60,7 +59,7 @@ export default function BusinessProfile ({company}: any): JSX.Element {
     flipEditMode()
   }
   return (
-    <Container component="main" maxWidth="lg">
+    <Container component="main" maxWidth="lg" sx={containerStyle.contentContainer}>
     <Box sx={containerStyle.contentBox}>
       <div style={styles.infoContainer}>
         <Grid container spacing={4} direction="column">
@@ -76,7 +75,7 @@ export default function BusinessProfile ({company}: any): JSX.Element {
         <p>Old marketing tasks</p>
       </div>
     </Box>
-    {editMode? <div><button onClick={editRequest}>Save</button><button onClick={flipEditMode}>Cancel</button></div>:<button onClick={flipEditMode}>Edit</button>}
+    {parseInt(userId) === parseInt(auth.userId) && (editMode? <div><button onClick={editRequest}>Save</button><button onClick={flipEditMode}>Cancel</button></div>:<button onClick={flipEditMode}>Edit</button>)}
     </Container>
   )
 }
