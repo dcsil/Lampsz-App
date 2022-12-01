@@ -21,7 +21,7 @@ import TextField from '@mui/material/TextField'
 
 const styles = {
   card: {
-    borderRadius: 12,
+    borderRadius: 8,
     textAlign: 'center',
     border: '1px solid grey'
   },

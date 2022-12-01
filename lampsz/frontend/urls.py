@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.urls import path
-from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic import TemplateView
 
 urls = [
@@ -15,7 +14,7 @@ urls = [
 ]
 
 
-@ensure_csrf_cookie
+# @ensure_csrf_cookie
 def index(request, **kwargs):
     return render(request, template_name="frontend/index.html")
 

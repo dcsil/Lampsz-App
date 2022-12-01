@@ -1,27 +1,13 @@
 import * as React from 'react'
-import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
-import Grid from '@mui/material/Grid'
 import ProfileInfo from './ProfileInfo'
 import ProfileDescription from './ProfileDescription'
 import { containerStyle, getCookie } from '../../utils/utils'
 import useAuth from '../../hooks/AuthHook'
 import { editBusinessProfile } from '../../actions/profile'
-
-const styles = {
-  infoContainer: {
-    display: 'flex',
-    flexGrow: 1,
-    overflow: 'auto',
-    width: 1 / 4
-  },
-  contentContainer: {
-    display: 'flex',
-    flexGrow: 1,
-    overflow: 'auto',
-    width: 3 / 4
-  }
-}
+import Button from '@mui/material/Button'
+import { Stack } from '@mui/material'
+import Grid from '@mui/material/Grid'
 
 export default function BusinessProfile ({ company, userId }: any): JSX.Element {
   const auth = useAuth()
@@ -42,28 +28,27 @@ export default function BusinessProfile ({ company, userId }: any): JSX.Element 
 
   return (
     <Container component="main" maxWidth="lg" sx={containerStyle.contentContainer}>
-      <Box sx={containerStyle.contentBox}>
-        <div style={styles.infoContainer}>
-          <Grid container spacing={4} direction="column">
-            <Grid item xs={4}>
-              <ProfileInfo user={company} editMode={editMode}/>
-            </Grid>
-            <Grid item xs={4}>
-              <ProfileDescription description={company.description} editMode={editMode}/>
-            </Grid>
-          </Grid>
-        </div>
-        <div style={styles.contentContainer}>
+      <Grid container spacing={2} sx={containerStyle.contentBox}>
+        <Grid item md={6}>
+          <Stack spacing={3} sx={containerStyle.contentBox}>
+            <ProfileInfo user={company} editMode={editMode}/>
+            <ProfileDescription description={company.description} editMode={editMode}/>
+            <Stack spacing={1} direction="row">
+              {parseInt(userId) === parseInt(auth.userId) && (
+                editMode
+                  ? <React.Fragment>
+                    <Button variant="outlined" onClick={editRequest}>Save</Button>
+                    <Button variant="outlined" onClick={flipEditMode}>Cancel</Button>
+                  </React.Fragment>
+                  : <Button variant="outlined" onClick={flipEditMode}>Edit</Button>
+              )}
+            </Stack>
+          </Stack>
+        </Grid>
+        <Grid item md={6}>
           <p>Old marketing tasks</p>
-        </div>
-      </Box>
-      {parseInt(userId) === parseInt(auth.userId) && (
-        editMode
-          ? <Box>
-            <button onClick={editRequest}>Save</button>
-            <button onClick={flipEditMode}>Cancel</button>
-          </Box>
-          : <button onClick={flipEditMode}>Edit</button>)}
+        </Grid>
+      </Grid>
     </Container>
   )
 }

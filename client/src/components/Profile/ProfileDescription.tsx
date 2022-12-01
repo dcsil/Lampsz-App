@@ -13,7 +13,7 @@ interface ProfileDescriptionProps {
 
 const styles = {
   card: {
-    borderRadius: 12,
+    borderRadius: 8,
     border: '1px solid grey'
   }
 }
