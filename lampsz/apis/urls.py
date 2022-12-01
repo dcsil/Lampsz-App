@@ -36,6 +36,7 @@ urlpatterns += [
     path("influencer/<int:user_id>", profile.influencer_detail_view),
     path("company/<int:user_id>", profile.company_detail_view),
     path("create_task/", profile.create_marketing_task),
+    path("upload_image/", profile.upload_image),
 ]
 
 urlpatterns += [

@@ -2,6 +2,8 @@ import * as React from 'react'
 import Box from '@mui/material/Box'
 import MarketingTaskCard from '../Shared/MarketingTaskCard'
 import Grid from '@mui/material/Grid'
+import useAuth from '../../hooks/AuthHook'
+import { Container } from '@mui/system'
 
 const data = [
   {
@@ -55,17 +57,23 @@ const data = [
 ]
 
 export default function Marketplace (): JSX.Element {
+  const auth = useAuth()
+
   return (
-    <Box sx={{ display: 'flex' }}>
-        <Grid container spacing={5}>
-            {data.map((item, index) =>
-            (
-                <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4}>
-                    <MarketingTaskCard title={item.title} description={item.description} height = '400' />
-                </Grid>
-            )
-            )}
-        </Grid>
-    </Box>
+
+    <Container component="main" maxWidth="lg">
+      <Box sx={{ display: 'flex' }}>
+          <Grid container spacing={5}>
+              {data.map((item, index) =>
+              (
+                  <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4}>
+                      <MarketingTaskCard title={auth.userId} description={auth.username} height = '400' />
+                  </Grid>
+              )
+              )}
+          </Grid>
+      </Box>
+    </Container>
+
   )
 }
