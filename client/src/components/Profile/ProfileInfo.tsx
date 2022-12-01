@@ -91,7 +91,7 @@ export default function ProfileInfo ({ user, editMode }: any): JSX.Element {
           <Grid item xs>
             <Avatar sx={styles.avatar} src="" alt="avatar"/>
             <Typography sx={styles.heading} component="h1" variant="h5">
-              {user.name}
+              {user.userType === UserType.INFLUENCER ? 'LampszChannel' : 'Company Name'}
             </Typography>
             <Typography component="span" sx={styles.subheader} variant="h6">
               {(user.shortBio != null) ? user.shortBio : 'No Short Bio Provided'}
