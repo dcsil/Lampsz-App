@@ -39,6 +39,10 @@ class Influencer(models.Model):
     thumbnail_url = models.URLField(blank=True)
     location = models.CharField(max_length=100)
     categories = models.ManyToManyField(Category, blank=True)
+    age = models.IntegerField(default=18)
+    subscribers = models.IntegerField(default=0)
+    likes = models.IntegerField(default=0)
+    shortBio = models.TextField(default="")
 
     def __str__(self):
         return self.user.username
@@ -51,7 +55,8 @@ class Company(models.Model):
     )
     categories = models.ManyToManyField(Category, blank=True)
     founded = models.DateField(null=True, blank=True)
-    about = models.TextField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    shortBio = models.TextField(default="")
 
     def __str__(self):
         return self.user.username

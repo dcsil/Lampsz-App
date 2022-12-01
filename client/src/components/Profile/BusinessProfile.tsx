@@ -7,8 +7,22 @@ import LocationOnIcon from '@mui/icons-material/LocationOn'
 import FactoryIcon from '@mui/icons-material/Factory'
 import ProfileInfo from './ProfileInfo'
 import ProfileDescription from './ProfileDescription'
-import { getBusinessProfile } from '../../actions/profile'
 import { containerStyle } from '../../utils/utils'
+
+const styles = {
+  infoContainer:{
+    display: 'flex',
+    flexGrow: 1,
+    overflow: 'auto',
+    width: 1/4
+  },
+  contentContainer:{
+    display: 'flex',
+    flexGrow: 1,
+    overflow: 'auto',
+    width: 3/4
+  }
+}
 
 const items = [
   {
@@ -23,26 +37,22 @@ const items = [
   }
 ]
 
-export default function BusinessProfile (): JSX.Element {
-  const [companyName, setCompanyName] = React.useState('Company Name')
-  const [description, setDescription] = React.useState('')
-
-  useEffect(() => {
-    getBusinessProfile('temp', setCompanyName, setDescription)
-  })
-
+export default function BusinessProfile ({company}: any): JSX.Element {
   return (
     <Box component="main" sx={containerStyle.contentBox}>
-      <Container maxWidth="md" sx={containerStyle.contentContainer}>
-        <Grid container spacing={4}>
-          <Grid item xs={12}>
-            <ProfileInfo items={items} name={companyName}/>
+      <div style={styles.infoContainer}>
+        <Grid container spacing={4} direction="column">
+          <Grid item xs={4}>
+            <ProfileInfo user={company}/>
           </Grid>
-          <Grid item xs={12}>
-            <ProfileDescription description={description}/>
+          <Grid item xs={4}>
+            <ProfileDescription description={company.description}/>
           </Grid>
         </Grid>
-      </Container>
+      </div>
+      <div style={styles.contentContainer}>
+        <p>hello yoooo</p>
+      </div>
     </Box>
   )
 }

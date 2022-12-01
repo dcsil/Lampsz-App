@@ -47,6 +47,48 @@ class InfluencerSerializer(serializers.ModelSerializer):
         return influencer
 
 
+class PublicUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "username"]
+
+
+class PublicInfluencerSerializer(serializers.ModelSerializer):
+    user = PublicUserSerializer(required=True)
+
+    class Meta:
+        model = Influencer
+        depth = 2
+        fields = [
+            "id",
+            "user",
+            "location",
+            "categories",
+            "description",
+            "subscribers",
+            "age",
+            "likes",
+            "shortBio",
+        ]
+
+
+class PublicCompanySerializer(serializers.ModelSerializer):
+    user = PublicUserSerializer(required=True)
+
+    class Meta:
+        model = Company
+        depth = 2
+        fields = [
+            "id",
+            "user",
+            "location",
+            "categories",
+            "founded",
+            "description",
+            "shortBio",
+        ]
+
+
 class CompanySerializer(serializers.ModelSerializer):
     user = UserSerializer(required=True)
     location = LocationSerializer(required=False)

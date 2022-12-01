@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { UserType } from '../../utils/types'
 import { Theme } from '@mui/material'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
@@ -11,12 +12,11 @@ import CardContent from '@mui/material/CardContent'
 import Avatar from '@mui/material/Avatar'
 import Grid from '@mui/material/Grid'
 import Container from '@mui/material/Container'
-
-interface ProfileCardProps {
-  name: string
-  shortBio?: string
-  items: Array<{ icon: JSX.Element, label: string, value: string }>
-}
+import LocationOnIcon from '@mui/icons-material/LocationOn'
+import BoyIcon from '@mui/icons-material/Boy'
+import SubscriptionsIcon from '@mui/icons-material/Subscriptions'
+import ThumbUpIcon from '@mui/icons-material/ThumbUp'
+import FactoryIcon from '@mui/icons-material/Factory'
 
 const styles = {
   card: {
@@ -46,27 +46,65 @@ const styles = {
   }
 }
 
-export default function ProfileInfo ({ name, shortBio, items }: ProfileCardProps): JSX.Element {
+export default function ProfileInfo ({user}: any): JSX.Element {
+  var items;
+  if(user.userType === UserType.INFLUENCER){
+    items = [
+      {
+        icon: <LocationOnIcon/>,
+        label: 'Location',
+        value: user.location.location
+      },
+      {
+        icon: <BoyIcon/>,
+        label: 'Age',
+        value: user.age
+      },
+      {
+        icon: <SubscriptionsIcon/>,
+        label: 'Subscribers',
+        value: user.subscribers
+      },
+      {
+        icon: <ThumbUpIcon/>,
+        label: 'Likes',
+        value: user.likes
+      }
+    ]
+  }else{
+    items = [
+      {
+        icon: <LocationOnIcon/>,
+        label: 'Location',
+        value: user.location.location
+      },
+      {
+        icon: <FactoryIcon/>,
+        label: 'Industry',
+        value: user.industry
+      }
+    ]
+  }
   return (
     <Card sx={styles.card}>
       <CardContent>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} direction="column">
           <Grid item xs>
             <Avatar sx={styles.avatar} src="" alt="avatar"/>
             <Typography sx={styles.heading} component="h1" variant="h5">
-              {name}
+              {user.name}
             </Typography>
             <Typography component="span" sx={styles.subheader} variant="h6">
-              {(shortBio != null) ? shortBio : 'No Short Bio Provided'}
+              {(user.shortBio != null) ? user.shortBio : 'No Short Bio Provided'}
             </Typography>
           </Grid>
 
-          <Divider orientation="vertical" variant="middle" flexItem/>
+          <Divider orientation="horizontal" variant="middle" flexItem/>
 
           <Grid item xs>
             <Container sx={{ textAlign: 'center' }}>
               <List>
-                {items.map(({ icon, label, value }) => (
+                {items.map(({icon, label, value}) => (
                   <ListItem key={label}>
                     <ListItemIcon sx={styles.profileStatItem}>
                       {icon}
