@@ -13,31 +13,27 @@ def public_user_detail(request, user_id):
     try:
         user = models.User.objects.get(id=user_id)
         if user.is_influencer:
-            userType = utils.UserType.INFLUENCER
-            influencers = models.Influencer.objects.filter(user=user)
-            influencer = influencers.first()
+            influencer = models.Influencer.objects.filter(user=user).first()
         else:
-            userType = utils.UserType.BUSINESS
-            companies = models.Company.objects.filter(user=user)
-            company = companies.first()
+            company = models.Company.objects.filter(user=user).first()
     except models.Influencer.DoesNotExist or models.Company.DoesNotExist or models.User.DoesNotExist:
         return JsonResponse(
             {"message": "The User does not exist"},
             status=status.HTTP_404_NOT_FOUND,
         )
-    if userType == utils.UserType.INFLUENCER:
+    if user.get_user_type() == utils.UserType.INFLUENCER:
         publicInfluencerSerializer = serializers.PublicInfluencerSerializer(
             influencer, many=False
         )
         data = dict(publicInfluencerSerializer.data)
-        data["userType"] = userType.value
+        data["userType"] = user.get_user_type().value
         return JsonResponse(data, status=status.HTTP_200_OK)
     else:
         publicCompanySerializer = serializers.PublicCompanySerializer(
             company, many=False
         )
         data = dict(publicCompanySerializer.data)
-        data["userType"] = userType.value
+        data["userType"] = user.get_user_type().value
         return JsonResponse(data, status=status.HTTP_200_OK)
 
 
