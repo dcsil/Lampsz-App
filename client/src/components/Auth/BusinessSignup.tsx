@@ -61,7 +61,7 @@ export default function BusinessSignup (): JSX.Element {
         />
         <FormTextField
           id="confirm-password" label="Confirm Password" type="password"
-          error={hasError(error)} value={confPassword}
+          error={hasError(error)} value={confPassword} errorMsg={error}
           onChange={formFieldOnChange(setConfPassword, setError)}
         />
         <Button type="submit" fullWidth variant="contained" sx={styles.signinButton}>

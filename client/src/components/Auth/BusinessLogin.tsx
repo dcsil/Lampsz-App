@@ -60,6 +60,7 @@ export default function BusinessLogin (): JSX.Element {
           autoComplete="current-password"
           value={password}
           type="password"
+          errorMsg={error}
           onChange={formFieldOnChange(setPassword, setError)}
         />
         <Button type="submit" fullWidth variant="contained" sx={styles.button}>
