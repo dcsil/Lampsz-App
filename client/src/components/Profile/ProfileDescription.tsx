@@ -4,9 +4,11 @@ import { Typography } from '@mui/material'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Container from '@mui/material/Container'
+import TextField from '@mui/material/TextField';
 
 interface ProfileDescriptionProps {
-  description: string
+  description: string,
+  editMode: boolean
 }
 
 const styles = {
@@ -16,15 +18,19 @@ const styles = {
   }
 }
 
-export default function ProfileDescription ({ description }: ProfileDescriptionProps): JSX.Element {
+export default function ProfileDescription ({ description, editMode }: ProfileDescriptionProps): JSX.Element {
   return (
     <Card sx={styles.card}>
       <CardContent>
         <Container>
           <PanelTitle variant="h5">Description</PanelTitle>
+          {
+          editMode?
+          <TextField required id="Description" label="Required" defaultValue={description}/>:
           <Typography component="p" variant="body1">
-            {description}
+            {description? description: "No description"}
           </Typography>
+          }
         </Container>
       </CardContent>
     </Card>

@@ -56,9 +56,10 @@ def public_influencer_detail(request, influencer_username):
 
 @api_view(["GET", "PUT"])
 @permission_classes([IsAuthenticated])
-def influencer_detail_view(request, influencer_id):
+def influencer_detail_view(request, user_id):
     try:
-        influencer = models.Influencer.objects.get(pk=influencer_id)
+        user = models.User.objects.get(id=user_id)
+        influencer = models.Influencer.objects.filter(user=user).first()
     except models.Influencer.DoesNotExist:
         return JsonResponse(
             {"message": "The Influencer does not exist"},
@@ -74,16 +75,9 @@ def influencer_detail_view(request, influencer_id):
         return JsonResponse(influencer_serializer.data, status=status.HTTP_200_OK)
     elif request.method == "PUT":
         influencer_data = request.data
-        influencer_serializer = serializers.InfluencerSerializer(
-            influencer, data=influencer_data, partial=True
-        )
-        if influencer_serializer.is_valid():
-            influencer_serializer.save()
-            return JsonResponse(influencer_serializer.data)
-        else:
-            return JsonResponse(
-                influencer_serializer.errors, status=status.HTTP_400_BAD_REQUEST
-            )
+        influencer_serializer = serializers.InfluencerSerializer(influencer, many=False)
+        influencer_serializer.update(influencer, influencer_data)
+        return JsonResponse(influencer_serializer.data, status=status.HTTP_200_OK)
     return JsonResponse(
         influencer_serializer.errors, status=status.HTTP_400_BAD_REQUEST
     )
@@ -91,9 +85,10 @@ def influencer_detail_view(request, influencer_id):
 
 @api_view(["GET", "PUT"])
 @permission_classes([IsAuthenticated])
-def company_detail_view(request, company_id):
+def company_detail_view(request, user_id):
     try:
-        company = models.Company.objects.get(pk=company_id)
+        user = models.User.objects.get(id=user_id)
+        company = models.Company.objects.filter(user=user).first()
     except models.Company.DoesNotExist:
         return JsonResponse(
             {"message": "The Company does not exist"}, status=status.HTTP_404_NOT_FOUND
@@ -108,16 +103,9 @@ def company_detail_view(request, company_id):
         return JsonResponse(company_serializer.data, status=status.HTTP_200_OK)
     elif request.method == "PUT":
         company_data = request.data
-        company_serializer = serializers.CompanySerializer(
-            company, data=company_data, partial=True
-        )
-        if company_serializer.is_valid():
-            company_serializer.save()
-            return JsonResponse(company_serializer.data)
-        else:
-            return JsonResponse(
-                company_serializer.errors, status=status.HTTP_400_BAD_REQUEST
-            )
+        company_serializer = serializers.CompanySerializer(company, many=False)
+        company_serializer.update(company, company_data)
+        return JsonResponse(company_serializer.data, status=status.HTTP_200_OK)
     return JsonResponse(company_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

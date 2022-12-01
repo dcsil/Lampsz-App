@@ -12,7 +12,7 @@ class LocationSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", "password", "email", "is_influencer"]
+        fields = ["id", "username", "email", "is_influencer"]
 
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)
@@ -33,6 +33,10 @@ class InfluencerSerializer(serializers.ModelSerializer):
             "home_page",
             "description",
             "platform",
+            "age",
+            "subscribers",
+            "likes",
+            "shortBio",
         ]
         depth = 2
 
@@ -45,6 +49,18 @@ class InfluencerSerializer(serializers.ModelSerializer):
             user=user, location=location, **validated_data
         )
         return influencer
+
+    def update(self, instance, validated_data):
+        location_data = validated_data.pop("location")
+        location = Location.objects.get_or_create(location=location_data["location"])
+        instance.location = location[0]
+        instance.description = validated_data.pop("description")
+        instance.age = validated_data.pop("age")
+        instance.subscribers = validated_data.pop("subscribers")
+        instance.likes = validated_data.pop("likes")
+        instance.shortBio = validated_data.pop("shortBio")
+        instance.save()
+        return instance
 
 
 class PublicUserSerializer(serializers.ModelSerializer):
@@ -83,20 +99,19 @@ class PublicCompanySerializer(serializers.ModelSerializer):
             "user",
             "location",
             "categories",
-            "founded",
             "description",
             "shortBio",
+            "industry",
         ]
 
 
 class CompanySerializer(serializers.ModelSerializer):
     user = UserSerializer(required=True)
     location = LocationSerializer(required=False)
-    founded = serializers.DateField(format="YYYY-MM-DD", required=False)
 
     class Meta:
-        model = Influencer
-        fields = ["id", "user", "location", "categories", "founded", "about"]
+        model = Company
+        fields = ["id", "user", "location", "categories", "description", "industry"]
         depth = 2
 
     def create(self, validated_data):
@@ -104,10 +119,18 @@ class CompanySerializer(serializers.ModelSerializer):
         user = User.objects.create(**user_data)
         location_data = validated_data.pop("location")
         location = Location.objects.get_or_create(location=location_data["location"])
-        influencer = Company.objects.create(
-            user=user, location=location, **validated_data
-        )
-        return influencer
+        company = Company.objects.create(user=user, location=location, **validated_data)
+        return company
+
+    def update(self, instance, validated_data):
+        location_data = validated_data.pop("location")
+        location = Location.objects.get_or_create(location=location_data["location"])
+        instance.location = location[0]
+        instance.description = validated_data.pop("description")
+        instance.shortBio = validated_data.pop("shortBio")
+        instance.industry = validated_data.pop("industry")
+        instance.save()
+        return instance
 
 
 class MarketingTaskSerializer(serializers.ModelSerializer):
