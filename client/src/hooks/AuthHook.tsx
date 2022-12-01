@@ -1,8 +1,9 @@
 import { AuthCallback, SetState, UserType } from '../utils/types'
 import * as React from 'react'
-import { loginAction, checkSession, logoutAction, registerAction } from '../actions/auth'
+import { checkSession, loginAction, logoutAction, registerAction } from '../actions/auth'
+import { AlertColor } from '@mui/material/Alert'
 
-export interface AuthContextType {
+interface AuthContextType {
   // States
   username: string
   userType: UserType
@@ -42,10 +43,10 @@ export function AuthProvider ({ children }: { children: React.ReactNode }): JSX.
    * @param callback callback called after success API server call (e.g., use for navigation).
    */
   const createAuthCallback = (callback?: VoidFunction): AuthCallback => {
-    return (username: string, userId: string, userType: UserType, hasError: boolean): void => {
-      setUsername(username)
-      setUserId(userId)
-      setUserType(userType)
+    return (hasError: boolean, _username?: string, _userId?: string, _userType?: UserType): void => {
+      setUsername(_username ?? '')
+      setUserId(_userId ?? '')
+      setUserType(_userType ?? UserType.NONE)
       setIsReadingCookie(false)
       if (callback && !hasError) {
         callback()
@@ -105,12 +106,7 @@ export function AuthProvider ({ children }: { children: React.ReactNode }): JSX.
    * @param callback callback called after success API server call (e.g., use for navigation).
    */
   const logout = (callback: VoidFunction): void => {
-    logoutAction(setCsrf, () => {
-      setUserType(UserType.NONE)
-      setUserId('')
-      setUsername('')
-      callback()
-    })
+    logoutAction(setCsrf, createAuthCallback(callback))
   }
 
   // APIs provided by the hook

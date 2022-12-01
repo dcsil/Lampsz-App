@@ -9,6 +9,7 @@ import Button from '@mui/material/Button'
 import Link from '@mui/material/Link'
 import useAuth from '../../hooks/AuthHook'
 import { FormTextField } from '../Shared/FormTextField'
+import useToast from '../../hooks/ToastHook'
 
 const styles = {
   form: {
@@ -28,6 +29,7 @@ export default function BusinessSignup (): JSX.Element {
   const [error, setError] = React.useState('')
   const auth = useAuth()
   const navigate = useNavigate()
+  const toast = useToast()
 
   /**
    * Handles business register form submission.
@@ -37,7 +39,10 @@ export default function BusinessSignup (): JSX.Element {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
-    auth.register(username, email, password, confPassword, UserType.BUSINESS, setError, () => navigate('/'))
+    auth.register(username, email, password, confPassword, UserType.BUSINESS, setError, () => {
+      navigate('/')
+      toast.getToastMessage()
+    })
   }
 
   return (

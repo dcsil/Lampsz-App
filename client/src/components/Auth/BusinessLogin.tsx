@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/AuthHook'
 import AuthTitle from './AuthTitle'
 import { FormTextField } from '../Shared/FormTextField'
+import useToast from '../../hooks/ToastHook'
 
 const styles = {
   avatar: {
@@ -26,6 +27,7 @@ export default function BusinessLogin (): JSX.Element {
   const [error, setError] = React.useState('')
   const navigate = useNavigate()
   const auth = useAuth()
+  const toast = useToast()
 
   /**
    * Handles business register form submission.
@@ -37,6 +39,7 @@ export default function BusinessLogin (): JSX.Element {
 
     auth.login(username, password, setError, () => {
       navigate('/', { replace: true })
+      toast.getToastMessage()
     })
   }
 

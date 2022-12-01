@@ -2,7 +2,7 @@ import React from 'react'
 
 // Types
 export type SetState<T> = React.Dispatch<React.SetStateAction<T>>
-export type AuthCallback = (username: string, userId: string, userType: UserType, hasError: boolean) => void
+export type AuthCallback = (hasError: boolean, username?: string, userId?: string, userType?: UserType) => void
 export type FormFieldEvent = React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
 
 // HTTP request/response data
