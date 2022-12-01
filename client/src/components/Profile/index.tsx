@@ -11,7 +11,6 @@ export function Profile (): JSX.Element{
   }
   var dict = {username: "", userType: 0}
   const [user, setUser] = React.useState(dict)
-  const [editMode, setEditMode] = React.useState(false)
   let {userId} = useParams<UserParam>()
   React.useEffect(()=>{
     getUserProfile(userId, setUser)

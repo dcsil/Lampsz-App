@@ -8,6 +8,9 @@ import FactoryIcon from '@mui/icons-material/Factory'
 import ProfileInfo from './ProfileInfo'
 import ProfileDescription from './ProfileDescription'
 import { containerStyle } from '../../utils/utils'
+import useAuth from '../../hooks/AuthHook'
+import { editBusinessProfile } from '../../actions/profile'
+import { getCookie } from '../../utils/utils'
 
 const styles = {
   infoContainer:{
@@ -38,21 +41,42 @@ const items = [
 ]
 
 export default function BusinessProfile ({company}: any): JSX.Element {
+  const auth = useAuth()
+  const [editMode, setEditMode] = React.useState(false)
+  const items = ["Location", "Industry", "Description"]
+  function flipEditMode(){
+    setEditMode(!editMode)
+
+  }
+  function editRequest(){
+    items.forEach((item:string)=>{
+      if(item === "Location"){
+        company[item.toLowerCase()] = {"location": (document.getElementById(item)! as HTMLInputElement).value}
+      }else{
+        company[item.toLowerCase()] = (document.getElementById(item)! as HTMLInputElement).value
+      }
+    })
+    editBusinessProfile(auth.userId, getCookie("csrftoken"), company)
+    flipEditMode()
+  }
   return (
-    <Box component="main" sx={containerStyle.contentBox}>
+    <Container component="main" maxWidth="lg">
+    <Box sx={containerStyle.contentBox}>
       <div style={styles.infoContainer}>
         <Grid container spacing={4} direction="column">
           <Grid item xs={4}>
-            <ProfileInfo user={company}/>
+            <ProfileInfo user={company} editMode={editMode}/>
           </Grid>
           <Grid item xs={4}>
-            <ProfileDescription description={company.description}/>
+            <ProfileDescription description={company.description} editMode={editMode}/>
           </Grid>
         </Grid>
       </div>
       <div style={styles.contentContainer}>
-        <p>hello yoooo</p>
+        <p>Old marketing tasks</p>
       </div>
     </Box>
+    {editMode? <div><button onClick={editRequest}>Save</button><button onClick={flipEditMode}>Cancel</button></div>:<button onClick={flipEditMode}>Edit</button>}
+    </Container>
   )
 }

@@ -7,7 +7,7 @@ from lampsz.apis.utils import UserType
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
-    is_influencer = models.BooleanField()
+    is_influencer = models.BooleanField(default=False)
 
     def get_user_type(self):
         """Returns UserType enum for current user."""
@@ -54,9 +54,9 @@ class Company(models.Model):
         Location, on_delete=models.CASCADE, null=True, blank=True
     )
     categories = models.ManyToManyField(Category, blank=True)
-    founded = models.DateField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     shortBio = models.TextField(default="")
+    industry = models.TextField(default="")
 
     def __str__(self):
         return self.user.username

@@ -17,6 +17,7 @@ import BoyIcon from '@mui/icons-material/Boy'
 import SubscriptionsIcon from '@mui/icons-material/Subscriptions'
 import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 import FactoryIcon from '@mui/icons-material/Factory'
+import TextField from '@mui/material/TextField';
 
 const styles = {
   card: {
@@ -46,29 +47,29 @@ const styles = {
   }
 }
 
-export default function ProfileInfo ({user}: any): JSX.Element {
+export default function ProfileInfo ({user, editMode}: any): JSX.Element {
   var items;
   if(user.userType === UserType.INFLUENCER){
     items = [
       {
         icon: <LocationOnIcon/>,
         label: 'Location',
-        value: user.location.location
+        value: user.location? user.location.location: "No Location"
       },
       {
         icon: <BoyIcon/>,
         label: 'Age',
-        value: user.age
+        value: user.age? user.age: "No data"
       },
       {
         icon: <SubscriptionsIcon/>,
         label: 'Subscribers',
-        value: user.subscribers
+        value: user.subscribers? user.subscribers: "No data"
       },
       {
         icon: <ThumbUpIcon/>,
         label: 'Likes',
-        value: user.likes
+        value: user.likes? user.likes: "No data"
       }
     ]
   }else{
@@ -76,12 +77,12 @@ export default function ProfileInfo ({user}: any): JSX.Element {
       {
         icon: <LocationOnIcon/>,
         label: 'Location',
-        value: user.location.location
+        value: user.location? user.location.location: "No Location"
       },
       {
         icon: <FactoryIcon/>,
         label: 'Industry',
-        value: user.industry
+        value: user.industry? user.industry: "No Industry"
       }
     ]
   }
@@ -112,7 +113,11 @@ export default function ProfileInfo ({user}: any): JSX.Element {
                     <ListItemText>
                       <b>{label}</b>
                     </ListItemText>
-                    <Typography component="p" variant="body1">{value}</Typography>
+                    {
+                      editMode?
+                      <TextField required id={label} label="Required" defaultValue={value}/>:
+                      <Typography component="p" variant="body1">{value}</Typography>
+                    }
                   </ListItem>
                 ))}
               </List>
