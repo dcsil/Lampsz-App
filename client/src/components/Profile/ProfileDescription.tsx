@@ -4,16 +4,16 @@ import { Typography } from '@mui/material'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Container from '@mui/material/Container'
-import TextField from '@mui/material/TextField';
+import TextField from '@mui/material/TextField'
 
 interface ProfileDescriptionProps {
-  description: string,
+  description: string
   editMode: boolean
 }
 
 const styles = {
   card: {
-    borderRadius: 12,
+    borderRadius: 8,
     border: '1px solid grey'
   }
 }
@@ -25,11 +25,11 @@ export default function ProfileDescription ({ description, editMode }: ProfileDe
         <Container>
           <PanelTitle variant="h5">Description</PanelTitle>
           {
-          editMode?
-          <TextField required id="Description" label="Required" defaultValue={description}/>:
-          <Typography component="p" variant="body1">
-            {description? description: "No description"}
-          </Typography>
+            editMode
+              ? <TextField required id="Description" label="Required" defaultValue={description}/>
+              : <Typography component="p" variant="body1">
+                {description || 'No description'}
+              </Typography>
           }
         </Container>
       </CardContent>

@@ -111,7 +111,7 @@ export const registerAction = (
 export const logoutAction = (setCsrf: SetState<string>, callback: AuthCallback): void => {
   axios
     .get('/api/logout/')
-    .then((response: AxiosResponse) => {
+    .then(_ => {
       getCSRF(setCsrf)
       callback(false)
     })

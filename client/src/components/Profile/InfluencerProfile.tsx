@@ -1,64 +1,54 @@
 import * as React from 'react'
-import { useEffect } from 'react'
-import {useParams} from "react-router-dom"
-import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Container from '@mui/material/Container'
 import ProfileInfo from './ProfileInfo'
 import useAuth from '../../hooks/AuthHook'
 import ProfileDescription from './ProfileDescription'
-import { containerStyle } from '../../utils/utils'
+import { containerStyle, getCookie } from '../../utils/utils'
 import { editInfluencerProfile } from '../../actions/profile'
-import { getCookie } from '../../utils/utils'
+import { Stack } from '@mui/material'
+import Button from '@mui/material/Button'
 
-const styles = {
-  infoContainer:{
-    display: 'flex',
-    flexGrow: 1,
-    overflow: 'auto',
-    width: 1/4
-  },
-  contentContainer:{
-    display: 'flex',
-    flexGrow: 1,
-    overflow: 'auto',
-    width: 3/4
-  }
-}
-
-export default function InfluencerProfile ({influencer, userId}: any): JSX.Element {
+export default function InfluencerProfile ({ influencer, userId }: any): JSX.Element {
   const auth = useAuth()
   const [editMode, setEditMode] = React.useState(false)
-  const items = ["Location", "Age", "Subscribers", "Likes", "Description"]
-  function flipEditMode(){
-    setEditMode(!editMode)
+  const items = ['Location', 'Age', 'Subscribers', 'Likes', 'Description']
 
+  const flipEditMode = (): void => {
+    setEditMode(!editMode)
   }
-  function editRequest(){
-    items.forEach((item:string)=>{
-        influencer[item.toLowerCase()] = (document.getElementById(item)! as HTMLInputElement).value
+
+  const editRequest = (): void => {
+    items.forEach((item: string) => {
+      influencer[item.toLowerCase()] = (document.getElementById(item)! as HTMLInputElement).value
     })
-    editInfluencerProfile(auth.userId, getCookie("csrftoken"), influencer)
+    editInfluencerProfile(auth.userId, getCookie('csrftoken'), influencer)
     flipEditMode()
   }
+
   return (
     <Container component="main" maxWidth="lg" sx={containerStyle.contentContainer}>
-    <Box sx={containerStyle.contentBox}>
-      <div style={styles.infoContainer}>
-        <Grid container spacing={4} direction="column">
-          <Grid item xs={4}>
+      <Grid container spacing={2} sx={containerStyle.contentBox}>
+        <Grid item md={6}>
+          <Stack spacing={3} sx={containerStyle.contentBox}>
             <ProfileInfo user={influencer} editMode={editMode}/>
-          </Grid>
-          <Grid item xs={4}>
             <ProfileDescription description={influencer.description} editMode={editMode}/>
-          </Grid>
+            <Stack spacing={1} direction="row">
+              {parseInt(userId) === parseInt(auth.userId) && (
+                editMode
+                  ? <React.Fragment>
+                    <Button variant="outlined" onClick={editRequest}>Save</Button>
+                    <Button variant="outlined" onClick={flipEditMode}>Cancel</Button>
+                  </React.Fragment>
+                  : <Button variant="outlined" onClick={flipEditMode}>Edit</Button>
+              )}
+            </Stack>
+          </Stack>
         </Grid>
-      </div>
-      <div style={styles.contentContainer}>
-        <p>Youtube video lists</p>
-      </div>
-    </Box>
-    {parseInt(userId) === parseInt(auth.userId) && (editMode? <div><button onClick={editRequest}>Save</button><button onClick={flipEditMode}>Cancel</button></div>:<button onClick={flipEditMode}>Edit</button>)}
+        <Grid item md={6}>
+          <p>Youtube video lists</p>
+        </Grid>
+      </Grid>
     </Container>
   )
 }

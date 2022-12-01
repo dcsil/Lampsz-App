@@ -17,11 +17,11 @@ import BoyIcon from '@mui/icons-material/Boy'
 import SubscriptionsIcon from '@mui/icons-material/Subscriptions'
 import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 import FactoryIcon from '@mui/icons-material/Factory'
-import TextField from '@mui/material/TextField';
+import TextField from '@mui/material/TextField'
 
 const styles = {
   card: {
-    borderRadius: 12,
+    borderRadius: 8,
     textAlign: 'center',
     border: '1px solid grey'
   },
@@ -47,46 +47,43 @@ const styles = {
   }
 }
 
-export default function ProfileInfo ({user, editMode}: any): JSX.Element {
-  var items;
-  if(user.userType === UserType.INFLUENCER){
-    items = [
-      {
-        icon: <LocationOnIcon/>,
-        label: 'Location',
-        value: user.location? user.location: "No Location"
-      },
-      {
-        icon: <BoyIcon/>,
-        label: 'Age',
-        value: user.age? user.age: "No data"
-      },
-      {
-        icon: <SubscriptionsIcon/>,
-        label: 'Subscribers',
-        value: user.subscribers? user.subscribers: "No data"
-      },
-      {
-        icon: <ThumbUpIcon/>,
-        label: 'Likes',
-        value: user.likes? user.likes: "No data"
-      }
-    ]
-  }else{
-    items = [
-      {
-        icon: <LocationOnIcon/>,
-        label: 'Location',
-        value: user.location? user.location: "No Location"
-      },
-      {
-        icon: <FactoryIcon/>,
-        label: 'Industry',
-        value: user.industry? user.industry: "No Industry"
-      }
-    ]
-  }
-  console.log(user.location)
+export default function ProfileInfo ({ user, editMode }: any): JSX.Element {
+  const items = (user.userType === UserType.INFLUENCER)
+    ? [
+        {
+          icon: <LocationOnIcon/>,
+          label: 'Location',
+          value: user.location ? user.location : 'No Location'
+        },
+        {
+          icon: <BoyIcon/>,
+          label: 'Age',
+          value: user.age ? user.age : 'No data'
+        },
+        {
+          icon: <SubscriptionsIcon/>,
+          label: 'Subscribers',
+          value: user.subscribers ? user.subscribers : 'No data'
+        },
+        {
+          icon: <ThumbUpIcon/>,
+          label: 'Likes',
+          value: user.likes ? user.likes : 'No data'
+        }
+      ]
+    : [
+        {
+          icon: <LocationOnIcon/>,
+          label: 'Location',
+          value: user.location ? user.location : 'No Location'
+        },
+        {
+          icon: <FactoryIcon/>,
+          label: 'Industry',
+          value: user.industry ? user.industry : 'No Industry'
+        }
+      ]
+
   return (
     <Card sx={styles.card}>
       <CardContent>
@@ -106,7 +103,7 @@ export default function ProfileInfo ({user, editMode}: any): JSX.Element {
           <Grid item xs>
             <Container sx={{ textAlign: 'center' }}>
               <List>
-                {items.map(({icon, label, value}) => (
+                {items.map(({ icon, label, value }) => (
                   <ListItem key={label}>
                     <ListItemIcon sx={styles.profileStatItem}>
                       {icon}
@@ -115,9 +112,9 @@ export default function ProfileInfo ({user, editMode}: any): JSX.Element {
                       <b>{label}</b>
                     </ListItemText>
                     {
-                      editMode?
-                      <TextField required id={label} label="Required" defaultValue={value}/>:
-                      <Typography component="p" variant="body1">{value}</Typography>
+                      editMode
+                        ? <TextField required id={label} label="Required" defaultValue={value}/>
+                        : <Typography component="p" variant="body1">{value}</Typography>
                     }
                   </ListItem>
                 ))}

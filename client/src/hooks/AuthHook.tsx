@@ -1,7 +1,6 @@
 import { AuthCallback, SetState, UserType } from '../utils/types'
 import * as React from 'react'
 import { checkSession, loginAction, logoutAction, registerAction } from '../actions/auth'
-import { AlertColor } from '@mui/material/Alert'
 
 interface AuthContextType {
   // States

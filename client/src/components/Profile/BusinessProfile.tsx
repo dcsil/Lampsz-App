@@ -1,77 +1,54 @@
 import * as React from 'react'
-import { useEffect } from 'react'
-import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
-import Grid from '@mui/material/Grid'
-import LocationOnIcon from '@mui/icons-material/LocationOn'
-import FactoryIcon from '@mui/icons-material/Factory'
 import ProfileInfo from './ProfileInfo'
 import ProfileDescription from './ProfileDescription'
-import { containerStyle } from '../../utils/utils'
+import { containerStyle, getCookie } from '../../utils/utils'
 import useAuth from '../../hooks/AuthHook'
 import { editBusinessProfile } from '../../actions/profile'
-import { getCookie } from '../../utils/utils'
+import Button from '@mui/material/Button'
+import { Stack } from '@mui/material'
+import Grid from '@mui/material/Grid'
 
-const styles = {
-  infoContainer:{
-    display: 'flex',
-    flexGrow: 1,
-    overflow: 'auto',
-    width: 1/4
-  },
-  contentContainer:{
-    display: 'flex',
-    flexGrow: 1,
-    overflow: 'auto',
-    width: 3/4
-  }
-}
-
-const items = [
-  {
-    icon: <LocationOnIcon/>,
-    label: 'Location',
-    value: 'Toronto, Ontario'
-  },
-  {
-    icon: <FactoryIcon/>,
-    label: 'Industry',
-    value: 'Food'
-  }
-]
-
-export default function BusinessProfile ({company, userId}: any): JSX.Element {
+export default function BusinessProfile ({ company, userId }: any): JSX.Element {
   const auth = useAuth()
   const [editMode, setEditMode] = React.useState(false)
-  const items = ["Location", "Industry", "Description"]
-  function flipEditMode(){
+  const items = ['Location', 'Industry', 'Description']
+
+  const flipEditMode = (): void => {
     setEditMode(!editMode)
   }
-  function editRequest(){
-    items.forEach((item:string)=>{
+
+  const editRequest = (): void => {
+    items.forEach((item: string) => {
       company[item.toLowerCase()] = (document.getElementById(item)! as HTMLInputElement).value
     })
-    editBusinessProfile(auth.userId, getCookie("csrftoken"), company)
+    editBusinessProfile(auth.userId, getCookie('csrftoken'), company)
     flipEditMode()
   }
+
   return (
     <Container component="main" maxWidth="lg" sx={containerStyle.contentContainer}>
-    <Box sx={containerStyle.contentBox}>
-      <div style={styles.infoContainer}>
-        <Grid container spacing={4} direction="column">
-          <Grid item xs={4}>
+      <Grid container spacing={2} sx={containerStyle.contentBox}>
+        <Grid item md={6}>
+          <Stack spacing={3} sx={containerStyle.contentBox}>
             <ProfileInfo user={company} editMode={editMode}/>
-          </Grid>
-          <Grid item xs={4}>
             <ProfileDescription description={company.description} editMode={editMode}/>
-          </Grid>
+            <Stack spacing={1} direction="row">
+              {parseInt(userId) === parseInt(auth.userId) && (
+                editMode
+                  ? <React.Fragment>
+                    <Button variant="outlined" onClick={editRequest}>Save</Button>
+                    <Button variant="outlined" onClick={flipEditMode}>Cancel</Button>
+                  </React.Fragment>
+                  : <Button variant="outlined" onClick={flipEditMode}>Edit</Button>
+              )}
+            </Stack>
+          </Stack>
         </Grid>
-      </div>
-      <div style={styles.contentContainer}>
-        <p>Old marketing tasks</p>
-      </div>
-    </Box>
-    {parseInt(userId) === parseInt(auth.userId) && (editMode? <div><button onClick={editRequest}>Save</button><button onClick={flipEditMode}>Cancel</button></div>:<button onClick={flipEditMode}>Edit</button>)}
+        <Grid item md={6}>
+          <p>Old marketing tasks</p>
+        </Grid>
+      </Grid>
     </Container>
   )
 }
