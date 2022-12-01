@@ -29,10 +29,8 @@ def public_user_detail(request, user_id):
         data["userType"] = user.get_user_type().value
         return JsonResponse(data, status=status.HTTP_200_OK)
     else:
-        publicCompanySerializer = serializers.PublicCompanySerializer(
-            company, many=False
-        )
-        data = dict(publicCompanySerializer.data)
+        company_serializer = serializers.CompanySerializer(company, many=False)
+        data = dict(company_serializer.data)
         data["userType"] = user.get_user_type().value
         return JsonResponse(data, status=status.HTTP_200_OK)
 

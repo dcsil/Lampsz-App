@@ -29,18 +29,14 @@ const styles = {
 export default function InfluencerProfile ({influencer, userId}: any): JSX.Element {
   const auth = useAuth()
   const [editMode, setEditMode] = React.useState(false)
-  const items = ["Location", "Industry", "Description"]
+  const items = ["Location", "Age", "Subscribers", "Likes", "Description"]
   function flipEditMode(){
     setEditMode(!editMode)
 
   }
   function editRequest(){
     items.forEach((item:string)=>{
-      if(item === "Location"){
-        influencer[item.toLowerCase()] = {"location": (document.getElementById(item)! as HTMLInputElement).value}
-      }else{
         influencer[item.toLowerCase()] = (document.getElementById(item)! as HTMLInputElement).value
-      }
     })
     editInfluencerProfile(auth.userId, getCookie("csrftoken"), influencer)
     flipEditMode()
@@ -62,7 +58,7 @@ export default function InfluencerProfile ({influencer, userId}: any): JSX.Eleme
         <p>Youtube video lists</p>
       </div>
     </Box>
-    {userId === auth.userId && (editMode? <div><button onClick={editRequest}>Save</button><button onClick={flipEditMode}>Cancel</button></div>:<button onClick={flipEditMode}>Edit</button>)}
+    {parseInt(userId) === parseInt(auth.userId) && (editMode? <div><button onClick={editRequest}>Save</button><button onClick={flipEditMode}>Cancel</button></div>:<button onClick={flipEditMode}>Edit</button>)}
     </Container>
   )
 }

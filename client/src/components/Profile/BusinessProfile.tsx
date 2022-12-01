@@ -49,11 +49,7 @@ export default function BusinessProfile ({company, userId}: any): JSX.Element {
   }
   function editRequest(){
     items.forEach((item:string)=>{
-      if(item === "Location"){
-        company[item.toLowerCase()] = {"location": (document.getElementById(item)! as HTMLInputElement).value}
-      }else{
-        company[item.toLowerCase()] = (document.getElementById(item)! as HTMLInputElement).value
-      }
+      company[item.toLowerCase()] = (document.getElementById(item)! as HTMLInputElement).value
     })
     editBusinessProfile(auth.userId, getCookie("csrftoken"), company)
     flipEditMode()
