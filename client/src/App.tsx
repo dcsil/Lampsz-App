@@ -1,11 +1,13 @@
 import * as React from 'react'
-import { ReactElement } from 'react'
+import { ReactElement, useEffect } from 'react'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Routes from './components/Routes'
 import { blue, indigo } from '@mui/material/colors'
 import CssBaseline from '@mui/material/CssBaseline'
 import './App.css'
-import { AuthProvider } from './hooks/AuthHook'
+import Alert from '@mui/material/Alert'
+import Snackbar from '@mui/material/Snackbar'
+import useToast from './hooks/ToastHook'
 
 const theme = createTheme({
   palette: {
@@ -26,12 +28,26 @@ const theme = createTheme({
 })
 
 function App (): ReactElement {
+  const toast = useToast()
+
+  const handleClose = (): void => {
+    toast.setToastOpen(false)
+  }
+
+  useEffect(() => {
+    toast.getToastMessage()
+  }, [])
+
   return (
     <ThemeProvider theme={theme}>
-      <AuthProvider>
-        <CssBaseline/>
-        <Routes/>
-      </AuthProvider>
+      <Snackbar open={toast.toastOpen} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={toast.level}>
+          {toast.message}
+        </Alert>
+      </Snackbar>
+
+      <CssBaseline/>
+      <Routes/>
     </ThemeProvider>
   )
 }

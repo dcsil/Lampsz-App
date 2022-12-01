@@ -108,10 +108,10 @@ def get_google_user_info(credentials: Credentials) -> dict[str, Any]:
 
 
 def get_youtube_channel_details(credentials: Credentials) -> dict[str, Any]:
-    """Get Youtube channel info associated with the given OAuth credential.
+    """Get YouTube channel info associated with the given OAuth credential.
 
     :param credentials: the Google OAuth Credential object.
-    :return: dictionary containing Youtube channel info.
+    :return: dictionary containing YouTube channel info.
     """
     youtube = build(YOUTUBE_SERVICE_NAME, YOUTUBE_API_VERSION, credentials=credentials)
     channel = youtube.channels().list(mine=True, part="snippet").execute()

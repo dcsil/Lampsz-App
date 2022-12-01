@@ -1,5 +1,6 @@
 import { AuthCallback, AuthResponse, ErrorData, RegisterValidation, SetState, UserType } from '../utils/types'
 import axios, { AxiosError, AxiosResponse } from 'axios'
+import { AlertColor } from '@mui/material/Alert'
 
 // Constants
 const confirmPassFails = 'Password don\'t match'
@@ -32,10 +33,10 @@ export const checkSession = (
       if (response.data.userType === UserType.NONE) {
         getCSRF(setCsrf)
       }
-      callback(response.data.username, response.data.userId, response.data.userType, true)
+      callback(false, response.data.username, response.data.userId, response.data.userType)
     })
     .catch(_ => {
-      callback('', '', UserType.NONE, false)
+      callback(true)
     })
 }
 
@@ -55,12 +56,10 @@ export const loginAction = (
 ): void => {
   axios
     .post('/api/login/', { username, password })
-    .then((response: AxiosResponse<AuthResponse>) => {
-      callback(response.data.username, response.data.userId, response.data.userType, false)
-    })
+    .then(successAuthResponse(callback))
     .catch((error: AxiosError<ErrorData>) => {
       setError(error.response!.data.message)
-      callback('', '', UserType.NONE, true)
+      callback(true)
     })
 }
 
@@ -92,16 +91,14 @@ export const registerAction = (
 
   axios
     .post('/api/register/', { email, username, password, is_influencer: userType === UserType.INFLUENCER })
-    .then((response: AxiosResponse<AuthResponse>) => {
-      callback(response.data.username, response.data.userId, response.data.userType, false)
-    })
+    .then(successAuthResponse(callback))
     .catch((error: AxiosError<RegisterValidation>) => {
       if (error.response!.data.username !== undefined) {
         setError(error.response!.data.username.join('\n'))
       } else if (error.response!.data.email !== undefined) {
         setError(error.response!.data.email.join('\n'))
       }
-      callback('', '', UserType.NONE, true)
+      callback(true)
     })
 }
 
@@ -111,12 +108,35 @@ export const registerAction = (
  * @param setCsrf set state function for CSRF token.
  * @param callback
  */
-export const logoutAction = (setCsrf: SetState<string>, callback: VoidFunction): void => {
+export const logoutAction = (setCsrf: SetState<string>, callback: AuthCallback): void => {
   axios
     .get('/api/logout/')
-    .then(() => {
+    .then((response: AxiosResponse) => {
       getCSRF(setCsrf)
-      callback()
+      callback(false)
     })
     .catch(error => console.log(error))
+}
+
+/**
+ *
+ * @param callback
+ */
+export const getMessagesAction = (callback: (message: string, level: AlertColor) => void): void => {
+  axios
+    .get('/api/messages/')
+    .then((response: AxiosResponse) => {
+      const messages = response.data.messages
+      if (messages.length !== 0) {
+        callback(messages[0].message, messages[0].level)
+      }
+    })
+    .catch((error: AxiosResponse) => console.log(error))
+}
+
+// Utility functions
+const successAuthResponse = (authCallback: AuthCallback): (response: AxiosResponse) => void => {
+  return (response: AxiosResponse<AuthResponse>) => {
+    authCallback(false, response.data.username, response.data.userId, response.data.userType)
+  }
 }
