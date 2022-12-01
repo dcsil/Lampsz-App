@@ -9,8 +9,6 @@ urls = [
     "profile",
     "marketplace",
     "marketplace/<int:taskId>",
-    "infProfile/<str:username>",
-    "busProfile/<str:username>",
     "applications",
     "tasks",
 ]
