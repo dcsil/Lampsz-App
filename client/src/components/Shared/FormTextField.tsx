@@ -10,11 +10,12 @@ interface FormTextFieldProps {
   autoFocus?: boolean
   autoComplete?: string
   type?: string
+  errorMsg?: string
   onChange: (event: FormFieldEvent) => void
 }
 
 export function FormTextField (
-  { id, autoFocus, label, error, value, autoComplete, type, onChange }: FormTextFieldProps
+  { id, autoFocus, label, error, value, autoComplete, type, errorMsg, onChange }: FormTextFieldProps
 ): JSX.Element {
   return (
     <TextField
@@ -30,6 +31,7 @@ export function FormTextField (
       error={error}
       value={value}
       onChange={onChange}
+      helperText={errorMsg}
     />
   )
 }

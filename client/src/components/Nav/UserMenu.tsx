@@ -3,11 +3,13 @@ import { AccountCircle } from '@mui/icons-material'
 import * as React from 'react'
 import useAuth from '../../hooks/AuthHook'
 import { useNavigate } from 'react-router-dom'
+import useToast from '../../hooks/ToastHook'
 
 export default function UserMenu (): JSX.Element {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const auth = useAuth()
   const navigate = useNavigate()
+  const toast = useToast()
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>): void => {
     setAnchorEl(event.currentTarget)
@@ -35,7 +37,10 @@ export default function UserMenu (): JSX.Element {
           <Typography textAlign="center" component="a" href={`/profile/${auth.userId}`}>Profile</Typography>
         </MenuItem>
         <MenuItem onClick={() => {
-          auth.logout(() => navigate('/'))
+          auth.logout(() => {
+            navigate('/')
+            toast.getToastMessage()
+          })
           handleClose()
         }}>
           <Typography textAlign="center" component="a">Logout</Typography>

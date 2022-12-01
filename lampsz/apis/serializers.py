@@ -94,6 +94,7 @@ class CompanySerializer(serializers.ModelSerializer):
             "description",
             "industry",
             "shortBio",
+            "industry",
         ]
         depth = 2
 
