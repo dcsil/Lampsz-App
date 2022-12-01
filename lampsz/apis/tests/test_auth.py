@@ -5,7 +5,7 @@ from rest_framework.utils import json
 
 from lampsz.apis.models import Company, User
 from lampsz.apis.utils import UserType
-from lampsz.apis.views.auth import bad_credentials
+from lampsz.apis.views.auth import CSRF_HEADER, bad_credentials, logout_success
 
 
 class TestLogin(APITestCase):
@@ -135,7 +135,7 @@ class TestRegister(APITestCase):
         self.assertEqual(Company.objects.count(), 1)
 
 
-class TestGetSession(APITestCase):
+class TestAuthMisc(APITestCase):
     def setUp(self) -> None:
         self.company_user = User.objects.create_user(
             username="company",
@@ -155,7 +155,8 @@ class TestGetSession(APITestCase):
 
     def test_get_session_after_login(self) -> None:
         """
-        Ensures get session succeeds with proper data when user is logged in.
+        Ensures get session succeeds and returns proper data when a user is
+        logged in.
         """
         self.client.login(username=self.company_user.username, password="correct")
 
@@ -165,3 +166,33 @@ class TestGetSession(APITestCase):
         response_data = json.loads(response.content)
         self.assertEqual(response_data.get("userType"), 0)
         self.assertEqual(response_data.get("username"), "company")
+
+    def test_logout_view(self) -> None:
+        """
+        Ensures logout succeeds after user login and correctly erases all the
+        data in session.
+        """
+        self.client.login(username=self.company_user.username, password="correct")
+
+        url = reverse("logout")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse("userType" in self.client.session)
+
+    def test_get_csrf_view(self) -> None:
+        url = reverse("csrf")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(CSRF_HEADER in response.headers)
+
+    def test_get_messages_view_after_logout(self) -> None:
+        self.client.login(username=self.company_user.username, password="correct")
+        self.client.get(reverse("logout"))
+
+        url = reverse("messages")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = json.loads(response.content)["messages"]
+        self.assertEqual(len(response_data), 1)
+        self.assertEqual(response_data[0]["message"], logout_success)
+        self.assertEqual(response_data[0]["level"], "success")

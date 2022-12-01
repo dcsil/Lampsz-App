@@ -1,5 +1,6 @@
 import { AuthCallback, AuthResponse, ErrorData, RegisterValidation, SetState, UserType } from '../utils/types'
 import axios, { AxiosError, AxiosResponse } from 'axios'
+import { AlertColor } from '@mui/material/Alert'
 
 // Constants
 const confirmPassFails = 'Password don\'t match'
@@ -119,4 +120,24 @@ export const logoutAction = (setCsrf: SetState<string>, callback: VoidFunction):
       callback()
     })
     .catch(error => console.log(error))
+}
+
+/**
+ *
+ * @param setMessage
+ * @param setLevel
+ * @param setOpen
+ */
+export const getMessages = (setMessage: SetState<string>, setLevel: SetState<AlertColor>, setOpen: SetState<boolean>): void => {
+  axios
+    .get('/api/messages/')
+    .then((response: AxiosResponse) => {
+      const messages = response.data.messages
+      if (messages.length !== 0) {
+        setMessage(messages[0].message)
+        setLevel(messages[0].level)
+        setOpen(true)
+      }
+    })
+    .catch((error: AxiosResponse) => console.log(error))
 }
