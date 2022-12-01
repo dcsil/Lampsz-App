@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { createBrowserRouter, Navigate, RouterProvider, useLocation } from 'react-router-dom'
 import Home from './Home'
 import Marketplace from './Marketplace'
-import {Profile} from './Profile'
+import Profile from './Profile'
 import MarketingTaskDetail from './MarketingTaskDetail'
 import MyApplications from './MyApplications'
 import MyMarketingTasks from './MyMarketingTasks'
@@ -57,7 +57,7 @@ const router = createBrowserRouter([
     )
   },
   {
-    path: '/marketplace/:taskId',
+    path: '/task/:taskId',
     element: (
       <RequireAuth>
         <MarketingTaskDetail/>
@@ -66,14 +66,6 @@ const router = createBrowserRouter([
   },
   {
     path: '/profile/:userId',
-    element:(
-      <RequireAuth>
-        <Profile/>
-      </RequireAuth>
-    )
-  },
-  {
-    path: '/profile',
     element: (
       <RequireAuth>
         <Profile/>
