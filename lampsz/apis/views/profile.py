@@ -1,4 +1,7 @@
-from django.http import JsonResponse
+import uuid
+
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import redirect
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.parsers import JSONParser
@@ -116,3 +119,11 @@ def create_marketing_task(request):
         serializer.save()
         return JsonResponse(serializer.data, status=201)
     return JsonResponse(serializer.errors, status=400)
+
+
+@api_view(["POST"])
+def upload_image(request):
+    cover = request.data["cover"]
+    title = request.data["title"]
+    models.ImageClass.objects.create(title=title, cover=cover)
+    return HttpResponse({"message": "successful"}, status=200)
