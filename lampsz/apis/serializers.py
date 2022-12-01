@@ -20,7 +20,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 class InfluencerSerializer(serializers.ModelSerializer):
     user = UserSerializer(required=True)
-    location = LocationSerializer(required=True)
 
     class Meta:
         model = Influencer
@@ -43,17 +42,11 @@ class InfluencerSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user_data = validated_data.pop("user")
         user = User.objects.create(**user_data)
-        location_data = validated_data.pop("location")
-        location = Location.objects.get_or_create(location=location_data["location"])
-        influencer = Influencer.objects.create(
-            user=user, location=location, **validated_data
-        )
+        influencer = Influencer.objects.create(user=user, **validated_data)
         return influencer
 
     def update(self, instance, validated_data):
-        location_data = validated_data.pop("location")
-        location = Location.objects.get_or_create(location=location_data["location"])
-        instance.location = location[0]
+        instance.location = validated_data.pop("location")
         instance.description = validated_data.pop("description")
         instance.age = validated_data.pop("age")
         instance.subscribers = validated_data.pop("subscribers")
@@ -88,44 +81,31 @@ class PublicInfluencerSerializer(serializers.ModelSerializer):
         ]
 
 
-class PublicCompanySerializer(serializers.ModelSerializer):
-    user = PublicUserSerializer(required=True)
+class CompanySerializer(serializers.ModelSerializer):
+    user = UserSerializer(required=True)
 
     class Meta:
         model = Company
-        depth = 2
         fields = [
             "id",
             "user",
             "location",
             "categories",
             "description",
+            "industry",
             "shortBio",
             "industry",
         ]
-
-
-class CompanySerializer(serializers.ModelSerializer):
-    user = UserSerializer(required=True)
-    location = LocationSerializer(required=False)
-
-    class Meta:
-        model = Company
-        fields = ["id", "user", "location", "categories", "description", "industry"]
         depth = 2
 
     def create(self, validated_data):
         user_data = validated_data.pop("user")
         user = User.objects.create(**user_data)
-        location_data = validated_data.pop("location")
-        location = Location.objects.get_or_create(location=location_data["location"])
-        company = Company.objects.create(user=user, location=location, **validated_data)
+        company = Company.objects.create(user=user, **validated_data)
         return company
 
     def update(self, instance, validated_data):
-        location_data = validated_data.pop("location")
-        location = Location.objects.get_or_create(location=location_data["location"])
-        instance.location = location[0]
+        instance.location = validated_data.get("location")
         instance.description = validated_data.pop("description")
         instance.shortBio = validated_data.pop("shortBio")
         instance.industry = validated_data.pop("industry")

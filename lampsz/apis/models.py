@@ -50,9 +50,7 @@ class Influencer(models.Model):
 
 class Company(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
-    location = models.ForeignKey(
-        Location, on_delete=models.CASCADE, null=True, blank=True
-    )
+    location = models.CharField(max_length=100)
     categories = models.ManyToManyField(Category, blank=True)
     description = models.TextField(null=True, blank=True)
     shortBio = models.TextField(default="")

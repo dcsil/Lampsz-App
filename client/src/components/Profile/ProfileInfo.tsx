@@ -54,7 +54,7 @@ export default function ProfileInfo ({user, editMode}: any): JSX.Element {
       {
         icon: <LocationOnIcon/>,
         label: 'Location',
-        value: user.location? user.location.location: "No Location"
+        value: user.location? user.location: "No Location"
       },
       {
         icon: <BoyIcon/>,
@@ -77,7 +77,7 @@ export default function ProfileInfo ({user, editMode}: any): JSX.Element {
       {
         icon: <LocationOnIcon/>,
         label: 'Location',
-        value: user.location? user.location.location: "No Location"
+        value: user.location? user.location: "No Location"
       },
       {
         icon: <FactoryIcon/>,
@@ -86,6 +86,7 @@ export default function ProfileInfo ({user, editMode}: any): JSX.Element {
       }
     ]
   }
+  console.log(user.location)
   return (
     <Card sx={styles.card}>
       <CardContent>
