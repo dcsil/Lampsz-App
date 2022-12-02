@@ -74,28 +74,6 @@ export default function MyMarketingTasks (): JSX.Element {
 
           </Grid>
       </Box>
-      <Box sx={{ display: 'flex' }}>
-        <img src='/media/images/best-berry-smoothie-recipe-06.jpg'/>
-        <div>
-          <label>
-            Title
-            <input type="text" value={title} onChange={(evt) => setTitle(evt.target.value)}/>
-          </label>
-          <label>
-            Description
-            <input type="text" value={description} onChange={(evt) => setDescription(evt.target.value)}/>
-          </label>
-          <label>
-            Image
-            <input type="file" onChange={(evt) => setImage(evt.target!.files![0])}/>
-          </label>
-          <label>
-            Price
-            <input type="text" value={price} onChange={(evt) => setPrice(evt.target.value)}/>
-          </label>
-          <button onClick={() => newTask()}>New Task</button>
-      </div>
-      </Box>
     </Container>
   )
 }
