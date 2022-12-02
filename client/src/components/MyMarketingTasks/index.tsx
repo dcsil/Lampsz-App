@@ -21,27 +21,6 @@ export default function MyMarketingTasks (): JSX.Element {
     getTasks();
   }, [])
 
-  const newTask = () => {
-    const uploadData = new FormData();
-    uploadData.append("userId", auth.userId);
-    uploadData.append("price", "12")
-    uploadData.append("postedDate", "2022-11-30")
-    uploadData.append("description", "this is a marketing task")
-    uploadData.append('title', title);
-    uploadData.append('image', image);
-
-    axios.post('http://127.0.0.1:8000/api/create_task/', uploadData, {
-      headers: {
-        'X-CSRFTOKEN': getCookie('csrftoken')
-      }
-    })
-    .then((response) => {
-      console.log(response);
-      getTasks();
-    })
-    .catch(error => console.log(error))
-  }
-
   const fetchData = new FormData();
   fetchData.append("userId", auth.userId)
   const getTasks = () => {
