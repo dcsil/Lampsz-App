@@ -12,7 +12,7 @@ interface MarketingTaskCardProp {
   height: string
 }
 
-export default function MarketingTaskCard ({ title, description, height}: MarketingTaskCardProp): JSX.Element {
+export default function MarketingTaskCard ({ title, description, height }: MarketingTaskCardProp): JSX.Element {
   return (
     <Card sx={{ width: '100%' }}>
       <CardMedia
@@ -30,7 +30,7 @@ export default function MarketingTaskCard ({ title, description, height}: Market
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" href="/task/1">View Details</Button>
+        <Button size="small" href="/tasks/1">View Details</Button>
       </CardActions>
     </Card>
   )

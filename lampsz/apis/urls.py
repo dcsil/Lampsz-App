@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.urls import path
 
-from lampsz.apis.views import auth, oauth, profile
+from lampsz.apis.views import auth, marketing_task, oauth, profile
 
 urlpatterns = [
     path("register/", auth.register_view, name="register"),
@@ -36,4 +36,15 @@ urlpatterns += [
     path("influencer/<int:user_id>", profile.influencer_detail_view),
     path("company/<int:user_id>", profile.company_detail_view),
     path("create_task/", profile.create_marketing_task),
+]
+
+urlpatterns += [
+    path(
+        "tasks/", marketing_task.MarketingTaskList.as_view(), name="marketing_task_list"
+    ),
+    path(
+        "tasks/<int:pk>",
+        marketing_task.MarketingTaskDetail.as_view(),
+        name="marketing_task_detail",
+    ),
 ]

@@ -57,7 +57,7 @@ const router = createBrowserRouter([
     )
   },
   {
-    path: '/task/:taskId',
+    path: '/tasks/:taskId',
     element: (
       <RequireAuth>
         <MarketingTaskDetail/>
