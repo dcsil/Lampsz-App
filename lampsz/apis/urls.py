@@ -37,7 +37,6 @@ urlpatterns += [
     path("company/<int:user_id>", profile.company_detail_view),
     path("create_task/", profile.create_marketing_task),
     path("get_company_tasks/", profile.get_company_tasks),
-    path("upload_image/", profile.upload_image),
 ]
 
 urlpatterns += [

@@ -115,16 +115,22 @@ def create_marketing_task(request):
     company = models.Company.objects.filter(user_id=userId)[0]
     title = request.data["title"]
     description = request.data["description"]
-    price = request.data["price"]
-    postedDate = request.data["postedDate"]
+    deliverables = request.data["deliverables"]
+    compensation = float(request.data["compensation"])
+    posted_date = request.data["postedDate"]
+    end_date = request.data["endDate"]
+    location = request.data["location"]
     image = request.data["image"]
 
     models.MarketingTask.objects.create(
         company=company,
         title=title,
         description=description,
-        price=price,
-        postedDate=postedDate,
+        deliverables=deliverables,
+        compensation=compensation,
+        posted_date=posted_date,
+        end_date=end_date,
+        location=location,
         image=image,
     )
     return HttpResponse({"message": "successful"}, status=200)
@@ -138,18 +144,20 @@ def get_company_tasks(request):
     data = serialize(
         "json",
         tasks,
-        fields=("company", "title", "description", "price", "postedDate", "image"),
+        fields=(
+            "company",
+            "title",
+            "description",
+            "deliverables",
+            "compensation",
+            "posted_date",
+            "end_date",
+            "location",
+            "image",
+        ),
     )
     y = json.loads(data)
     fields_data = []
     for item in y:
         fields_data.append(item["fields"])
     return JsonResponse({"yo": fields_data}, status=200)
-
-
-@api_view(["POST"])
-def upload_image(request):
-    cover = request.data["cover"]
-    title = request.data["title"]
-    models.ImageClass.objects.create(title=title, cover=cover)
-    return HttpResponse({"message": "successful"}, status=200)
