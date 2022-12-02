@@ -15,7 +15,10 @@ export default function FormDialog({refreshFunc} : {refreshFunc:Function}) {
   const [open, setOpen] = useState(false);
   const [ title, setTitle] = useState("");
   const [ description, setDescription ] = useState("");
-  const [ price, setPrice ] = useState("");
+  const [ deliverables, setDeliverables] = useState("");
+  const [ compensation, setCompensation ] = useState("");
+  const [ endDate, setEndDate] = useState("");
+  const [ location, setLocation ] = useState("");
   const [ image, setImage ] = useState<any|null>(null);
 
   const handleClickOpen = () => {
@@ -29,10 +32,13 @@ export default function FormDialog({refreshFunc} : {refreshFunc:Function}) {
   const create = () => {
     const uploadData = new FormData();
     uploadData.append("userId", auth.userId);
-    uploadData.append("price", "12")
-    uploadData.append("postedDate", "2022-11-30")
-    uploadData.append("description", "this is a marketing task")
     uploadData.append('title', title);
+    uploadData.append("description", description)
+    uploadData.append("deliverables", deliverables)
+    uploadData.append("compensation", compensation)
+    uploadData.append("postedDate", "2022-11-30")
+    uploadData.append("endDate", "2022-11-30")
+    uploadData.append("location", location)
     uploadData.append('image', image);
 
     axios.post('http://127.0.0.1:8000/api/create_task/', uploadData, {
@@ -41,10 +47,10 @@ export default function FormDialog({refreshFunc} : {refreshFunc:Function}) {
     }
     })
     .then((response) => {
-    console.log(response);
+        console.log(response);
+        refreshFunc();
     })
     .catch(error => console.log(error))
-    refreshFunc();
     handleClose();
   }
 
@@ -79,7 +85,7 @@ export default function FormDialog({refreshFunc} : {refreshFunc:Function}) {
             onChange={(evt) => setDescription(evt.target.value)}
           />
          <DialogContentText>
-            Payout for your Marketing Task
+            Deliverables for Your Marketing Task
           </DialogContentText>
           <TextField
             autoFocus
@@ -87,7 +93,40 @@ export default function FormDialog({refreshFunc} : {refreshFunc:Function}) {
             id="name"
             fullWidth
             variant="standard"
-            onChange={(evt) => setPrice(evt.target.value)}
+            onChange={(evt) => setDeliverables(evt.target.value)}
+          />
+         <DialogContentText>
+            Compensation for your Marketing Task
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            fullWidth
+            variant="standard"
+            onChange={(evt) => setCompensation(evt.target.value)}
+          />
+         <DialogContentText>
+            End date
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            fullWidth
+            variant="standard"
+            onChange={(evt) => setEndDate(evt.target.value)}
+          />
+         <DialogContentText>
+            Location
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            fullWidth
+            variant="standard"
+            onChange={(evt) => setLocation(evt.target.value)}
           />
          <DialogContentText>
             Upload an Image for Your Marketing Task
