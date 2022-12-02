@@ -6,6 +6,7 @@ import Button from '@mui/material/Button'
 import { Stack } from '@mui/material'
 import useAuth from '../../hooks/AuthHook'
 import { UserType } from '../../utils/types'
+import { Link } from 'react-router-dom'
 
 interface TaskHeaderProps {
   title: string
@@ -20,7 +21,7 @@ export default function TaskHeader ({ title, companyName }: TaskHeaderProps): JS
       <Box display="flex" justifyContent="space-between">
         <Box>
           <Typography variant="h4" gutterBottom>{title}</Typography>
-          <Box display="flex" alignItems="center">
+          <Box display="flex" alignItems="center" component={Link} to={'/profile/1'}>
             <Box sx={{ m: 1 }}>
               <Avatar alt="company-logo"/>
             </Box>

@@ -54,6 +54,9 @@ export default function MarketingTaskDetail (): JSX.Element {
         <TaskAboutCompany
           companyName={companyName}
           shortBio="This company is a test company."
+          companyLocation=''
+          industry=''
+          companyDescription={description}
         />
       </TabPanel>
       <TabPanel value={tabValue} index={2}>
