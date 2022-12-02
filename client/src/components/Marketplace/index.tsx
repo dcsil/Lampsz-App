@@ -61,7 +61,7 @@ export default function Marketplace (): JSX.Element {
 
   return (
 
-    <Container component="main" maxWidth="lg">
+    <Container component="main" maxWidth="lg" >
       <Box sx={{ display: 'flex' }}>
           <Grid container spacing={5}>
               {data.map((item, index) =>

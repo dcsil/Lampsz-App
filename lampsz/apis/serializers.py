@@ -116,16 +116,25 @@ class CompanySerializer(serializers.ModelSerializer):
 class MarketingTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = MarketingTask
-        fields = ["id", "company", "title", "description", "price", "postedDate"]
+        fields = [
+            "id",
+            "company",
+            "title",
+            "description",
+            "price",
+            "postedDate",
+            "image",
+        ]
 
     def create(self, validated_data):
         return MarketingTask.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
-        instance.company = validated_data.get("company", instance.title)
-        instance.title = validated_data.get("title", instance.code)
-        instance.description = validated_data.get("description", instance.linenos)
-        instance.price = validated_data.get("price", instance.language)
-        instance.postedDate = validated_data.get("postedDate", instance.style)
+        instance.company = validated_data.get("company")
+        instance.title = validated_data.get("title")
+        instance.description = validated_data.get("description")
+        instance.price = validated_data.get("price")
+        instance.postedDate = validated_data.get("postedDate")
+        instance.image = validated_data.get("image")
         instance.save()
         return instance
