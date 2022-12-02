@@ -29,12 +29,19 @@ export default function MyMarketingTasks (): JSX.Element {
     uploadData.append('title', title);
     uploadData.append('image', image);
 
-    fetch('http://127.0.0.1:8000/api/create_task/', {
-      credentials: 'include',
-      method: 'POST',
-      body: uploadData
+    axios.post('http://127.0.0.1:8000/api/create_task/', FormData)
+    .then(response => {
+      console.log(response)
     })
-    .then( res => console.log(res))
+    .catch(error => console.log(error))
+
+
+    // fetch('http://127.0.0.1:8000/api/create_task/', {
+    //   credentials: 'include',
+    //   method: 'POST',
+    //   body: uploadData
+    // })
+    // .then( res => console.log(res))
   }
 
   const fetchData = new FormData();
