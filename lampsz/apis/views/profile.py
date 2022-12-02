@@ -133,7 +133,7 @@ def create_marketing_task(request):
 @api_view(["POST"])
 def get_company_tasks(request):
     userId = request.data["userId"]
-    company = models.Company.objects.filter(user_id=userId)[0]
+    company = models.Company.objects.filter(user=userId)[0]
     tasks = models.MarketingTask.objects.filter(company=company)
     data = serialize(
         "json",
