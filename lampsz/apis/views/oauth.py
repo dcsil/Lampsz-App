@@ -17,7 +17,7 @@ from lampsz.apis.utils import ensure_https_url
 from lampsz.apis.views.auth import failed_consent, login_success
 
 
-def authorize(request):
+def authorize(request):  # pragma: no cover
     """
     View that obtains authorization URL and redirects user to Google OAuth page.
     """
@@ -27,7 +27,7 @@ def authorize(request):
     return redirect(authorization_url)
 
 
-def oauth2callback(request):
+def oauth2callback(request):  # pragma: no cover
     """
     View that handles Google OAuth callback by performing several tasks:
       1. If user with given Google ID already exists, then simply login the user

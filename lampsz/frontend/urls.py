@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.urls import path
 from django.views.generic import TemplateView
 
@@ -8,18 +7,15 @@ urls = [
     "signup",
     "profile/<int:userId>",
     "marketplace",
-    "task/<int:taskId>",
+    "tasks/<int:taskId>",
     "applications",
     "tasks",
 ]
 
-
-# @ensure_csrf_cookie
-def index(request, **kwargs):
-    return render(request, template_name="frontend/index.html")
-
-
-urlpatterns = [path(pattern, index) for pattern in urls]
+urlpatterns = [
+    path(pattern, TemplateView.as_view(template_name="frontend/index.html"))
+    for pattern in urls
+]
 
 urlpatterns += [
     path(

@@ -1,22 +1,16 @@
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-from rest_framework.utils import json
 
 from lampsz.apis.models import Company, User
+from lampsz.apis.tests.utils import create_test_company_user
 from lampsz.apis.utils import UserType
 from lampsz.apis.views.auth import CSRF_HEADER, bad_credentials, logout_success
 
 
 class TestLogin(APITestCase):
     def setUp(self) -> None:
-        self.company_user = User.objects.create_user(
-            username="test_c",
-            email="test_c@email.com",
-            password="correct",
-            is_influencer=False,
-        )
-        Company.objects.create(user=self.company_user)
+        self.company_user, _ = create_test_company_user()
 
     def tearDown(self) -> None:
         self.client.logout()
@@ -29,9 +23,8 @@ class TestLogin(APITestCase):
         data = {"username": "test_c", "password": "correct"}
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        response_data = json.loads(response.content)
-        self.assertEqual(response_data.get("userId"), self.company_user.id)
-        self.assertEqual(response_data.get("username"), self.company_user.username)
+        self.assertEqual(response.data["userId"], self.company_user.id)
+        self.assertEqual(response.data["username"], self.company_user.username)
         self.assertEqual(self.client.session["user_type"], UserType.BUSINESS)
 
     def test_company_login_incorrect_credentials(self) -> None:
@@ -42,7 +35,7 @@ class TestLogin(APITestCase):
         data = {"username": "test", "password": "test"}
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-        self.assertEqual(json.loads(response.content).get("message"), bad_credentials)
+        self.assertEqual(response.data["message"], bad_credentials)
 
     def test_company_login_incorrect_username(self) -> None:
         """
@@ -52,18 +45,12 @@ class TestLogin(APITestCase):
         data = {"username": "non-existent", "password": "correct"}
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-        self.assertEqual(json.loads(response.content).get("message"), bad_credentials)
+        self.assertEqual(response.data["message"], bad_credentials)
 
 
 class TestRegister(APITestCase):
     def setUp(self) -> None:
-        self.company_user = User.objects.create_user(
-            username="company",
-            email="test@email.com",
-            password="correct",
-            is_influencer=False,
-        )
-        Company.objects.create(user=self.company_user)
+        self.company_user, _ = create_test_company_user()
 
     def tearDown(self) -> None:
         self.client.logout()
@@ -74,8 +61,8 @@ class TestRegister(APITestCase):
         """
         url = reverse("register")
         data = {
-            "username": "test_c",
-            "email": "test_c@email.com",
+            "username": "test",
+            "email": "test@email.com",
             "password": "correct",
             "is_influencer": False,
         }
@@ -84,7 +71,7 @@ class TestRegister(APITestCase):
         self.assertEqual(Company.objects.count(), 2)
         self.assertEqual(User.objects.count(), 2)
         try:
-            User.objects.get(username="test_c")
+            User.objects.get(username="test")
         except User.DoesNotExist:
             self.fail("User with username 'test' should be in queryset.")
         self.assertEqual(self.client.session["user_type"], UserType.BUSINESS)
@@ -95,18 +82,17 @@ class TestRegister(APITestCase):
         """
         url = reverse("register")
         data = {
-            "username": "company",
+            "username": "test_c",
             "email": "test2@email.com",
             "password": "correct",
             "is_influencer": False,
         }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
-        validation_error = json.loads(response.content)
-        self.assertIn("username", validation_error)
-        self.assertEqual(len(validation_error.get("username")), 1)
+        self.assertIn("username", response.data)
+        self.assertEqual(len(response.data["username"]), 1)
         self.assertEqual(
-            validation_error.get("username")[0],
+            response.data["username"][0],
             "A user with that username already exists.",
         )
         self.assertEqual(User.objects.count(), 1)
@@ -118,18 +104,17 @@ class TestRegister(APITestCase):
         """
         url = reverse("register")
         data = {
-            "username": "test",
-            "email": "test@email.com",
+            "username": "test_c",
+            "email": "test_c@email.com",
             "password": "correct",
             "is_influencer": False,
         }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
-        validation_error = json.loads(response.content)
-        self.assertIn("email", validation_error)
-        self.assertEqual(len(validation_error.get("email")), 1)
+        self.assertIn("email", response.data)
+        self.assertEqual(len(response.data["email"]), 1)
         self.assertEqual(
-            validation_error.get("email")[0], "user with this email already exists."
+            response.data["email"][0], "user with this email already exists."
         )
         self.assertEqual(User.objects.count(), 1)
         self.assertEqual(Company.objects.count(), 1)
@@ -137,13 +122,7 @@ class TestRegister(APITestCase):
 
 class TestAuthMisc(APITestCase):
     def setUp(self) -> None:
-        self.company_user = User.objects.create_user(
-            username="company",
-            email="test@email.com",
-            password="correct",
-            is_influencer=False,
-        )
-        Company.objects.create(user=self.company_user)
+        self.company_user, _ = create_test_company_user()
 
     def test_get_session_when_unauthenticated(self) -> None:
         """
@@ -163,9 +142,8 @@ class TestAuthMisc(APITestCase):
         url = reverse("session")
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        response_data = json.loads(response.content)
-        self.assertEqual(response_data.get("userType"), 0)
-        self.assertEqual(response_data.get("username"), "company")
+        self.assertEqual(response.data["userType"], 0)
+        self.assertEqual(response.data["username"], self.company_user.username)
 
     def test_logout_view(self) -> None:
         """
@@ -192,7 +170,6 @@ class TestAuthMisc(APITestCase):
         url = reverse("messages")
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        response_data = json.loads(response.content)["messages"]
-        self.assertEqual(len(response_data), 1)
-        self.assertEqual(response_data[0]["message"], logout_success)
-        self.assertEqual(response_data[0]["level"], "success")
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data["messages"][0]["message"], logout_success)
+        self.assertEqual(response.data["messages"][0]["level"], "success")

@@ -32,7 +32,7 @@ def login_user(request: WSGIRequest, user: User) -> None:
     request.session["user_type"] = user.get_user_type()
 
 
-def credentials_to_dict(credentials: Credentials) -> dict[str, str]:
+def credentials_to_dict(credentials: Credentials) -> dict[str, str]:  # pragma: no cover
     """Converts Google authentication credential object into dictionary.
 
     :param credentials: Google authentication credential object.
@@ -48,7 +48,7 @@ def credentials_to_dict(credentials: Credentials) -> dict[str, str]:
     }
 
 
-def get_oauth_flow(redirect_uri: str, state: str = None) -> Flow:
+def get_oauth_flow(redirect_uri: str, state: str = None) -> Flow:  # pragma: no cover
     """Create new Google OAuth Flow object.
 
     :param redirect_uri: the redirect uri for Google OAuth flow.
@@ -63,7 +63,7 @@ def get_oauth_flow(redirect_uri: str, state: str = None) -> Flow:
     )
 
 
-def get_authorization_url(redirect_uri: str) -> tuple[str, str]:
+def get_authorization_url(redirect_uri: str) -> tuple[str, str]:  # pragma: no cover
     """Get Google authorization URL and state.
 
     :param redirect_uri: the redirect uri for Google OAuth flow.
@@ -82,7 +82,9 @@ def get_authorization_url(redirect_uri: str) -> tuple[str, str]:
     )
 
 
-def get_access_token(redirect_uri: str, response_url: str, state: str) -> Credentials:
+def get_access_token(
+    redirect_uri: str, response_url: str, state: str
+) -> Credentials:  # pragma: no cover
     """Get Google API access token.
 
     :param redirect_uri: the redirect uri for Google OAuth flow.
@@ -97,7 +99,9 @@ def get_access_token(redirect_uri: str, response_url: str, state: str) -> Creden
     return flow.credentials
 
 
-def get_google_user_info(credentials: Credentials) -> dict[str, Any]:
+def get_google_user_info(
+    credentials: Credentials,
+) -> dict[str, Any]:  # pragma: no cover
     """Get Google user info associated with the given OAuth credential.
 
     :param credentials: the Google OAuth Credential object.
@@ -107,7 +111,9 @@ def get_google_user_info(credentials: Credentials) -> dict[str, Any]:
     return oauth2.userinfo().get().execute()
 
 
-def get_youtube_channel_details(credentials: Credentials) -> dict[str, Any]:
+def get_youtube_channel_details(
+    credentials: Credentials,
+) -> dict[str, Any]:  # pragma: no cover
     """Get YouTube channel info associated with the given OAuth credential.
 
     :param credentials: the Google OAuth Credential object.
