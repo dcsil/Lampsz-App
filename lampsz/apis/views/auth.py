@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, logout
 from django.contrib.messages import get_messages
-from django.http import JsonResponse
 from django.middleware.csrf import get_token
 from rest_framework import status
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
@@ -54,9 +53,7 @@ def login_view(request):
     password = request.data.get("password")
     user = authenticate(request, username=username, password=password)
     if user is None:
-        return JsonResponse(
-            {"message": bad_credentials}, status=status.HTTP_404_NOT_FOUND
-        )
+        return Response({"message": bad_credentials}, status=status.HTTP_404_NOT_FOUND)
 
     login_user(request, user)
     messages.success(request, login_success)
