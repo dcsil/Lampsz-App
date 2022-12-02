@@ -30,7 +30,7 @@ export default function MarketingTaskCard ({ title, description, height}: Market
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">View Details</Button>
+        <Button size="small" href="/task/1">View Details</Button>
       </CardActions>
     </Card>
   )

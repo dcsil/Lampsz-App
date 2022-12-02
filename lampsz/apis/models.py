@@ -64,7 +64,10 @@ class MarketingTask(models.Model):
     company = models.ForeignKey(
         Company, on_delete=models.CASCADE, null=False, blank=False
     )
-    title = models.TextField(null=False, blank=False)
-    description = models.TextField(null=False, blank=False)
-    price = models.FloatField(null=False, blank=False)
-    postedDate = models.DateField(null=False, blank=False)
+    title = models.TextField(blank=False)
+    description = models.TextField(blank=True)
+    deliverables = models.TextField(blank=True)
+    compensation = models.FloatField(null=False, blank=False)
+    posted_date = models.DateField(null=False, blank=False)
+    end_date = models.DateField(null=True, blank=True)
+    location = models.CharField(max_length=100, blank=True)
