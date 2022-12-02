@@ -28,7 +28,9 @@ def has_unique_error(field: str, errors: ValidationErrors) -> bool:
 
 
 def ensure_https_url(url: str) -> str:
-    """Returns the url if it already uses HTTPS, otherwise add HTTPS."""
+    """
+    Returns the url if it already uses HTTPS, otherwise add HTTPS.
+    """
     if url.startswith("https://"):
         return url
 

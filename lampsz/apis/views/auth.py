@@ -1,6 +1,9 @@
+from typing import Any
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, logout
 from django.contrib.messages import get_messages
+from django.core.handlers.wsgi import WSGIRequest
 from django.middleware.csrf import get_token
 from rest_framework import status
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
@@ -57,13 +60,7 @@ def login_view(request):
 
     login_user(request, user)
     messages.success(request, login_success)
-    return Response(
-        {
-            "userId": request.user.id,
-            "username": request.user.username,
-            "userType": request.session.get("user_type", UserType.NONE),
-        }
-    )
+    return Response(get_auth_success_data(request))
 
 
 @api_view(["GET"])
@@ -88,14 +85,7 @@ def register_view(request):
         models.Company.objects.create(user=user)
         login_user(request, user)
         messages.success(request, register_success)
-        return Response(
-            {
-                "userId": request.user.id,
-                "username": request.user.username,
-                "userType": request.session.get("user_type", UserType.NONE),
-            },
-            status=status.HTTP_201_CREATED,
-        )
+        return Response(get_auth_success_data(request), status=status.HTTP_201_CREATED)
 
     errors = user_serializer.errors
     if has_unique_error("username", errors) or has_unique_error("email", errors):
@@ -111,13 +101,7 @@ def get_session_view(request):
     """
     Returns user ID, username, and user type of the user that is logged in.
     """
-    return Response(
-        {
-            "userId": request.user.id,
-            "username": request.user.username,
-            "userType": request.session.get("user_type", UserType.NONE),
-        }
-    )
+    return Response(get_auth_success_data(request))
 
 
 @api_view(["GET"])
@@ -140,3 +124,15 @@ def get_auth_messages_view(request):
         for message in get_messages(request)
     ]
     return Response({"messages": serialized})
+
+
+# Utility functions for auth.py
+def get_auth_success_data(request: WSGIRequest) -> dict[str, Any]:
+    """
+    Returns success response data for authentication APIs.
+    """
+    return {
+        "userId": request.user.id,
+        "username": request.user.username,
+        "userType": request.session.get("user_type", UserType.NONE),
+    }
