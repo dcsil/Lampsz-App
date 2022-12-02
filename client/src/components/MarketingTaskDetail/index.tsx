@@ -14,12 +14,12 @@ const description = 'Curabitur consectetur velit nibh, et mollis elit auctor in.
   'ullamcorper purus. Morbi eget lobortis ligula.'
 
 export default function MarketingTaskDetail (): JSX.Element {
-  const [value, setValue] = React.useState(0)
+  const [tabValue, setTabValue] = React.useState(0)
   const [title] = React.useState('Marketing Task Title')
   const [companyName] = React.useState('Company Name')
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number): void => {
-    setValue(newValue)
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number): void => {
+    setTabValue(newValue)
   }
 
   return (
@@ -28,8 +28,8 @@ export default function MarketingTaskDetail (): JSX.Element {
 
       <AppBar position="static" sx={{ mt: 2, borderRadius: 2 }}>
         <Tabs
-          value={value}
-          onChange={handleChange}
+          value={tabValue}
+          onChange={handleTabChange}
           indicatorColor="secondary"
           textColor="inherit"
           variant="fullWidth"
@@ -40,7 +40,7 @@ export default function MarketingTaskDetail (): JSX.Element {
           <Tab label="Applicants"/>
         </Tabs>
       </AppBar>
-      <TabPanel value={value} index={0}>
+      <TabPanel value={tabValue} index={0}>
         <TaskOverview
           description={description}
           deliverables={description}
@@ -50,13 +50,13 @@ export default function MarketingTaskDetail (): JSX.Element {
           endDate="2022-12-02"
         />
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel value={tabValue} index={1}>
         <TaskAboutCompany
           companyName={companyName}
           shortBio="This company is a test company."
         />
       </TabPanel>
-      <TabPanel value={value} index={2}>
+      <TabPanel value={tabValue} index={2}>
         Item Three
       </TabPanel>
     </Container>
