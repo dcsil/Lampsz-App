@@ -1,10 +1,9 @@
-import uuid
+import json
 
+from django.core.serializers import serialize
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import redirect
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.parsers import JSONParser
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
 from lampsz.apis import models, serializers, utils
@@ -112,13 +111,40 @@ def company_detail_view(request, user_id):
 
 @api_view(["POST"])
 def create_marketing_task(request):
-    data = JSONParser().parse(request)
+    userId = request.data["userId"]
+    company = models.Company.objects.filter(user_id=userId)[0]
+    title = request.data["title"]
+    description = request.data["description"]
+    price = request.data["price"]
+    postedDate = request.data["postedDate"]
+    image = request.data["image"]
 
-    serializer = serializers.MarketingTaskSerializer(data=data)
-    if serializer.is_valid():
-        serializer.save()
-        return JsonResponse(serializer.data, status=201)
-    return JsonResponse(serializer.errors, status=400)
+    models.MarketingTask.objects.create(
+        company=company,
+        title=title,
+        description=description,
+        price=price,
+        postedDate=postedDate,
+        image=image,
+    )
+    return HttpResponse({"message": "successful"}, status=200)
+
+
+@api_view(["POST"])
+def get_company_tasks(request):
+    userId = request.data["userId"]
+    company = models.Company.objects.filter(user_id=userId)[0]
+    tasks = models.MarketingTask.objects.filter(company=company)
+    data = serialize(
+        "json",
+        tasks,
+        fields=("company", "title", "description", "price", "postedDate", "image"),
+    )
+    y = json.loads(data)
+    fields_data = []
+    for item in y:
+        fields_data.append(item["fields"])
+    return JsonResponse({"yo": fields_data}, status=200)
 
 
 @api_view(["POST"])
