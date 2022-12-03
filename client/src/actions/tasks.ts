@@ -3,7 +3,7 @@ import { SetState } from '../utils/types'
 
 
 export const getTasks = (userId: string, csrf: string | null, setTasks:Function): void => {
-    axios.get(('/api/tasks?' + 'user_id=' + userId), {
+    axios.get((`/api/tasks?user_id=${userId}` ), {
         headers: {
         'X-CSRFTOKEN': csrf
         }
