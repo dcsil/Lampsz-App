@@ -12,7 +12,7 @@ import { MarketingTask } from '../../utils/types'
 
 export default function MarketingTaskDetail (): JSX.Element {
   const [tabValue, setTabValue] = React.useState(0)
-  const taskData = useLoaderData() as MarketingTask
+  const taskData = useLoaderData() as MarketingTas
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number): void => {
     setTabValue(newValue)
