@@ -1,8 +1,8 @@
 from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.parsers import JSONParser
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.response import Response
 
 from lampsz.apis import models, serializers, utils
 
@@ -109,10 +109,24 @@ def company_detail_view(request, user_id):
 
 @api_view(["POST"])
 def create_marketing_task(request):
-    data = JSONParser().parse(request)
+    userId = request.data["userId"]
+    data = {}
+    data["company"] = models.Company.objects.filter(user_id=userId)[0].id
+
+    data["title"] = request.data["title"]
+    data["description"] = request.data["description"]
+    data["deliverables"] = request.data["deliverables"]
+    data["compensation"] = float(request.data["compensation"])
+    data["posted_date"] = request.data["postedDate"]
+    data["end_date"] = request.data["endDate"]
+    data["location"] = request.data["location"]
+    data["image"] = request.data["image"]
 
     serializer = serializers.MarketingTaskSerializer(data=data)
+
     if serializer.is_valid():
         serializer.save()
-        return JsonResponse(serializer.data, status=201)
-    return JsonResponse(serializer.errors, status=400)
+    else:
+        print(serializer.errors)
+
+    return Response({"message": "successful"}, status=200)

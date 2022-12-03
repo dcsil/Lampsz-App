@@ -121,9 +121,10 @@ class MarketingTaskSerializer(serializers.ModelSerializer):
             "company",
             "title",
             "description",
+            "deliverables",
             "posted_date",
             "end_date",
-            "deliverables",
             "compensation",
             "location",
+            "image",
         ]

@@ -9,17 +9,20 @@ import Typography from '@mui/material/Typography'
 interface MarketingTaskCardProp {
   title: string
   description: string
-  height: string
+  compensation: string
+  postedDate: string
+  endDate: string
+  location: string
+  image: string
 }
 
-export default function MarketingTaskCard ({ title, description, height }: MarketingTaskCardProp): JSX.Element {
+export default function MarketingTaskCard ({ title, description, compensation, postedDate, endDate, location, image }: MarketingTaskCardProp): JSX.Element {
   return (
     <Card sx={{ width: '100%' }}>
       <CardMedia
         component="img"
-        height={height}
-        image="/static/images/cards/contemplative-reptile.jpg"
-        alt="green iguana"
+        height={400}
+        image={image}
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
@@ -27,6 +30,18 @@ export default function MarketingTaskCard ({ title, description, height }: Marke
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {description}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {location}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {compensation}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {postedDate}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {endDate}
         </Typography>
       </CardContent>
       <CardActions>
