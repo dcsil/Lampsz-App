@@ -1,16 +1,16 @@
-import axios, { AxiosError, AxiosResponse } from 'axios'
-import { SetState } from '../utils/types'
+import axios from 'axios'
 
 
-export const getTasks = (userId: string, csrf: string | null, setTasks:Function): void => {
-    axios.get((`/api/tasks?user_id=${userId}` ), {
-        headers: {
+export const getTasks = (userId: string, csrf: string | undefined, setTasks: Function): void => {
+  axios
+    .get((`/api/tasks?user_id=${userId}`), {
+      headers: {
         'X-CSRFTOKEN': csrf
-        }
+      }
     })
     .then(response => {
-    setTasks(response.data)
-    console.log(response.data)
+      setTasks(response.data)
+      console.log(response.data)
     })
     .catch(error => console.log(error))
 }
