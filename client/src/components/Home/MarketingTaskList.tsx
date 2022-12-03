@@ -8,13 +8,13 @@ import { containerStyle } from '../../utils/utils'
 
 const tasks = [
   {
-    title: 'T1',
-    description: 'asdfassdfasdf',
-    compensation: '1000',
-    postedDate: '2022-11-11',
-    endDate: '2022-11-13',
-    location: 'Toronto',
-    image: '\awd'
+    title: 'T2',
+    description: 'this is a desc',
+    compensation: '12932198327',
+    postedDate: '2000-11-11',
+    endDate: '3000-11-13',
+    location: 'Beijing',
+    image: '/nonesense'
 
   }
 ]

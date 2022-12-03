@@ -10,7 +10,13 @@ import axios from 'axios';
 import { getCookie } from '../../utils/utils'
 import useAuth from '../../hooks/AuthHook'
 
-export default function FormDialog({refreshFunc} : {refreshFunc:Function}) {
+interface CreateTaskFormProp {
+  refreshFunc: Function
+  userId: string
+  csrf: string | null
+  setTasks: Function
+}
+export default function FormDialog({refreshFunc, userId, csrf, setTasks} : CreateTaskFormProp ) {
   const auth = useAuth();
   const [open, setOpen] = useState(false);
   const [ title, setTitle] = useState("");
@@ -49,7 +55,7 @@ export default function FormDialog({refreshFunc} : {refreshFunc:Function}) {
     })
     .then((response) => {
         console.log(response);
-        refreshFunc();
+        refreshFunc(userId, csrf, setTasks);
     })
     .catch(error => console.log(error))
     handleClose();
