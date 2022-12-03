@@ -1,3 +1,5 @@
+from django.contrib import messages
+from django.http import Http404
 from rest_framework import generics
 
 from lampsz.apis.models import MarketingTask
@@ -32,3 +34,10 @@ class MarketingTaskDetail(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = MarketingTask.objects.all()
     serializer_class = MarketingTaskSerializer
+
+    def get_object(self):
+        try:
+            return super().get_object()
+        except Http404:
+            messages.error(self.request, "Trying to access non-existent marketing task")
+            raise Http404
