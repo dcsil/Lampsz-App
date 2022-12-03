@@ -2,12 +2,13 @@ import * as React from 'react'
 import Container from '@mui/material/Container'
 import ProfileInfo from './ProfileInfo'
 import ProfileDescription from './ProfileDescription'
-import { containerStyle, getCookie } from '../../utils/utils'
+import { containerStyle } from '../../utils/utils'
 import useAuth from '../../hooks/AuthHook'
 import { editBusinessProfile } from '../../actions/profile'
 import Button from '@mui/material/Button'
 import { Stack } from '@mui/material'
 import Grid from '@mui/material/Grid'
+import Cookies from 'js-cookie'
 
 export default function BusinessProfile ({ company, userId }: any): JSX.Element {
   const auth = useAuth()
@@ -22,7 +23,7 @@ export default function BusinessProfile ({ company, userId }: any): JSX.Element 
     items.forEach((item: string) => {
       company[item.toLowerCase()] = (document.getElementById(item)! as HTMLInputElement).value
     })
-    editBusinessProfile(auth.userId, getCookie('csrftoken'), company)
+    editBusinessProfile(auth.userId, Cookies.get('csrftoken'), company)
     flipEditMode()
   }
 

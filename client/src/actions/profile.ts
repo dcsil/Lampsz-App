@@ -10,7 +10,7 @@ export const getUserProfile = (userId: string, setInfluencer: SetState<{ usernam
     .catch((error: AxiosError) => console.log(error))
 }
 
-export const editBusinessProfile = (userId: string, csrf: string | null, body: any): void => {
+export const editBusinessProfile = (userId: string, csrf: string | undefined, body: any): void => {
   axios
     .put(`/api/company/${userId}`, body, {
       headers: {
@@ -23,7 +23,7 @@ export const editBusinessProfile = (userId: string, csrf: string | null, body: a
     .catch((error: AxiosError) => console.log(error))
 }
 
-export const editInfluencerProfile = (userId: string, csrf: string | null, body: any): void => {
+export const editInfluencerProfile = (userId: string, csrf: string | undefined, body: any): void => {
   axios
     .put(`/api/influencer/${userId}`, body, {
       headers: {

@@ -4,10 +4,11 @@ import Container from '@mui/material/Container'
 import ProfileInfo from './ProfileInfo'
 import useAuth from '../../hooks/AuthHook'
 import ProfileDescription from './ProfileDescription'
-import { containerStyle, getCookie } from '../../utils/utils'
+import { containerStyle } from '../../utils/utils'
 import { editInfluencerProfile } from '../../actions/profile'
 import { Stack } from '@mui/material'
 import Button from '@mui/material/Button'
+import Cookies from 'js-cookie'
 
 export default function InfluencerProfile ({ influencer, userId }: any): JSX.Element {
   const auth = useAuth()
@@ -22,7 +23,7 @@ export default function InfluencerProfile ({ influencer, userId }: any): JSX.Ele
     items.forEach((item: string) => {
       influencer[item.toLowerCase()] = (document.getElementById(item)! as HTMLInputElement).value
     })
-    editInfluencerProfile(auth.userId, getCookie('csrftoken'), influencer)
+    editInfluencerProfile(auth.userId, Cookies.get('csrftoken'), influencer)
     flipEditMode()
   }
 
