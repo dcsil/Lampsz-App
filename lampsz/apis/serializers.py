@@ -18,7 +18,6 @@ class InfluencerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Influencer
         fields = [
-            "id",
             "user",
             "location",
             "categories",
@@ -63,7 +62,6 @@ class PublicInfluencerSerializer(serializers.ModelSerializer):
         model = Influencer
         depth = 2
         fields = [
-            "id",
             "user",
             "location",
             "categories",
@@ -81,7 +79,6 @@ class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
         fields = [
-            "id",
             "user",
             "location",
             "categories",

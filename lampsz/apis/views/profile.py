@@ -109,16 +109,15 @@ def company_detail_view(request, user_id):
 
 @api_view(["POST"])
 def create_marketing_task(request):
-    userId = request.data["userId"]
     data = {}
-    data["company"] = models.Company.objects.filter(user_id=userId)[0].id
+    data["company_id"] = request.data["user_id"]
 
     data["title"] = request.data["title"]
     data["description"] = request.data["description"]
     data["deliverables"] = request.data["deliverables"]
     data["compensation"] = float(request.data["compensation"])
-    data["posted_date"] = request.data["postedDate"]
-    data["end_date"] = request.data["endDate"]
+    data["posted_date"] = request.data["posted_date"]
+    data["end_date"] = request.data["end_date"]
     data["location"] = request.data["location"]
     data["image"] = request.data["image"]
 
