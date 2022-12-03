@@ -1,6 +1,6 @@
 import { Box, Container } from '@mui/material'
 import Grid from '@mui/material/Grid'
-import MarketingTaskCard from '../Shared/MarketingTaskCard'
+import TasksBox from '../Shared/TasksBox'
 import React, { useState, useEffect }  from 'react'
 import { upload } from '@testing-library/user-event/dist/upload';
 import axios from 'axios';
@@ -15,7 +15,7 @@ export default function MyMarketingTasks (): JSX.Element {
   const [ description, setDescription ] = useState("");
   const [ price, setPrice ] = useState("");
   const [ image, setImage ] = useState<any|null>(null);
-  const [ tasks, setTasks ] = useState<{company: string, title: string, description: string, price: string, postedDate: string, image: string}[]>([]);
+  const [ tasks, setTasks ] = useState<{company: string, title: string, description: string, deliverables: string, compensation: string, postedDate: string, endDate: string, location: string, image: string}[]>([]);
 
   useEffect(() => {
     getTasks();
@@ -41,18 +41,7 @@ export default function MyMarketingTasks (): JSX.Element {
 
     <Container component="main" maxWidth="lg" >
       <CreateTaskForm refreshFunc={getTasks}></CreateTaskForm>
-      <Box sx={{ display: 'flex' }}>
-          <Grid container spacing={5}>
-              {tasks.map((item, index) =>
-              (
-                  <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4}>
-                      <MarketingTaskCard title={auth.userId} description={auth.username} height = '400' />
-                  </Grid>
-              )
-              )}
-
-          </Grid>
-      </Box>
+      <TasksBox tasks={tasks}></TasksBox>
     </Container>
   )
 }
