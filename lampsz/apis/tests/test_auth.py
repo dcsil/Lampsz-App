@@ -5,7 +5,7 @@ from rest_framework.test import APITestCase
 from lampsz.apis.models import Company, User
 from lampsz.apis.tests.utils import create_test_company_user
 from lampsz.apis.utils import UserType
-from lampsz.apis.views.auth import CSRF_HEADER, bad_credentials, logout_success
+from lampsz.apis.views.auth import bad_credentials, logout_success
 
 
 class TestLogin(APITestCase):
@@ -119,6 +119,24 @@ class TestRegister(APITestCase):
         self.assertEqual(User.objects.count(), 1)
         self.assertEqual(Company.objects.count(), 1)
 
+    def test_company_register_invalid_characters_in_username(self) -> None:
+        """
+        Ensure register fails when provided username contains invalid chars.
+        """
+        url = reverse("register")
+        data = {
+            "username": ",./';p[]",
+            "email": "test_c2@email.com",
+            "password": "correct",
+            "is_influencer": False,
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("username", response.data)
+        self.assertEqual(len(response.data["username"]), 1)
+        self.assertEqual(User.objects.count(), 1)
+        self.assertEqual(Company.objects.count(), 1)
+
 
 class TestAuthMisc(APITestCase):
     def setUp(self) -> None:
@@ -157,13 +175,10 @@ class TestAuthMisc(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertFalse("userType" in self.client.session)
 
-    def test_get_csrf_view(self) -> None:
-        url = reverse("csrf")
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(CSRF_HEADER in response.headers)
-
     def test_get_messages_view_after_logout(self) -> None:
+        """
+        Ensures logout correctly gets logout message from API.
+        """
         self.client.login(username=self.company_user.username, password="correct")
         self.client.get(reverse("logout"))
 
