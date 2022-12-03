@@ -8,7 +8,7 @@ export default function MarketplaceLink (): JSX.Element {
   return (
     <Paper sx={containerStyle.centeredPaper}>
       <Stack direction='column'>
-        <Typography component="h1" variant="h5">
+        <Typography variant="h5">
           Find Marketing Tasks on the Marketplace!
         </Typography>
         <Button href="/marketplace">Go To Marketplace</Button>

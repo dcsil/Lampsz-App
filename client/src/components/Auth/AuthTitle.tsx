@@ -19,7 +19,7 @@ export default function AuthTitle ({ title }: { title: string }): JSX.Element {
       <Avatar sx={styles.avatar}>
         <LockOutlinedIcon/>
       </Avatar>
-      <Typography component="h1" variant="h5" sx={styles.title}>
+      <Typography variant="h5" sx={styles.title}>
         {title}
       </Typography>
     </React.Fragment>
