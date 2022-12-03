@@ -169,3 +169,4 @@ __snapshots__
 data
 staticfiles
 client_secret.json
+media
