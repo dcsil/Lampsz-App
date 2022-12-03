@@ -1,19 +1,26 @@
 import * as React from 'react'
-import Grid from '@mui/material/Grid'
-import Container from '@mui/material/Container'
-import ProfileInfo from './ProfileInfo'
 import useAuth from '../../hooks/AuthHook'
-import ProfileDescription from './ProfileDescription'
-import { containerStyle } from '../../utils/utils'
-import { editInfluencerProfile } from '../../actions/profile'
-import { Stack } from '@mui/material'
-import Button from '@mui/material/Button'
+import { editProfile } from '../../actions/profile'
 import Cookies from 'js-cookie'
+import Container from '@mui/material/Container'
+import { containerStyle } from '../../utils/utils'
+import Grid from '@mui/material/Grid'
+import { Stack } from '@mui/material'
+import ProfileInfo from './ProfileInfo'
+import ProfileDescription from './ProfileDescription'
+import Button from '@mui/material/Button'
 
-export default function InfluencerProfile ({ influencer, userId }: any): JSX.Element {
+interface ProfileBaseProps {
+  items: string[]
+  user: any
+  userId: number
+}
+
+export default function ProfileBase (
+  { user, items, userId }: ProfileBaseProps
+): JSX.Element {
   const auth = useAuth()
   const [editMode, setEditMode] = React.useState(false)
-  const items = ['Location', 'Age', 'Subscribers', 'Likes', 'Description']
 
   const flipEditMode = (): void => {
     setEditMode(!editMode)
@@ -21,9 +28,9 @@ export default function InfluencerProfile ({ influencer, userId }: any): JSX.Ele
 
   const editRequest = (): void => {
     items.forEach((item: string) => {
-      influencer[item.toLowerCase()] = (document.getElementById(item)! as HTMLInputElement).value
+      user[item.toLowerCase()] = (document.getElementById(item)! as HTMLInputElement).value
     })
-    editInfluencerProfile(auth.userId, Cookies.get('csrftoken'), influencer)
+    editProfile(auth.userId, Cookies.get('csrftoken'), user)
     flipEditMode()
   }
 
@@ -32,10 +39,10 @@ export default function InfluencerProfile ({ influencer, userId }: any): JSX.Ele
       <Grid container spacing={2} sx={containerStyle.contentBox}>
         <Grid item md={6}>
           <Stack spacing={3} sx={containerStyle.contentBox}>
-            <ProfileInfo user={influencer} editMode={editMode}/>
-            <ProfileDescription description={influencer.description} editMode={editMode}/>
+            <ProfileInfo user={user} editMode={editMode}/>
+            <ProfileDescription description={user.description} editMode={editMode}/>
             <Stack spacing={1} direction="row">
-              {parseInt(userId) === auth.userId && (
+              {userId === auth.userId && (
                 editMode
                   ? <React.Fragment>
                     <Button variant="outlined" onClick={editRequest}>Save</Button>
@@ -47,7 +54,7 @@ export default function InfluencerProfile ({ influencer, userId }: any): JSX.Ele
           </Stack>
         </Grid>
         <Grid item md={6}>
-          <p>Youtube video lists</p>
+          <p>Old marketing tasks</p>
         </Grid>
       </Grid>
     </Container>

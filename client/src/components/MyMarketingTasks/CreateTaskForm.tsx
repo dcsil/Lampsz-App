@@ -9,15 +9,15 @@ import DialogTitle from '@mui/material/DialogTitle'
 import axios from 'axios'
 import useAuth from '../../hooks/AuthHook'
 import Cookies from 'js-cookie'
+import { MarketingTask, SetState } from '../../utils/types'
 
 interface CreateTaskFormProp {
-  refreshFunc: Function
+  refreshFunc: (userId: number, setTasks: Function) => void
   userId: number
-  csrf: string | undefined
-  setTasks: Function
+  setTasks: SetState<MarketingTask[]>
 }
 
-export default function FormDialog ({ refreshFunc, userId, csrf, setTasks }: CreateTaskFormProp): JSX.Element {
+export default function FormDialog ({ refreshFunc, userId, setTasks }: CreateTaskFormProp): JSX.Element {
   const auth = useAuth()
   const [open, setOpen] = useState(false)
   const [title, setTitle] = useState('')
@@ -56,7 +56,7 @@ export default function FormDialog ({ refreshFunc, userId, csrf, setTasks }: Cre
     })
       .then((response) => {
         console.log(response)
-        refreshFunc(userId, csrf, setTasks)
+        refreshFunc(userId, setTasks)
       })
       .catch(error => console.log(error))
     handleClose()

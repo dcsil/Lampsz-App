@@ -52,6 +52,7 @@ export interface MarketingTask {
   postedDate: string
   title: string
   location: string
+  image: string
 }
 
 // Enums

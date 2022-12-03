@@ -3,14 +3,14 @@ import TasksBox from '../Shared/TasksBox'
 import useAuth from '../../hooks/AuthHook'
 import { Container } from '@mui/system'
 import { getTasks } from '../../actions/tasks'
-import Cookies from 'js-cookie'
+import { MarketingTask } from '../../utils/types'
 
 export default function Marketplace (): JSX.Element {
   const auth = useAuth()
-  const [tasks, setTasks] = useState<Array<{ id: string, company: string, title: string, description: string, deliverables: string, compensation: string, posted_date: string, end_date: string, location: string, image: string }>>([])
+  const [tasks, setTasks] = useState<MarketingTask[]>([])
 
   useEffect(() => {
-    getTasks(auth.userId, Cookies.get('csrftoken'), setTasks)
+    getTasks(auth.userId, setTasks)
   }, [])
 
   // const getTasks = () => {
