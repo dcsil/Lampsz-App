@@ -11,14 +11,14 @@ import MarketingTaskCard from '../Shared/MarketingTaskCard'
 import useAuth from '../../hooks/AuthHook'
 
 
-export default function TasksBox({tasks} : {tasks:Array<{company: string, title: string, description: string, deliverables: string, compensation: string, postedDate: string, endDate: string, location: string, image: string}>}): JSX.Element {
+export default function TasksBox({tasks} : {tasks:Array<{ title: string, description: string, deliverables: string, compensation: string, posted_date: string, end_date: string, location: string, image: string}>}): JSX.Element {
   return (
       <Box sx={{ display: 'flex' }}>
           <Grid container spacing={5}>
               {tasks.map((item, index) =>
               (
                   <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4}>
-                      <MarketingTaskCard title={item.title} description={item.description} compensation={item.compensation} postedDate={item.postedDate} endDate={item.endDate} location={item.location} image={item.image} />
+                      <MarketingTaskCard title={item.title} description={item.description} compensation={item.compensation} postedDate={item.posted_date} endDate={item.end_date} location={item.location} image={item.image} />
                   </Grid>
               )
               )}

@@ -31,17 +31,18 @@ export default function FormDialog({refreshFunc} : {refreshFunc:Function}) {
 
   const create = () => {
     const uploadData = new FormData();
+    const today = new Date().toISOString().slice(0, 10)
     uploadData.append("userId", auth.userId);
     uploadData.append('title', title);
     uploadData.append("description", description)
     uploadData.append("deliverables", deliverables)
     uploadData.append("compensation", compensation)
-    uploadData.append("postedDate", "2022-11-30")
-    uploadData.append("endDate", "2022-11-30")
+    uploadData.append("postedDate", String(today))
+    uploadData.append("endDate", endDate)
     uploadData.append("location", location)
     uploadData.append('image', image);
 
-    axios.post('http://127.0.0.1:8000/api/create_task/', uploadData, {
+    axios.post('/api/create_task/', uploadData, {
     headers: {
         'X-CSRFTOKEN': getCookie('csrftoken')
     }

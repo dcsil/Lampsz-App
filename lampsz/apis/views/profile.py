@@ -1,6 +1,3 @@
-import json
-
-from django.core.serializers import serialize
 from django.http import HttpResponse, JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
@@ -111,53 +108,25 @@ def company_detail_view(request, user_id):
 
 @api_view(["POST"])
 def create_marketing_task(request):
-    userId = request.data["userId"]
-    company = models.Company.objects.filter(user_id=userId)[0]
-    title = request.data["title"]
-    description = request.data["description"]
-    deliverables = request.data["deliverables"]
-    compensation = float(request.data["compensation"])
-    posted_date = request.data["postedDate"]
-    end_date = request.data["endDate"]
-    location = request.data["location"]
-    image = request.data["image"]
 
-    models.MarketingTask.objects.create(
-        company=company,
-        title=title,
-        description=description,
-        deliverables=deliverables,
-        compensation=compensation,
-        posted_date=posted_date,
-        end_date=end_date,
-        location=location,
-        image=image,
-    )
+    userId = request.data["userId"]
+    data = {}
+    data["company"] = models.Company.objects.filter(user_id=userId)[0].id
+
+    data["title"] = request.data["title"]
+    data["description"] = request.data["description"]
+    data["deliverables"] = request.data["deliverables"]
+    data["compensation"] = float(request.data["compensation"])
+    data["posted_date"] = request.data["postedDate"]
+    data["end_date"] = request.data["endDate"]
+    data["location"] = request.data["location"]
+    data["image"] = request.data["image"]
+
+    serializer = serializers.MarketingTaskSerializer(data=data)
+
+    if serializer.is_valid():
+        serializer.save()
+    else:
+        print(serializer.errors)
+
     return HttpResponse({"message": "successful"}, status=200)
-
-
-@api_view(["POST"])
-def get_company_tasks(request):
-    userId = request.data["userId"]
-    company = models.Company.objects.filter(user=userId)[0]
-    tasks = models.MarketingTask.objects.filter(company=company)
-    data = serialize(
-        "json",
-        tasks,
-        fields=(
-            "company",
-            "title",
-            "description",
-            "deliverables",
-            "compensation",
-            "posted_date",
-            "end_date",
-            "location",
-            "image",
-        ),
-    )
-    y = json.loads(data)
-    fields_data = []
-    for item in y:
-        fields_data.append(item["fields"])
-    return JsonResponse({"yo": fields_data}, status=200)
