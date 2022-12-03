@@ -14,7 +14,7 @@ export default function ProfileLink ({ username }: ProfileLinkProps): JSX.Elemen
   return (
     <Paper sx={containerStyle.centeredPaper}>
       <Stack direction='column'>
-        <Typography component="h1" variant="h5">
+        <Typography variant="h5">
           Welcome {username}!
         </Typography>
         <Button href={`/profile/${auth.userId}`}>View Profile</Button>

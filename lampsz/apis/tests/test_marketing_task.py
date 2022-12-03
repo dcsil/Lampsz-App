@@ -48,7 +48,7 @@ class TestMarketingTaskList(APITestCase):
         """
         url = reverse("marketing_task_list")
         data = {
-            "company": self.company.pk,
+            "company_id": self.company.pk,
             "title": "Test Task 2",
             "description": "Test description",
             "deliverables": "Test deliverables",

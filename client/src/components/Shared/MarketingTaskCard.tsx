@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography'
 interface MarketingTaskCardProp {
   title: string
   description: string
-  compensation: string
+  compensation: number
   postedDate: string
   endDate: string
   location: string

@@ -15,13 +15,6 @@ class User(AbstractUser):
 
 
 # Filter classes
-class Location(models.Model):
-    location = models.CharField(max_length=20)
-
-    def __str__(self):
-        return self.location
-
-
 class Category(models.Model):
     category = models.CharField(max_length=20)
 
@@ -35,6 +28,7 @@ class Influencer(models.Model):
         max_length=10, choices=SocialPlatform.choices, default=SocialPlatform.YOUTUBE
     )
     description = models.TextField()
+    channel_name = models.CharField(max_length=100)
     home_page = models.URLField(blank=True)
     thumbnail_url = models.URLField(blank=True)
     location = models.CharField(max_length=100)
@@ -42,22 +36,17 @@ class Influencer(models.Model):
     age = models.IntegerField(default=18)
     subscribers = models.IntegerField(default=0)
     likes = models.IntegerField(default=0)
-    shortBio = models.TextField(default="")
-
-    def __str__(self):
-        return self.user.username
+    short_bio = models.TextField(default="")
 
 
 class Company(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
-    location = models.CharField(max_length=100)
+    company_name = models.CharField(max_length=100)
+    location = models.CharField(blank=True, max_length=100)
     categories = models.ManyToManyField(Category, blank=True)
-    description = models.TextField(null=True, blank=True)
-    shortBio = models.TextField(default="")
-    industry = models.TextField(default="")
-
-    def __str__(self):
-        return self.user.username
+    description = models.TextField(blank=True, default="")
+    short_bio = models.TextField(blank=True, default="")
+    industry = models.TextField(blank=True, default="")
 
 
 class MarketingTask(models.Model):

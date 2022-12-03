@@ -33,7 +33,7 @@ export default function TaskAboutCompany (
           </Box>
           <Stack spacing={1}>
             <Typography variant="h6">{companyName}</Typography>
-            <Typography color="text.secondary">{shortBio}</Typography>
+            <Typography color="text.secondary">{shortBio || 'No Short Bio Provided'}</Typography>
           </Stack>
         </Box>
       </Card>

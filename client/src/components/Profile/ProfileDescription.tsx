@@ -27,7 +27,7 @@ export default function ProfileDescription ({ description, editMode }: ProfileDe
           {
             editMode
               ? <TextField required id="Description" label="Required" defaultValue={description}/>
-              : <Typography component="p" variant="body1">
+              : <Typography variant="body1">
                 {description || 'No description'}
               </Typography>
           }

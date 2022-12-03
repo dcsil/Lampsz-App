@@ -11,5 +11,5 @@ def create_test_company_user() -> tuple[User, Company]:
         password="correct",
         is_influencer=False,
     )
-    company = Company.objects.create(user=company_user)
+    company = Company.objects.create(user=company_user, company_name="Test Company")
     return company_user, company

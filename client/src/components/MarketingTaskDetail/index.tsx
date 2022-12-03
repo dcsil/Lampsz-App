@@ -7,16 +7,15 @@ import AppBar from '@mui/material/AppBar'
 import TaskOverview from './TaskOverview'
 import TaskHeader from './TaskHeader'
 import TaskAboutCompany from './TaskAboutCompany'
-
-const description = 'Curabitur consectetur velit nibh, et mollis elit auctor in. Proin id diam ipsum. Phasellus vel\n' +
-  'turpis tincidunt, rhoncus risus efficitur, laoreet ipsum. Suspendisse auctor facilisis lorem.\n' +
-  'Vestibulum pulvinar posuere lacus, quis ullamcorper urna pulvinar aliquet. Suspendisse et\n' +
-  'ullamcorper purus. Morbi eget lobortis ligula.'
+import { useLoaderData } from 'react-router-dom'
+import { MarketingTask } from '../../utils/types'
+import useAuth from '../../hooks/AuthHook'
 
 export default function MarketingTaskDetail (): JSX.Element {
   const [tabValue, setTabValue] = React.useState(0)
-  const [title] = React.useState('Marketing Task Title')
-  const [companyName] = React.useState('Company Name')
+  const taskData = useLoaderData() as MarketingTask
+  const auth = useAuth()
+  console.log(taskData)
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number): void => {
     setTabValue(newValue)
@@ -24,7 +23,7 @@ export default function MarketingTaskDetail (): JSX.Element {
 
   return (
     <Container component="main" maxWidth="lg" sx={containerStyle.contentContainer}>
-      <TaskHeader title={title} companyName={companyName}/>
+      <TaskHeader title={taskData.title} companyName={taskData.company.companyName}/>
 
       <AppBar position="static" sx={{ mt: 2, borderRadius: 2 }}>
         <Tabs
@@ -37,26 +36,26 @@ export default function MarketingTaskDetail (): JSX.Element {
         >
           <Tab label="Overview"/>
           <Tab label="About the Company"/>
-          <Tab label="Applicants"/>
+          {taskData.company.user.userId === auth.userId && <Tab label="Applicants"/>}
         </Tabs>
       </AppBar>
       <TabPanel value={tabValue} index={0}>
         <TaskOverview
-          description={description}
-          deliverables={description}
-          compensation="$140 CAD"
-          location="Toronto"
-          postedDate="2022-12-02"
-          endDate="2022-12-02"
+          description={taskData.description}
+          deliverables={taskData.deliverables}
+          compensation={`$${taskData.compensation}`}
+          location={taskData.location}
+          postedDate={taskData.postedDate}
+          endDate={taskData.endDate}
         />
       </TabPanel>
       <TabPanel value={tabValue} index={1}>
         <TaskAboutCompany
-          companyName={companyName}
-          shortBio="This company is a test company."
-          companyLocation=''
-          industry=''
-          companyDescription={description}
+          companyName={taskData.company.companyName}
+          shortBio={taskData.company.shortBio}
+          companyLocation={taskData.company.location}
+          industry={taskData.company.industry}
+          companyDescription={taskData.company.description}
         />
       </TabPanel>
       <TabPanel value={tabValue} index={2}>

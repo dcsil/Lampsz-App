@@ -1,18 +1,26 @@
 import * as React from 'react'
+import useAuth from '../../hooks/AuthHook'
+import { editProfile } from '../../actions/profile'
+import Cookies from 'js-cookie'
 import Container from '@mui/material/Container'
+import { containerStyle } from '../../utils/utils'
+import Grid from '@mui/material/Grid'
+import { Stack } from '@mui/material'
 import ProfileInfo from './ProfileInfo'
 import ProfileDescription from './ProfileDescription'
-import { containerStyle, getCookie } from '../../utils/utils'
-import useAuth from '../../hooks/AuthHook'
-import { editBusinessProfile } from '../../actions/profile'
 import Button from '@mui/material/Button'
-import { Stack } from '@mui/material'
-import Grid from '@mui/material/Grid'
 
-export default function BusinessProfile ({ company, userId }: any): JSX.Element {
+interface ProfileBaseProps {
+  items: string[]
+  user: any
+  userId: number
+}
+
+export default function ProfileBase (
+  { user, items, userId }: ProfileBaseProps
+): JSX.Element {
   const auth = useAuth()
   const [editMode, setEditMode] = React.useState(false)
-  const items = ['Location', 'Industry', 'Description']
 
   const flipEditMode = (): void => {
     setEditMode(!editMode)
@@ -20,9 +28,9 @@ export default function BusinessProfile ({ company, userId }: any): JSX.Element 
 
   const editRequest = (): void => {
     items.forEach((item: string) => {
-      company[item.toLowerCase()] = (document.getElementById(item)! as HTMLInputElement).value
+      user[item.toLowerCase()] = (document.getElementById(item)! as HTMLInputElement).value
     })
-    editBusinessProfile(auth.userId, getCookie('csrftoken'), company)
+    editProfile(auth.userId, Cookies.get('csrftoken'), user)
     flipEditMode()
   }
 
@@ -31,10 +39,10 @@ export default function BusinessProfile ({ company, userId }: any): JSX.Element 
       <Grid container spacing={2} sx={containerStyle.contentBox}>
         <Grid item md={6}>
           <Stack spacing={3} sx={containerStyle.contentBox}>
-            <ProfileInfo user={company} editMode={editMode}/>
-            <ProfileDescription description={company.description} editMode={editMode}/>
+            <ProfileInfo user={user} editMode={editMode}/>
+            <ProfileDescription description={user.description} editMode={editMode}/>
             <Stack spacing={1} direction="row">
-              {parseInt(userId) === parseInt(auth.userId) && (
+              {userId === auth.userId && (
                 editMode
                   ? <React.Fragment>
                     <Button variant="outlined" onClick={editRequest}>Save</Button>

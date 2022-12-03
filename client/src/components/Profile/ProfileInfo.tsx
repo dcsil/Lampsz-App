@@ -90,7 +90,7 @@ export default function ProfileInfo ({ user, editMode }: any): JSX.Element {
         <Grid container spacing={2} direction="column">
           <Grid item xs>
             <Avatar sx={styles.avatar} src="" alt="avatar"/>
-            <Typography sx={styles.heading} component="h1" variant="h5">
+            <Typography sx={styles.heading} variant="h5">
               {user.userType === UserType.INFLUENCER ? 'LampszChannel' : 'Company Name'}
             </Typography>
             <Typography component="span" sx={styles.subheader} variant="h6">
@@ -114,7 +114,7 @@ export default function ProfileInfo ({ user, editMode }: any): JSX.Element {
                     {
                       editMode
                         ? <TextField required id={label} label="Required" defaultValue={value}/>
-                        : <Typography component="p" variant="body1">{value}</Typography>
+                        : <Typography variant="body1">{value}</Typography>
                     }
                   </ListItem>
                 ))}
