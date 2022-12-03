@@ -1,71 +1,39 @@
-import * as React from 'react'
+import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import MarketingTaskCard from '../Shared/MarketingTaskCard'
+import TasksBox from '../Shared/TasksBox'
 import Grid from '@mui/material/Grid'
-
-const data = [
-  {
-    title: 'T1',
-    description: 'asdfassdfasdf'
-  },
-  {
-    title: 'T2',
-    description: 'asdfassdfasdf'
-  },
-  {
-    title: 'T3',
-    description: 'asdfassdfasdf'
-  },
-  {
-    title: 'T4',
-    description: 'asdfassdfasdf'
-  },
-  {
-    title: 'T5',
-    description: 'asdfassdfasdf'
-  },
-  {
-    title: 'T6',
-    description: 'asdfassdfasdf'
-  },
-  {
-    title: 'T7',
-    description: 'asdfassdfasdf'
-  },
-  {
-    title: 'T8',
-    description: 'asdfassdfasdf'
-  },
-  {
-    title: 'T9',
-    description: 'asdfassdfasdf'
-  },
-  {
-    title: 'T10',
-    description: 'asdfassdfasdf'
-  },
-  {
-    title: 'T11',
-    description: 'asdfassdfasdf'
-  },
-  {
-    title: 'T12',
-    description: 'asdfassdfasdf'
-  }
-]
+import useAuth from '../../hooks/AuthHook'
+import { Container } from '@mui/system'
+import axios from 'axios';
+import { getCookie } from '../../utils/utils'
+import { getTasks } from '../../actions/tasks'
 
 export default function Marketplace (): JSX.Element {
+  const auth = useAuth()
+  const [ tasks, setTasks ] = useState<{id: string, company: string, title: string, description: string, deliverables: string, compensation: string, posted_date: string, end_date: string, location: string, image: string}[]>([]);
+
+  useEffect(() => {
+    getTasks(auth.userId, getCookie('csrftoken'), setTasks);
+  }, [])
+
+  // const getTasks = () => {
+  //   axios.get('/api/tasks?' + 'user_id=' + String(auth.userId), {
+  //       headers: {
+  //         'X-CSRFTOKEN': getCookie('csrftoken')
+  //       }
+  //   })
+  //   .then(response => {
+  //     setTasks(response.data)
+  //     console.log(response.data)
+  //   })
+  //   .catch(error => console.log(error))
+  // }
   return (
-    <Box sx={{ display: 'flex' }}>
-        <Grid container spacing={5}>
-            {data.map((item, index) =>
-            (
-                <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4}>
-                    <MarketingTaskCard title={item.title} description={item.description} height = '400' />
-                </Grid>
-            )
-            )}
-        </Grid>
-    </Box>
+
+    <Container component="main" maxWidth="lg" >
+      <TasksBox tasks={tasks}></TasksBox>
+    </Container>
+
   )
 }

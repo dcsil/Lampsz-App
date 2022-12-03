@@ -13,13 +13,18 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
 from lampsz.apis import urls as apis_urls
+from lampsz.settings import base
 
 urlpatterns = [
     path("", include("lampsz.frontend.urls")),
     path("admin/", admin.site.urls),
     path("api/", include(apis_urls)),
 ]
+
+urlpatterns += static(base.STATIC_URL, document_root=base.STATIC_ROOT)
+urlpatterns += static(base.MEDIA_URL, document_root=base.MEDIA_ROOT)
