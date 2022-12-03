@@ -35,7 +35,7 @@ export default function BusinessProfile ({ company, userId }: any): JSX.Element 
             <ProfileInfo user={company} editMode={editMode}/>
             <ProfileDescription description={company.description} editMode={editMode}/>
             <Stack spacing={1} direction="row">
-              {parseInt(userId) === parseInt(auth.userId) && (
+              {parseInt(userId) === auth.userId && (
                 editMode
                   ? <React.Fragment>
                     <Button variant="outlined" onClick={editRequest}>Save</Button>

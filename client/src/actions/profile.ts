@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from 'axios'
 import { SetState } from '../utils/types'
 
-export const getUserProfile = (userId: string, setInfluencer: SetState<{ username: string, userType: number }>): void => {
+export const getUserProfile = (userId: number, setInfluencer: SetState<{ username: string, userType: number }>): void => {
   axios
     .get(`/api/profile/${userId}`)
     .then((response: AxiosResponse) => {
@@ -10,7 +10,7 @@ export const getUserProfile = (userId: string, setInfluencer: SetState<{ usernam
     .catch((error: AxiosError) => console.log(error))
 }
 
-export const editBusinessProfile = (userId: string, csrf: string | undefined, body: any): void => {
+export const editBusinessProfile = (userId: number, csrf: string | undefined, body: any): void => {
   axios
     .put(`/api/company/${userId}`, body, {
       headers: {
@@ -23,7 +23,7 @@ export const editBusinessProfile = (userId: string, csrf: string | undefined, bo
     .catch((error: AxiosError) => console.log(error))
 }
 
-export const editInfluencerProfile = (userId: string, csrf: string | undefined, body: any): void => {
+export const editInfluencerProfile = (userId: number, csrf: string | undefined, body: any): void => {
   axios
     .put(`/api/influencer/${userId}`, body, {
       headers: {

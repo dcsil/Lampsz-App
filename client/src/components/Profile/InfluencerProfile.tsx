@@ -35,7 +35,7 @@ export default function InfluencerProfile ({ influencer, userId }: any): JSX.Ele
             <ProfileInfo user={influencer} editMode={editMode}/>
             <ProfileDescription description={influencer.description} editMode={editMode}/>
             <Stack spacing={1} direction="row">
-              {parseInt(userId) === parseInt(auth.userId) && (
+              {parseInt(userId) === auth.userId && (
                 editMode
                   ? <React.Fragment>
                     <Button variant="outlined" onClick={editRequest}>Save</Button>

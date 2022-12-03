@@ -9,10 +9,13 @@ import TaskHeader from './TaskHeader'
 import TaskAboutCompany from './TaskAboutCompany'
 import { useLoaderData } from 'react-router-dom'
 import { MarketingTask } from '../../utils/types'
+import useAuth from '../../hooks/AuthHook'
 
 export default function MarketingTaskDetail (): JSX.Element {
   const [tabValue, setTabValue] = React.useState(0)
   const taskData = useLoaderData() as MarketingTask
+  const auth = useAuth()
+  console.log(taskData)
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number): void => {
     setTabValue(newValue)
@@ -33,7 +36,7 @@ export default function MarketingTaskDetail (): JSX.Element {
         >
           <Tab label="Overview"/>
           <Tab label="About the Company"/>
-          <Tab label="Applicants"/>
+          {taskData.company.user.userId === auth.userId && <Tab label="Applicants"/>}
         </Tabs>
       </AppBar>
       <TabPanel value={tabValue} index={0}>

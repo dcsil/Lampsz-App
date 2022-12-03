@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 
-export const getTasks = (userId: string, csrf: string | undefined, setTasks: Function): void => {
+export const getTasks = (userId: number, csrf: string | undefined, setTasks: Function): void => {
   axios
     .get((`/api/tasks?user_id=${userId}`), {
       headers: {

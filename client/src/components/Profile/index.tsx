@@ -10,7 +10,7 @@ export default function Profile (): JSX.Element {
   const [user, setUser] = React.useState(dict)
   const { userId } = useParams()
   React.useEffect(() => {
-    getUserProfile(userId!, setUser)
+    getUserProfile(parseInt(userId!), setUser)
   }, [])
   if (user.userType === UserType.NONE) {
     return <></>

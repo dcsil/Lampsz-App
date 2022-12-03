@@ -12,7 +12,7 @@ import Cookies from 'js-cookie'
 
 interface CreateTaskFormProp {
   refreshFunc: Function
-  userId: string
+  userId: number
   csrf: string | undefined
   setTasks: Function
 }
@@ -39,7 +39,7 @@ export default function FormDialog ({ refreshFunc, userId, csrf, setTasks }: Cre
   const create = (): void => {
     const uploadData = new FormData()
     const today = new Date().toISOString().slice(0, 10)
-    uploadData.append('userId', auth.userId)
+    uploadData.append('userId', auth.userId.toString())
     uploadData.append('title', title)
     uploadData.append('description', description)
     uploadData.append('deliverables', deliverables)

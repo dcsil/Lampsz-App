@@ -6,7 +6,7 @@ interface AuthContextType {
   // States
   username: string
   userType: UserType
-  userId: string
+  userId: number
   csrf: string
   isReadingCookie: boolean
   // Set states functions
@@ -32,7 +32,7 @@ const AuthContext = React.createContext<AuthContextType>(null!)
 export function AuthProvider ({ children }: { children: React.ReactNode }): JSX.Element {
   const [username, setUsername] = React.useState<string>('')
   const [userType, setUserType] = React.useState<UserType>(UserType.NONE)
-  const [userId, setUserId] = React.useState<string>('')
+  const [userId, setUserId] = React.useState<number>(-1)
   const [csrf, setCsrf] = React.useState<string>('')
   const [isReadingCookie, setIsReadingCookie] = React.useState<boolean>(true)
 
@@ -42,9 +42,9 @@ export function AuthProvider ({ children }: { children: React.ReactNode }): JSX.
    * @param callback callback called after success API server call (e.g., use for navigation).
    */
   const createAuthCallback = (callback?: VoidFunction): AuthCallback => {
-    return (hasError: boolean, _username?: string, _userId?: string, _userType?: UserType): void => {
+    return (hasError: boolean, _username?: string, _userId?: number, _userType?: UserType): void => {
       setUsername(_username ?? '')
-      setUserId(_userId ?? '')
+      setUserId(_userId ?? -1)
       setUserType(_userType ?? UserType.NONE)
       setIsReadingCookie(false)
       if (callback && !hasError) {
