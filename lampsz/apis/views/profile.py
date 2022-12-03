@@ -108,7 +108,6 @@ def company_detail_view(request, user_id):
 
 @api_view(["POST"])
 def create_marketing_task(request):
-
     userId = request.data["userId"]
     data = {}
     data["company"] = models.Company.objects.filter(user_id=userId)[0].id
