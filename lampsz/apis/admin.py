@@ -25,13 +25,6 @@ class CompanyAdmin(admin.ModelAdmin):
         model = models.Company
 
 
-class LocationAdmin(admin.ModelAdmin):
-    list_display = ["__str__"]
-
-    class Meta:
-        model = models.Location
-
-
 class MarketingTaskAdmin(admin.ModelAdmin):
     list_display = ["__str__"]
 
@@ -42,5 +35,4 @@ class MarketingTaskAdmin(admin.ModelAdmin):
 admin.site.register(models.User, UserAdmin)
 admin.site.register(models.Influencer, InfluencerAdmin)
 admin.site.register(models.Company, CompanyAdmin)
-admin.site.register(models.Location, LocationAdmin)
 admin.site.register(models.MarketingTask, MarketingTaskAdmin)

@@ -1,12 +1,6 @@
 from rest_framework import serializers
 
-from lampsz.apis.models import Company, Influencer, Location, MarketingTask, User
-
-
-class LocationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Location
-        fields = ["id", "location"]
+from lampsz.apis.models import Company, Influencer, MarketingTask, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -101,18 +95,11 @@ class CompanySerializer(serializers.ModelSerializer):
 
 
 class MarketingTaskSerializer(serializers.ModelSerializer):
-    company = CompanySerializer(required=True)
+    company = CompanySerializer(read_only=True)
+    company_id = serializers.PrimaryKeyRelatedField(
+        queryset=Company.objects.all(), write_only=True, source="company"
+    )
 
     class Meta:
         model = MarketingTask
-        fields = [
-            "id",
-            "company",
-            "title",
-            "description",
-            "posted_date",
-            "end_date",
-            "deliverables",
-            "compensation",
-            "location",
-        ]
+        fields = "__all__"

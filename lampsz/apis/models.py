@@ -15,13 +15,6 @@ class User(AbstractUser):
 
 
 # Filter classes
-class Location(models.Model):
-    location = models.CharField(max_length=20)
-
-    def __str__(self):
-        return self.location
-
-
 class Category(models.Model):
     category = models.CharField(max_length=20)
 
@@ -45,9 +38,6 @@ class Influencer(models.Model):
     likes = models.IntegerField(default=0)
     short_bio = models.TextField(default="")
 
-    def __str__(self):
-        return self.user.username
-
 
 class Company(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
@@ -57,9 +47,6 @@ class Company(models.Model):
     description = models.TextField(blank=True, default="")
     short_bio = models.TextField(blank=True, default="")
     industry = models.TextField(blank=True, default="")
-
-    def __str__(self):
-        return self.user.username
 
 
 class MarketingTask(models.Model):
