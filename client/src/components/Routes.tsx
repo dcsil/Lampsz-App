@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useEffect } from 'react'
-import { createBrowserRouter, Navigate, RouterProvider, useLocation } from 'react-router-dom'
+import { createBrowserRouter, Navigate, redirect, RouterProvider, useLocation } from 'react-router-dom'
 import Home from './Home'
 import Marketplace from './Marketplace'
 import Profile from './Profile'
@@ -16,6 +16,7 @@ import BusinessSignup from './Auth/BusinessSignup'
 import InfluencerAuthTab from './Auth/InfluencerAuthTab'
 import AuthTabs from './Auth/AuthTabs'
 import BusinessLogin from './Auth/BusinessLogin'
+import { getMarketingTaskData } from '../actions/marketingTask'
 
 const router = createBrowserRouter([
   {
@@ -62,7 +63,8 @@ const router = createBrowserRouter([
       <RequireAuth>
         <MarketingTaskDetail/>
       </RequireAuth>
-    )
+    ),
+    loader: async ({ params }) => loaderDataOrHome(await getMarketingTaskData(params.taskId!))
   },
   {
     path: '/profile/:userId',
@@ -147,4 +149,12 @@ function AuthRoutes ({ children }: { children: JSX.Element }): JSX.Element {
     return <Navigate to="/" replace/>
   }
   return <NavWrapper>{children}</NavWrapper>
+}
+
+function loaderDataOrHome (data: any): Response {
+  try {
+    return data
+  } catch (_) {
+    return redirect('/')
+  }
 }

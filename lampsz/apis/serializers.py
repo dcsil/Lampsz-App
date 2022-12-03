@@ -82,7 +82,7 @@ class PublicInfluencerSerializer(serializers.ModelSerializer):
 
 
 class CompanySerializer(serializers.ModelSerializer):
-    user = UserSerializer(required=True)
+    user = PublicUserSerializer(required=True)
 
     class Meta:
         model = Company
@@ -93,27 +93,16 @@ class CompanySerializer(serializers.ModelSerializer):
             "categories",
             "description",
             "industry",
-            "shortBio",
+            "short_bio",
             "industry",
+            "company_name",
         ]
         depth = 2
 
-    def create(self, validated_data):
-        user_data = validated_data.pop("user")
-        user = User.objects.create(**user_data)
-        company = Company.objects.create(user=user, **validated_data)
-        return company
-
-    def update(self, instance, validated_data):
-        instance.location = validated_data.get("location")
-        instance.description = validated_data.pop("description")
-        instance.shortBio = validated_data.pop("shortBio")
-        instance.industry = validated_data.pop("industry")
-        instance.save()
-        return instance
-
 
 class MarketingTaskSerializer(serializers.ModelSerializer):
+    company = CompanySerializer(required=True)
+
     class Meta:
         model = MarketingTask
         fields = [
