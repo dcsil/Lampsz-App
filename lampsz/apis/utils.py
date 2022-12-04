@@ -1,5 +1,7 @@
 from enum import IntEnum
 
+import requests
+from django.conf import settings
 from rest_framework.exceptions import ErrorDetail
 
 # Types
@@ -35,3 +37,42 @@ def ensure_https_url(url: str) -> str:
         return url
 
     return url.replace("http", "https")
+
+
+def get_youtube_channel_detail(data: dict, channel_id: str) -> None:
+    url = (
+        "https://youtube.googleapis.com/youtube/v3/channels?"
+        "part=contentDetails%2Cstatistics&id={ci}&key={api}"
+    ).format(ci=channel_id, api=settings.GOOGLE_API_KEY)
+    channel_data = requests.get(url).json()
+    subscribers, views, videos = 0, 0, 0
+    for item in channel_data["items"]:
+        subscribers += int(item["statistics"]["subscriberCount"])
+        views += int(item["statistics"]["viewCount"])
+        videos += int(item["statistics"]["videoCount"])
+    data["subscribers"] = subscribers
+    data["views"] = views
+    data["videos"] = videos
+    get_youtube_playlist_detail(
+        data,
+        [
+            i["contentDetails"]["relatedPlaylists"]["uploads"]
+            for i in channel_data["items"]
+        ],
+    )
+
+
+def get_youtube_playlist_detail(data: dict, playlist_ids: list) -> None:
+    video_lists = []
+    for playlist_id in playlist_ids:
+        url = (
+            "https://youtube.googleapis.com/youtube/v3/playlistItems?"
+            "part=snippet&playlistId={pi}&key={api}"
+        ).format(pi=playlist_id, api=settings.GOOGLE_API_KEY)
+        playlist_data = requests.get(url).json()
+        for item in playlist_data["items"]:
+            video_lists.append(
+                "https://www.youtube.com/watch?v="
+                + item["snippet"]["resourceId"]["videoId"]
+            )
+    data["video_lists"] = video_lists

@@ -51,6 +51,7 @@ def oauth2callback(request):  # pragma: no cover
         # Get Google user info and Youtube channel detail
         user_info = get_google_user_info(credentials)
         channel_detail = get_youtube_channel_details(credentials)
+        print(channel_detail)
     except (AccessDeniedError, HttpError):
         messages.error(request, failed_consent)
         # Redirect back to login page if user doesn't give consent
@@ -73,6 +74,7 @@ def oauth2callback(request):  # pragma: no cover
             home_page=channel_detail["channel_url"],
             thumbnail_url=channel_detail["thumbnail"],
             location=channel_detail["country"],
+            channel_id=channel_detail["id"],
         )
         influencer.save()
 

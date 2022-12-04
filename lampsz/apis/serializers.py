@@ -12,8 +12,14 @@ class UserSerializer(serializers.ModelSerializer):
         return User.objects.create_user(**validated_data)
 
 
+class PublicUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "username"]
+
+
 class InfluencerSerializer(serializers.ModelSerializer):
-    user = UserSerializer(required=True)
+    user = PublicUserSerializer(required=True)
 
     class Meta:
         model = Influencer
@@ -27,9 +33,6 @@ class InfluencerSerializer(serializers.ModelSerializer):
             "description",
             "platform",
             "age",
-            "subscribers",
-            "likes",
-            "shortBio",
         ]
         depth = 2
 
@@ -48,31 +51,6 @@ class InfluencerSerializer(serializers.ModelSerializer):
         instance.shortBio = validated_data.pop("shortBio")
         instance.save()
         return instance
-
-
-class PublicUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ["id", "username"]
-
-
-class PublicInfluencerSerializer(serializers.ModelSerializer):
-    user = PublicUserSerializer(required=True)
-
-    class Meta:
-        model = Influencer
-        depth = 2
-        fields = [
-            "id",
-            "user",
-            "location",
-            "categories",
-            "description",
-            "subscribers",
-            "age",
-            "likes",
-            "shortBio",
-        ]
 
 
 class CompanySerializer(serializers.ModelSerializer):

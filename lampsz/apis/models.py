@@ -34,9 +34,8 @@ class Influencer(models.Model):
     location = models.CharField(max_length=100)
     categories = models.ManyToManyField(Category, blank=True)
     age = models.IntegerField(default=18)
-    subscribers = models.IntegerField(default=0)
-    likes = models.IntegerField(default=0)
     short_bio = models.TextField(default="")
+    channel_id = models.CharField(max_length=400)
 
 
 class Company(models.Model):
