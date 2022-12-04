@@ -88,8 +88,6 @@ export default function MarketingTaskForm (
                 value={description} margin="dense"
                 onChange={(evt) => setDescription(evt.target.value)}
               />
-            </Grid>
-            <Grid item lg={12}>
               <FormTextField
                 id="deliverables" label="Task Deliverables" multiline rows={4}
                 value={deliverables} margin="dense"
@@ -114,7 +112,7 @@ export default function MarketingTaskForm (
               </LocalizationProvider>
             </Grid>
             <Grid item xs>
-              <DialogContentText sx={{ mb: 1 }}>
+              <DialogContentText sx={{ mb: 1, mt: 1 }}>
                 Upload an Image for Your Marketing Task
               </DialogContentText>
               <input type="file" onChange={(evt) => setImage(evt.target.files![0])}/>

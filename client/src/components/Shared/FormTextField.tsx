@@ -10,8 +10,8 @@ interface FormTextFieldProps {
   autoFocus?: boolean
   autoComplete?: string
   type?: string
-  margin?: 'dense' | 'normal' | 'none',
-  multiline?: boolean,
+  margin?: 'dense' | 'normal' | 'none'
+  multiline?: boolean
   rows?: number
   errorMsg?: string
   onChange: (event: FormFieldEvent) => void
