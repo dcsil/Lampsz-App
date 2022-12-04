@@ -12,7 +12,7 @@ export default function MarketingTaskCard ({ taskData }: { taskData: MarketingTa
     <Card sx={{ width: '100%' }}>
       <CardMedia
         component="img"
-        height={400}
+        height={200}
         image={taskData.image}
       />
       <CardContent>

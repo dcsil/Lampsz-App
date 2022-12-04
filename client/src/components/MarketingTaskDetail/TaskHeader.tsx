@@ -133,13 +133,15 @@ export default function TaskHeader (): JSX.Element {
 
         <Stack p={1} spacing={1}>
           {auth.userType === UserType.INFLUENCER && <Button variant="contained" color="info">Apply</Button>}
-          {auth.userId === company.user.id && active
-            ? <React.Fragment>
+          {auth.userId === company.user.id && (
+            <React.Fragment>
               <Button variant="contained" color="error" onClick={() => onClick(Actions.DELETE)}>Delete Task</Button>
-              <Button variant="contained" color="warning" onClick={() => onClick(Actions.CLOSE)}>Close Task</Button>
+              {active
+                ? <Button variant="contained" color="warning" onClick={() => onClick(Actions.CLOSE)}>Close Task</Button>
+                : <Button variant="contained" color="info" onClick={() => onClick(Actions.REOPEN)}>Re-open Task</Button>
+              }
             </React.Fragment>
-            : <Button variant="contained" color="info" onClick={() => onClick(Actions.REOPEN)}>Re-open Task</Button>
-          }
+          )}
         </Stack>
       </Box>
     </React.Fragment>
