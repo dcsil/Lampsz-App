@@ -3,22 +3,13 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from lampsz.apis.models import MarketingTask
-from lampsz.apis.tests.utils import create_test_company_user
+from lampsz.apis.tests.utils import create_test_company_user, create_test_marketing_task
 
 
 class TestMarketingTaskList(APITestCase):
     def setUp(self) -> None:
         _, self.company = create_test_company_user()
-        self.test_task = MarketingTask.objects.create(
-            company=self.company,
-            title="Test Task",
-            description="Test description",
-            deliverables="Test deliverables",
-            compensation=140.0,
-            posted_date="2022-12-02",
-            end_date="2022-12-02",
-            location="Toronto",
-        )
+        self.test_task = create_test_marketing_task(self.company)
 
     def test_get_all_tasks(self) -> None:
         """
@@ -66,16 +57,7 @@ class TestMarketingTaskList(APITestCase):
 class TestMarketingTaskDetail(APITestCase):
     def setUp(self) -> None:
         _, self.company = create_test_company_user()
-        self.test_task = MarketingTask.objects.create(
-            company=self.company,
-            title="Test Task",
-            description="Test description",
-            deliverables="Test deliverables",
-            compensation=140.0,
-            posted_date="2022-12-02",
-            end_date="2022-12-02",
-            location="Toronto",
-        )
+        self.test_task = create_test_marketing_task(self.company)
 
     def test_get_task_detail(self) -> None:
         """

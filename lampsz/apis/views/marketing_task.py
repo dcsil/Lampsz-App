@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from lampsz.apis.models import MarketingTask
 from lampsz.apis.serializers import MarketingTaskSerializer
 
-__all__ = ["MarketingTaskList", "MarketingTaskDetail"]
+__all__ = ["MarketingTaskList", "MarketingTaskDetail", "get_marketing_tasks"]
 
 
 class MarketingTaskList(generics.ListCreateAPIView):

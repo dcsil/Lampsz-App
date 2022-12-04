@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from lampsz.apis.models import Company, Influencer, MarketingTask, User
+from lampsz.apis.models import Company, Influencer, MarketingTask, TaskApplication, User
 
 __all__ = [
     "UserSerializer",
@@ -8,6 +8,7 @@ __all__ = [
     "InfluencerSerializer",
     "CompanySerializer",
     "MarketingTaskSerializer",
+    "TaskApplicationSerializer",
 ]
 
 
@@ -77,4 +78,15 @@ class MarketingTaskSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MarketingTask
+        fields = "__all__"
+
+
+class TaskApplicationSerializer(serializers.ModelSerializer):
+    marketing_task = MarketingTaskSerializer(read_only=True)
+    marketing_task_id = serializers.PrimaryKeyRelatedField(
+        queryset=MarketingTask.objects.all(), write_only=True, source="marketing_task"
+    )
+
+    class Meta:
+        model = TaskApplication
         fields = "__all__"
