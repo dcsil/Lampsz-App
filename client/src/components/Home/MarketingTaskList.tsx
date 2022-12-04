@@ -5,18 +5,9 @@ import MarketingTaskCard from '../Shared/MarketingTaskCard'
 import { Stack } from '@mui/material'
 import Paper from '@mui/material/Paper'
 import { containerStyle } from '../../utils/utils'
+import { MarketingTask } from '../../utils/types'
 
-const tasks = [
-  {
-    title: 'T2',
-    description: 'this is a desc',
-    compensation: 123,
-    postedDate: '2000-11-11',
-    endDate: '3000-11-13',
-    location: 'Beijing',
-    image: '/nonesense'
-  }
-]
+const tasks: MarketingTask[] = []
 
 export default function MarketingTaskList (): JSX.Element {
   return (
@@ -24,16 +15,8 @@ export default function MarketingTaskList (): JSX.Element {
       <PanelTitle variant="h5">Your Marketing Tasks</PanelTitle>
       <Stack direction="row" spacing={2} marginTop={3}>
         {tasks.map((item, index) =>
-          <MarketingTaskCard
-            key={index}
-            title={item.title}
-            description={item.description}
-            compensation={item.compensation}
-            postedDate={item.postedDate}
-            endDate={item.endDate}
-            location={item.location}
-            image={item.image}
-          />)}
+          <MarketingTaskCard key={index} taskData={item}/>
+        )}
       </Stack>
       <Link color="primary" href="/tasks" sx={{ mt: 3 }}>
         See all your marketing tasks

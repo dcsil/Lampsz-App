@@ -1,20 +1,18 @@
-import { AuthCallback, AuthResponse, ErrorData, RegisterValidation, SetState, UserType } from '../utils/types'
+import { AuthCallback, AuthResponse, ErrorData, RegisterValidation, SetState } from '../utils/types'
 import axios, { AxiosError, AxiosResponse } from 'axios'
 import { AlertColor } from '@mui/material/Alert'
 
 // Constants
 const confirmPassFails = 'Password don\'t match'
 
-/**
- * Gets one-time CSRF token from API server
- *
- * @param setCsrf set state function for CSRF token.
- */
-const getCSRF = (setCsrf: SetState<string>): void => {
-  axios
-    .get('/api/csrf/')
-    .then((response: AxiosResponse) => setCsrf(response.headers['x-csrftoken']!))
-    .catch((error: AxiosError) => console.log(error))
+// Interfaces
+export interface RegisterInfo {
+  username: string
+  companyName: string
+  email: string
+  password: string
+  confirmPassword: string
+  is_influencer: boolean
 }
 
 /**
@@ -23,21 +21,11 @@ const getCSRF = (setCsrf: SetState<string>): void => {
  * @param setCsrf set state function for CSRF token.
  * @param callback
  */
-export const checkSession = (
-  setCsrf: SetState<string>,
-  callback: AuthCallback
-): void => {
+export const checkSession = (setCsrf: SetState<string>, callback: AuthCallback): void => {
   axios
     .get('/api/session/')
-    .then((response: AxiosResponse<AuthResponse>) => {
-      if (response.data.userType === UserType.NONE) {
-        getCSRF(setCsrf)
-      }
-      callback(false, response.data.username, response.data.userId, response.data.userType)
-    })
-    .catch(_ => {
-      callback(true)
-    })
+    .then(successAuthResponse(callback))
+    .catch(_ => callback(true))
 }
 
 /**
@@ -66,31 +54,19 @@ export const loginAction = (
 /**
  * Register user by calling API server.
  *
- * @param username user inputted username.
- * @param email user inputted email.
- * @param password user inputted password.
- * @param confPassword user inputted confirm password.
- * @param userType the type of user registering.
+ * @param info object containing all the info needed to register new user.
  * @param setError set state function for error message from API server.
  * @param callback
  */
-export const registerAction = (
-  username: string,
-  email: string,
-  password: string,
-  confPassword: string,
-  userType: UserType,
-  setError: SetState<string>,
-  callback: AuthCallback
-): void => {
+export const registerAction = (info: RegisterInfo, setError: SetState<string>, callback: AuthCallback): void => {
   // Check two passwords match
-  if (password !== confPassword) {
+  if (info.password !== info.confirmPassword) {
     setError(confirmPassFails)
     return
   }
 
   axios
-    .post('/api/register/', { email, username, password, is_influencer: userType === UserType.INFLUENCER })
+    .post('/api/register/', info)
     .then(successAuthResponse(callback))
     .catch((error: AxiosError<RegisterValidation>) => {
       if (error.response!.data.username !== undefined) {
@@ -111,10 +87,7 @@ export const registerAction = (
 export const logoutAction = (setCsrf: SetState<string>, callback: AuthCallback): void => {
   axios
     .get('/api/logout/')
-    .then(_ => {
-      getCSRF(setCsrf)
-      callback(false)
-    })
+    .then(_ => callback(false))
     .catch(error => console.log(error))
 }
 

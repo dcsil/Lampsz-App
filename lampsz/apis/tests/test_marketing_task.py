@@ -88,6 +88,15 @@ class TestMarketingTaskDetail(APITestCase):
         self.assertEqual(response.data["posted_date"], "2022-12-02")
         self.assertEqual(response.data["compensation"], 140.0)
 
+    def test_get_non_existent_task(self) -> None:
+        """
+        Ensure get task detail API fails with a message when requested task
+        doesn't exist.
+        """
+        url = reverse("marketing_task_detail", kwargs={"pk": 10000})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
     def test_put_task_detail(self) -> None:
         """
         Ensure put task detail API correctly update the task with given ID

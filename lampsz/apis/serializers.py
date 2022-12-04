@@ -2,6 +2,15 @@ from rest_framework import serializers
 
 from lampsz.apis.models import Company, Influencer, MarketingTask, User
 
+__all__ = [
+    "UserSerializer",
+    "PublicUserSerializer",
+    "InfluencerSerializer",
+    "CompanySerializer",
+    "MarketingTaskSerializer",
+    "PublicInfluencerSerializer",
+]
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

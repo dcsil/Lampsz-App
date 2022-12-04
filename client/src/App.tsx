@@ -16,6 +16,9 @@ const theme = createTheme({
     },
     primary: {
       main: indigo[700]
+    },
+    background: {
+      default: '#f7f7f7'
     }
   },
   typography: {

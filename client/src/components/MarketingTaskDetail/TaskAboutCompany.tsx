@@ -26,7 +26,7 @@ export default function TaskAboutCompany (
 ): JSX.Element {
   return (
     <React.Fragment>
-      <Card sx={{ boxShadow: 'none', m: 2, mb: 3 }}>
+      <Card sx={{ boxShadow: 'none', m: 2, mb: 3, backgroundColor: 'inherit' }}>
         <Box display="flex">
           <Box sx={{ mr: 3 }}>
             <Avatar alt="company-logo" sx={{ width: '100px', height: '100px' }}/>
@@ -38,7 +38,7 @@ export default function TaskAboutCompany (
         </Box>
       </Card>
 
-      <Card sx={{ boxShadow: 'none', border: '1px solid grey' }}>
+      <Card sx={{ p: 2, border: '1px solid grey' }}>
         <Box p={2}>
           <TaskInfoItems label="Location" text={companyLocation || 'No Location Provided'}/>
           <TaskInfoItems label="Industry" text={industry || 'No Industry Provided'}/>

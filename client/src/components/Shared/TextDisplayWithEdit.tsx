@@ -7,9 +7,11 @@ import EditIcon from '@mui/icons-material/Edit'
 interface TextDisplayWithEditProps {
   title: string
   text: string
+  showEdit?: boolean
+  editAction?: VoidFunction
 }
 
-export default function TextDisplayWithEdit ({ title, text }: TextDisplayWithEditProps): JSX.Element {
+export default function TextDisplayWithEdit (props: TextDisplayWithEditProps): JSX.Element {
   return (
     <React.Fragment>
       <Box
@@ -19,16 +21,18 @@ export default function TextDisplayWithEdit ({ title, text }: TextDisplayWithEdi
         margin={2}
         marginBottom={0}
       >
-        <Typography variant="h6" fontWeight="medium">{title}</Typography>
-        <Typography variant="body2" color="secondary">
-          <Tooltip title="Edit Description" placement="top">
-            <EditIcon/>
-          </Tooltip>
-        </Typography>
+        <Typography variant="h6" fontWeight="medium">{props.title}</Typography>
+        {props.showEdit && (
+          <Typography variant="body2" color="secondary">
+            <Tooltip title="Edit Description" placement="top">
+              <EditIcon onClick={props.editAction}/>
+            </Tooltip>
+          </Typography>
+        )}
       </Box>
       <Box p={2}>
         <Typography variant="body1" color="text.secondary" fontWeight="light">
-          {text}
+          {props.text}
         </Typography>
       </Box>
     </React.Fragment>

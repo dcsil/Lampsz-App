@@ -1,6 +1,6 @@
 import { AuthCallback, SetState, UserType } from '../utils/types'
 import * as React from 'react'
-import { checkSession, loginAction, logoutAction, registerAction } from '../actions/auth'
+import { checkSession, loginAction, logoutAction, registerAction, RegisterInfo } from '../actions/auth'
 
 interface AuthContextType {
   // States
@@ -14,15 +14,7 @@ interface AuthContextType {
   setUserType: SetState<UserType>
   // Custom functions
   login: (loginUsername: string, password: string, setError: SetState<string>, callback: VoidFunction) => void
-  register: (
-    newUsername: string,
-    email: string,
-    password: string,
-    confPassword: string,
-    userType: UserType,
-    setError: SetState<string>,
-    callback: VoidFunction
-  ) => void
+  register: (info: RegisterInfo, setError: SetState<string>, callback: VoidFunction) => void
   session: VoidFunction
   logout: (callback: VoidFunction) => void
 }
@@ -70,24 +62,12 @@ export function AuthProvider ({ children }: { children: React.ReactNode }): JSX.
    * Wrapper around register API server call that automatically updates
    * authenticated user data.
    *
-   * @param newUsername user inputted new username.
-   * @param email user inputted email for new account.
-   * @param password user inputted new password.
-   * @param confPassword user inputted confirm password.
-   * @param userType the type of user registering.
+   * @param info object containing all the info needed to register new user.
    * @param setError set state function for error message from API server.
    * @param callback callback called after success API server call (e.g., use for navigation).
    */
-  const register = (
-    newUsername: string,
-    email: string,
-    password: string,
-    confPassword: string,
-    userType: UserType,
-    setError: SetState<string>,
-    callback: VoidFunction
-  ): void => {
-    registerAction(newUsername, email, password, confPassword, userType, setError, createAuthCallback(callback))
+  const register = (info: RegisterInfo, setError: SetState<string>, callback: VoidFunction): void => {
+    registerAction(info, setError, createAuthCallback(callback))
   }
 
   /**

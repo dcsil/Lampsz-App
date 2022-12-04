@@ -1,4 +1,5 @@
 import { FormFieldEvent, NavItem, SetState, UserType } from './types'
+import Cookies from 'js-cookie'
 
 export const containerStyle = {
   contentBox: {
@@ -81,3 +82,18 @@ export const formFieldOnChange = (
  * Utility function to determine whether there is error or not.
  */
 export const hasError = (error: string): boolean => error !== ''
+
+/**
+ * Converts ISO string date to date in yyyy-mm-dd format.
+ */
+export const isoToDate = (isoString: string): string => {
+  return isoString.slice(0, 10).toString()
+}
+
+export const getRequestConfig = (): any => {
+  return {
+    headers: {
+      'X-CSRFTOKEN': Cookies.get('csrftoken')
+    }
+  }
+}
