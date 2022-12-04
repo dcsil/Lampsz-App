@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
@@ -104,3 +105,52 @@ def company_detail_view(request, user_id):
         company_serializer.update(company, company_data)
         return JsonResponse(company_serializer.data, status=status.HTTP_200_OK)
     return JsonResponse(company_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+<<<<<<< HEAD
+=======
+
+
+@api_view(["POST"])
+def create_marketing_task(request):
+    data = {}
+    data["company_id"] = request.data["user_id"]
+
+    data["title"] = request.data["title"]
+    data["description"] = request.data["description"]
+    data["deliverables"] = request.data["deliverables"]
+    data["compensation"] = float(request.data["compensation"])
+    data["posted_date"] = request.data["posted_date"]
+    data["end_date"] = request.data["end_date"]
+    data["location"] = request.data["location"]
+    data["image"] = request.data["image"]
+
+    serializer = serializers.MarketingTaskSerializer(data=data)
+
+    if serializer.is_valid():
+        serializer.save()
+    else:
+        print(serializer.errors)
+
+    return Response({"message": "successful"}, status=200)
+
+
+@api_view(["POST"])
+def get_marketing_tasks(request):
+    query = request.data["query"]
+    location = request.data["location"]
+
+    qs = models.MarketingTask.objects.filter(
+        Q(title__contains=query)
+        | Q(description__contains=query)
+        | Q(deliverables__contains=query)
+    )
+    if location != "":
+        qs = qs.filter(location=location)
+
+    results = []
+    for task in qs:
+        serializer = serializers.MarketingTaskSerializer(task)
+        results.append(serializer.data)
+
+    print(results)
+    return Response({"tasks": results}, status=200)
+>>>>>>> add search bar

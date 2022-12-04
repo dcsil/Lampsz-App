@@ -7,11 +7,12 @@ import { MarketingTask } from '../../utils/types'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { containerStyle } from '../../utils/utils'
+import { SearchBar } from '../Shared/SearchBar'
 
 export default function Marketplace (): JSX.Element {
   const auth = useAuth()
   const [tasks, setTasks] = useState<MarketingTask[]>([])
-
+  const [ query, setQuery ] = useState("")
   useEffect(() => {
     getTasks(auth.userId, setTasks)
   }, [])
@@ -21,6 +22,7 @@ export default function Marketplace (): JSX.Element {
       <Box display="flex" sx={{ mb: 3 }}>
         <Typography variant="h4" gutterBottom>Marketplace</Typography>
       </Box>
+      <SearchBar setTasks={setTasks}></SearchBar>
       <TasksBox tasks={tasks}></TasksBox>
     </Container>
 
