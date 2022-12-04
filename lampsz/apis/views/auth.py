@@ -14,7 +14,8 @@ from rest_framework.decorators import (
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from lampsz.apis import models, serializers
+from lampsz.apis.models import Company
+from lampsz.apis.serializers import UserSerializer
 from lampsz.apis.services import login_user
 from lampsz.apis.utils import UserType, has_unique_error
 
@@ -73,10 +74,10 @@ def register_view(request):
     Creates a new User and Company object and returns user ID, username, and
     user type if register data is valid, otherwise return the validation errors.
     """
-    user_serializer = serializers.UserSerializer(data=request.data)
+    user_serializer = UserSerializer(data=request.data)
     if user_serializer.is_valid():
         user = user_serializer.save()
-        models.Company.objects.create(user=user)
+        Company.objects.create(user=user, company_name=request.data["company_name"])
         login_user(request, user)
         messages.success(request, register_success)
         return Response(get_auth_success_data(request), status=status.HTTP_201_CREATED)

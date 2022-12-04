@@ -23,7 +23,7 @@ class MarketingTaskList(generics.ListCreateAPIView):
         queryset = MarketingTask.objects.all()
         user_id = self.request.query_params.get("user_id")
         if user_id is not None:
-            queryset = queryset.filter(company__user_id=user_id)
+            queryset = queryset.filter(company=user_id)
         return queryset
 
 
