@@ -1,10 +1,19 @@
+import datetime
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from lampsz.apis.utils import UserType
 
-__all__ = ["User", "Category", "Company", "Influencer", "MarketingTask"]
+__all__ = [
+    "User",
+    "Category",
+    "Company",
+    "Influencer",
+    "MarketingTask",
+    "TaskApplication",
+]
 
 
 class User(AbstractUser):
@@ -18,7 +27,6 @@ class User(AbstractUser):
         return UserType.INFLUENCER if self.is_influencer else UserType.BUSINESS
 
 
-# Filter classes
 class Category(models.Model):
     category = models.CharField(max_length=20)
 
@@ -65,3 +73,9 @@ class MarketingTask(models.Model):
     location = models.CharField(max_length=100, blank=True)
     image = models.ImageField(upload_to="images/", default="", blank=True)
     active = models.BooleanField(default=True)
+
+
+class TaskApplication(models.Model):
+    influencer = models.ForeignKey(Influencer, on_delete=models.CASCADE)
+    marketing_task = models.ForeignKey(MarketingTask, on_delete=models.CASCADE)
+    applied_on = models.DateField(default=datetime.date.today)
