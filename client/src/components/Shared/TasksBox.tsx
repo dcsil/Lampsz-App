@@ -8,18 +8,10 @@ export default function TasksBox ({ tasks }: { tasks: MarketingTask[] }): JSX.El
   return (
     <Box sx={{ display: 'flex' }}>
       <Grid container spacing={5}>
-        {tasks.map((item, index) =>
+        {tasks.map((taskData, index) =>
           (
-            <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4} key={index}>
-              <MarketingTaskCard
-                title={item.title}
-                description={item.description}
-                compensation={item.compensation}
-                postedDate={item.postedDate}
-                endDate={item.endDate}
-                location={item.location}
-                image={item.image}
-              />
+            <Grid item xs={12} md={4} lg={3} key={index}>
+              <MarketingTaskCard taskData={taskData}/>
             </Grid>
           )
         )}
