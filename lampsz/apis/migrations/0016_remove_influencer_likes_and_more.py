@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("apis", "0013_delete_location_influencer_channel_id"),
+        ("apis", "0015_influencer_channel_id"),
     ]
 
     operations = [

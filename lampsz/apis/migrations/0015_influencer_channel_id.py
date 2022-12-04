@@ -6,13 +6,10 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("apis", "0012_merge_20221203_0109"),
+        ("apis", "0014_alter_marketingtask_image"),
     ]
 
     operations = [
-        migrations.DeleteModel(
-            name="Location",
-        ),
         migrations.AddField(
             model_name="influencer",
             name="channel_id",
