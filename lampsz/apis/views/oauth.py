@@ -73,6 +73,7 @@ def oauth2callback(request):  # pragma: no cover
             home_page=channel_detail["channel_url"],
             thumbnail_url=channel_detail["thumbnail"],
             location=channel_detail["country"],
+            channel_id=channel_detail["id"],
         )
         influencer.save()
 
