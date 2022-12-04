@@ -31,16 +31,7 @@ class InfluencerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Influencer
-        fields = [
-            "user",
-            "location",
-            "categories",
-            "thumbnail_url",
-            "home_page",
-            "description",
-            "platform",
-            "age",
-        ]
+        fields = "__all__"
         depth = 2
 
     def create(self, validated_data):
@@ -58,6 +49,7 @@ class InfluencerSerializer(serializers.ModelSerializer):
         instance.shortBio = validated_data.pop("shortBio")
         instance.save()
         return instance
+
 
 class CompanySerializer(serializers.ModelSerializer):
     user = PublicUserSerializer(required=True)
