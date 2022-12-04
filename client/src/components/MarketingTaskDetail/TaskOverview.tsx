@@ -6,12 +6,14 @@ import TextDisplayWithEdit from '../Shared/TextDisplayWithEdit'
 import TaskInfoItems from './TaskInfoItems'
 import { MarketingTask } from '../../utils/types'
 import MarketingTaskForm from '../MyMarketingTasks/MarketingTaskForm'
+import useAuth from '../../hooks/AuthHook'
 
 export default function TaskOverview ({ taskData }: { taskData: MarketingTask }): JSX.Element {
+  const auth = useAuth()
   const [dialogOpen, setDialogOpen] = React.useState(false)
 
   return (
-    <Card sx={{ boxShadow: 'none' }}>
+    <Card sx={{ p: 2 }}>
       <MarketingTaskForm
         closeDialog={() => setDialogOpen(false)}
         open={dialogOpen}
@@ -21,7 +23,7 @@ export default function TaskOverview ({ taskData }: { taskData: MarketingTask })
       <TextDisplayWithEdit
         title="Description"
         text={taskData.description || 'No Description Provided'}
-        showEdit
+        showEdit={auth.userId === taskData.company.user.id}
         editAction={() => setDialogOpen(true)}
       />
       <Divider/>

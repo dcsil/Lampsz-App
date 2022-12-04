@@ -36,7 +36,7 @@ export default function MarketingTaskDetail (): JSX.Element {
         >
           <Tab label="Overview"/>
           <Tab label="About the Company"/>
-          {taskData.company.user.userId === auth.userId && <Tab label="Applicants"/>}
+          {taskData.company.user.id === auth.userId && <Tab label="Applicants"/>}
         </Tabs>
       </AppBar>
       <TabPanel value={tabValue} index={0}>
