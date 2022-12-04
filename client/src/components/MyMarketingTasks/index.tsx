@@ -29,7 +29,10 @@ export default function MyMarketingTasks (): JSX.Element {
       </Box>
 
       <MarketingTaskForm open={open} closeDialog={() => setOpen(false)} isCreate={true}/>
-      <TasksBox tasks={tasks}></TasksBox>
+      {tasks.length > 0
+        ? <TasksBox tasks={tasks}></TasksBox>
+        : <Typography>No Marketing Task.</Typography>
+      }
     </Container>
   )
 }
