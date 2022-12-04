@@ -8,8 +8,9 @@ from lampsz.apis.tests.utils import create_test_company_user, create_test_market
 
 class TestMarketingTaskList(APITestCase):
     def setUp(self) -> None:
-        _, self.company = create_test_company_user()
+        user, self.company = create_test_company_user()
         self.test_task = create_test_marketing_task(self.company)
+        self.client.force_login(user)
 
     def test_get_all_tasks(self) -> None:
         """
@@ -56,8 +57,9 @@ class TestMarketingTaskList(APITestCase):
 
 class TestMarketingTaskDetail(APITestCase):
     def setUp(self) -> None:
-        _, self.company = create_test_company_user()
+        user, self.company = create_test_company_user()
         self.test_task = create_test_marketing_task(self.company)
+        self.client.force_login(user)
 
     def test_get_task_detail(self) -> None:
         """

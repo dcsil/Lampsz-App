@@ -3,6 +3,7 @@ from django.db.models import Q
 from django.http import Http404
 from rest_framework import generics
 from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from lampsz.apis.models import MarketingTask
@@ -16,6 +17,7 @@ class MarketingTaskList(generics.ListCreateAPIView):
     Generic view for retrieving all marketing task and creating new task.
     """
 
+    permission_classes = [IsAuthenticated]
     serializer_class = MarketingTaskSerializer
 
     def get_queryset(self):
@@ -35,6 +37,7 @@ class MarketingTaskDetail(generics.RetrieveUpdateDestroyAPIView):
     Generic view for retrieve, update and remove marketing task details.
     """
 
+    permission_classes = [IsAuthenticated]
     queryset = MarketingTask.objects.all()
     serializer_class = MarketingTaskSerializer
 
