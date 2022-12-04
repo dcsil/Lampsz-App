@@ -66,10 +66,7 @@ export const updateMarketingTask = (
 export const deleteMarketingTask = (taskId: number, callback: VoidFunction): void => {
   axios
     .delete(`/api/tasks/${taskId}`, getRequestConfig())
-    .then(response => {
-      callback()
-      console.log(response)
-    })
+    .then(_ => callback())
     .catch(error => console.log(error))
 }
 
@@ -83,9 +80,6 @@ export const deleteMarketingTask = (taskId: number, callback: VoidFunction): voi
 export const changeMarketingTaskState = (taskId: number, active: boolean, callback: VoidFunction): void => {
   axios
     .patch(`/api/tasks/${taskId}`, { active }, getRequestConfig())
-    .then(response => {
-      callback()
-      console.log(response)
-    })
+    .then(_ => callback())
     .catch(error => console.log(error))
 }
