@@ -10,12 +10,12 @@ import TaskAboutCompany from './TaskAboutCompany'
 import { useLoaderData } from 'react-router-dom'
 import { MarketingTask } from '../../utils/types'
 import useAuth from '../../hooks/AuthHook'
+import Alert from '@mui/material/Alert'
 
 export default function MarketingTaskDetail (): JSX.Element {
   const [tabValue, setTabValue] = React.useState(0)
-  const taskData = useLoaderData() as MarketingTask
+  const { company, active } = useLoaderData() as MarketingTask
   const auth = useAuth()
-  console.log(taskData)
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number): void => {
     setTabValue(newValue)
@@ -23,7 +23,8 @@ export default function MarketingTaskDetail (): JSX.Element {
 
   return (
     <Container component="main" maxWidth="lg" sx={containerStyle.contentContainer}>
-      <TaskHeader title={taskData.title} companyName={taskData.company.companyName}/>
+      {!active && <Alert severity="warning" sx={{ mb: 3 }}>This marketing task is no longer active.</Alert>}
+      <TaskHeader/>
 
       <AppBar position="static" sx={{ mt: 2, borderRadius: 2 }}>
         <Tabs
@@ -36,20 +37,14 @@ export default function MarketingTaskDetail (): JSX.Element {
         >
           <Tab label="Overview"/>
           <Tab label="About the Company"/>
-          {taskData.company.user.id === auth.userId && <Tab label="Applicants"/>}
+          {company.user.id === auth.userId && <Tab label="Applicants"/>}
         </Tabs>
       </AppBar>
       <TabPanel value={tabValue} index={0}>
-        <TaskOverview taskData={taskData}/>
+        <TaskOverview/>
       </TabPanel>
       <TabPanel value={tabValue} index={1}>
-        <TaskAboutCompany
-          companyName={taskData.company.companyName}
-          shortBio={taskData.company.shortBio}
-          companyLocation={taskData.company.location}
-          industry={taskData.company.industry}
-          companyDescription={taskData.company.description}
-        />
+        <TaskAboutCompany/>
       </TabPanel>
       <TabPanel value={tabValue} index={2}>
         Item Three
