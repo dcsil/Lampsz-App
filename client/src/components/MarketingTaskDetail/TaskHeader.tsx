@@ -13,6 +13,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContentText from '@mui/material/DialogContentText'
+import { createApplication, deleteApplication } from '../../actions/taskApplication'
 
 enum Actions {
   CLOSE,
@@ -83,15 +84,47 @@ function ConfirmationDialog (
   )
 }
 
+function TaskOwnerActionButtons ({ onClick }: { onClick: (action: Actions) => void }): JSX.Element {
+  const { active } = useLoaderData() as MarketingTask
+
+  return (
+    <Stack p={1} spacing={1}>
+      <React.Fragment>
+        <Button variant="contained" color="error" onClick={() => onClick(Actions.DELETE)}>Delete Task</Button>
+        {active
+          ? <Button variant="contained" color="warning" onClick={() => onClick(Actions.CLOSE)}>Close Task</Button>
+          : <Button variant="contained" color="info" onClick={() => onClick(Actions.REOPEN)}>Re-open Task</Button>
+        }
+      </React.Fragment>
+    </Stack>
+  )
+}
+
+function InfluencerActionButtons (): JSX.Element {
+  const auth = useAuth()
+  const { id } = useLoaderData() as MarketingTask
+
+  React.useEffect(() => {
+
+  }, [])
+
+  return (
+    <Stack p={1} spacing={1}>
+      <Button variant="contained" color="info" onClick={() => createApplication(auth.userId, id)}>Apply</Button>
+      <Button variant="contained" color="error" onClick={() => deleteApplication()}>Unapply</Button>
+    </Stack>
+  )
+}
+
 export default function TaskHeader (): JSX.Element {
   const auth = useAuth()
-  const { title, company, id, active } = useLoaderData() as MarketingTask
+  const { title, company, id } = useLoaderData() as MarketingTask
   const [open, setOpen] = React.useState(false)
   const [dialogTitle, setDialogTitle] = React.useState('')
   const [dialogDescription, setDialogDescription] = React.useState('')
   const [action, setAction] = React.useState<Actions>(Actions.REOPEN)
 
-  const onClick = (action: Actions): void => {
+  const taskOwnerActions = (action: Actions): void => {
     switch (action) {
       case Actions.CLOSE:
         setDialogTitle(closeTaskTitle)
@@ -131,18 +164,8 @@ export default function TaskHeader (): JSX.Element {
           </Box>
         </Box>
 
-        <Stack p={1} spacing={1}>
-          {auth.userType === UserType.INFLUENCER && <Button variant="contained" color="info">Apply</Button>}
-          {auth.userId === company.user.id && (
-            <React.Fragment>
-              <Button variant="contained" color="error" onClick={() => onClick(Actions.DELETE)}>Delete Task</Button>
-              {active
-                ? <Button variant="contained" color="warning" onClick={() => onClick(Actions.CLOSE)}>Close Task</Button>
-                : <Button variant="contained" color="info" onClick={() => onClick(Actions.REOPEN)}>Re-open Task</Button>
-              }
-            </React.Fragment>
-          )}
-        </Stack>
+        {auth.userType === UserType.INFLUENCER && <InfluencerActionButtons/>}
+        {auth.userId === company.user.id && <TaskOwnerActionButtons onClick={taskOwnerActions}/>}
       </Box>
     </React.Fragment>
   )
