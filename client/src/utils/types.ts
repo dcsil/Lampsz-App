@@ -27,13 +27,12 @@ export interface NavItem {
 }
 
 export interface UserData {
-  userId: number
+  id: number
   username: string
 }
 
 export interface CompanyData {
   user: UserData
-  id: number
   companyName: string
   description: string
   industry: string

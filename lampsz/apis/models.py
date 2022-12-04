@@ -4,13 +4,17 @@ from django.utils.translation import gettext_lazy as _
 
 from lampsz.apis.utils import UserType
 
+__all__ = ["User", "Category", "Company", "Influencer", "MarketingTask"]
+
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     is_influencer = models.BooleanField(default=False)
 
     def get_user_type(self):
-        """Returns UserType enum for current user."""
+        """
+        Returns UserType enum for current user.
+        """
         return UserType.INFLUENCER if self.is_influencer else UserType.BUSINESS
 
 
@@ -23,7 +27,7 @@ class Influencer(models.Model):
     class SocialPlatform(models.TextChoices):
         YOUTUBE = "YT", _("Youtube")
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     platform = models.CharField(
         max_length=10, choices=SocialPlatform.choices, default=SocialPlatform.YOUTUBE
     )
@@ -39,7 +43,7 @@ class Influencer(models.Model):
 
 
 class Company(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     company_name = models.CharField(max_length=100)
     location = models.CharField(blank=True, max_length=100)
     categories = models.ManyToManyField(Category, blank=True)
@@ -59,4 +63,4 @@ class MarketingTask(models.Model):
     posted_date = models.DateField(null=False, blank=False)
     end_date = models.DateField(null=True, blank=True)
     location = models.CharField(max_length=100, blank=True)
-    image = models.ImageField(upload_to="images/", default="")
+    image = models.ImageField(upload_to="images/", default="", blank=True)

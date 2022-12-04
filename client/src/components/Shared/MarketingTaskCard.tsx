@@ -5,47 +5,38 @@ import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
+import { MarketingTask } from '../../utils/types'
 
-interface MarketingTaskCardProp {
-  title: string
-  description: string
-  compensation: number
-  postedDate: string
-  endDate: string
-  location: string
-  image: string
-}
-
-export default function MarketingTaskCard ({ title, description, compensation, postedDate, endDate, location, image }: MarketingTaskCardProp): JSX.Element {
+export default function MarketingTaskCard ({ taskData }: { taskData: MarketingTask }): JSX.Element {
   return (
     <Card sx={{ width: '100%' }}>
       <CardMedia
         component="img"
         height={400}
-        image={image}
+        image={taskData.image}
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          {title}
+          {taskData.title}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {description}
+          {taskData.description}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {location}
+          {taskData.location}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {compensation}
+          {taskData.compensation}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {postedDate}
+          {taskData.postedDate}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {endDate}
+          {taskData.endDate}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" href="/tasks/1">View Details</Button>
+        <Button size="small" href={`/tasks/${taskData.id}`}>View Details</Button>
       </CardActions>
     </Card>
   )

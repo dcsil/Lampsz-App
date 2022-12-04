@@ -22,7 +22,6 @@ urlpatterns = [
     path("login/", auth.login_view, name="login"),
     path("logout/", auth.logout_view, name="logout"),
     path("session/", auth.get_session_view, name="session"),
-    path("csrf/", auth.get_csrf_view, name="csrf"),
     path("messages/", auth.get_auth_messages_view, name="messages"),
 ]
 

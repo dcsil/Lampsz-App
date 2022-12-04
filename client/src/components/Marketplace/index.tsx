@@ -4,6 +4,9 @@ import useAuth from '../../hooks/AuthHook'
 import { Container } from '@mui/system'
 import { getTasks } from '../../actions/tasks'
 import { MarketingTask } from '../../utils/types'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import { containerStyle } from '../../utils/utils'
 
 export default function Marketplace (): JSX.Element {
   const auth = useAuth()
@@ -13,21 +16,11 @@ export default function Marketplace (): JSX.Element {
     getTasks(auth.userId, setTasks)
   }, [])
 
-  // const getTasks = () => {
-  //   axios.get('/api/tasks?' + 'user_id=' + String(auth.userId), {
-  //       headers: {
-  //         'X-CSRFTOKEN': getCookie('csrftoken')
-  //       }
-  //   })
-  //   .then(response => {
-  //     setTasks(response.data)
-  //     console.log(response.data)
-  //   })
-  //   .catch(error => console.log(error))
-  // }
   return (
-
-    <Container component="main" maxWidth="lg">
+    <Container component="main" maxWidth="lg" sx={containerStyle.contentContainer}>
+      <Box display="flex" sx={{ mb: 3 }}>
+        <Typography variant="h4" gutterBottom>Marketplace</Typography>
+      </Box>
       <TasksBox tasks={tasks}></TasksBox>
     </Container>
 

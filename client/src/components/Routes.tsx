@@ -64,7 +64,13 @@ const router = createBrowserRouter([
         <MarketingTaskDetail/>
       </RequireAuth>
     ),
-    loader: async ({ params }) => loaderDataOrHome(await getMarketingTaskData(params.taskId!))
+    loader: async ({ params }) => {
+      try {
+        return await getMarketingTaskData(params.taskId!)
+      } catch (_) {
+        return redirect('/')
+      }
+    }
   },
   {
     path: '/profile/:userId',
@@ -149,12 +155,4 @@ function AuthRoutes ({ children }: { children: JSX.Element }): JSX.Element {
     return <Navigate to="/" replace/>
   }
   return <NavWrapper>{children}</NavWrapper>
-}
-
-function loaderDataOrHome (data: any): Response {
-  try {
-    return data
-  } catch (_) {
-    return redirect('/')
-  }
 }

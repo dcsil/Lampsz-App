@@ -1,6 +1,5 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
-import { UserType } from '../../utils/types'
 import { useNavigate } from 'react-router-dom'
 import { containerStyle, formFieldOnChange, hasError } from '../../utils/utils'
 import AuthTitle from './AuthTitle'
@@ -24,8 +23,9 @@ const styles = {
 export default function BusinessSignup (): JSX.Element {
   const [username, setUsername] = React.useState('')
   const [email, setEmail] = React.useState('')
+  const [companyName, setCompanyName] = React.useState('')
   const [password, setPassword] = React.useState('')
-  const [confPassword, setConfPassword] = React.useState('')
+  const [confirmPassword, setConfirmPassword] = React.useState('')
   const [error, setError] = React.useState('')
   const auth = useAuth()
   const navigate = useNavigate()
@@ -39,7 +39,8 @@ export default function BusinessSignup (): JSX.Element {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
-    auth.register(username, email, password, confPassword, UserType.BUSINESS, setError, () => {
+    const registerInfo = { username, companyName, email, password, confirmPassword, is_influencer: false }
+    auth.register(registerInfo, setError, () => {
       navigate('/')
       toast.getToastMessage()
     })
@@ -55,6 +56,11 @@ export default function BusinessSignup (): JSX.Element {
           onChange={formFieldOnChange(setUsername, setError)}
         />
         <FormTextField
+          id="company-name" label="Company Name"
+          error={hasError(error)} value={companyName}
+          onChange={formFieldOnChange(setCompanyName, setError)}
+        />
+        <FormTextField
           id="email" label="Email Address" autoComplete="email"
           error={hasError(error)} value={email}
           onChange={formFieldOnChange(setEmail, setError)}
@@ -66,8 +72,8 @@ export default function BusinessSignup (): JSX.Element {
         />
         <FormTextField
           id="confirm-password" label="Confirm Password" type="password"
-          error={hasError(error)} value={confPassword} errorMsg={error}
-          onChange={formFieldOnChange(setConfPassword, setError)}
+          error={hasError(error)} value={confirmPassword} errorMsg={error}
+          onChange={formFieldOnChange(setConfirmPassword, setError)}
         />
         <Button type="submit" fullWidth variant="contained" sx={styles.signinButton}>
           Sign Up
