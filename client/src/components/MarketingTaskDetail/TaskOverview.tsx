@@ -11,9 +11,11 @@ import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import CardMedia from '@mui/material/CardMedia'
 import CardContent from '@mui/material/CardContent'
+import { useLoaderData } from 'react-router-dom'
 
-export default function TaskOverview ({ taskData }: { taskData: MarketingTask }): JSX.Element {
+export default function TaskOverview (): JSX.Element {
   const auth = useAuth()
+  const taskData = useLoaderData() as MarketingTask
   const [dialogOpen, setDialogOpen] = React.useState(false)
 
   return (

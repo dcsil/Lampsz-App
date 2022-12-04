@@ -35,9 +35,9 @@ class MarketingTaskDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = MarketingTask.objects.all()
     serializer_class = MarketingTaskSerializer
 
-    def get_object(self):
+    def get(self, request, *args, **kwargs):
         try:
-            return super().get_object()
+            return super().get(request, *args, **kwargs)
         except Http404:
             messages.error(self.request, "Trying to access non-existent marketing task")
             raise Http404

@@ -52,6 +52,7 @@ export interface MarketingTask {
   title: string
   location: string
   image: string
+  active: boolean
 }
 
 // Enums

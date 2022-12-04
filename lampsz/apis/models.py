@@ -65,3 +65,4 @@ class MarketingTask(models.Model):
     end_date = models.DateField(null=True, blank=True)
     location = models.CharField(max_length=100, blank=True)
     image = models.ImageField(upload_to="images/", default="", blank=True)
+    active = models.BooleanField(default=True)

@@ -51,6 +51,7 @@ export default function MarketingTaskForm (
     uploadData.append('postedDate', isoToDate(new Date().toISOString()))
     uploadData.append('endDate', isoToDate(endDate.toISOString()))
     uploadData.append('location', location)
+    uploadData.append('active', String(true))
     if (image !== null) {
       uploadData.append('image', image)
     }
@@ -121,7 +122,7 @@ export default function MarketingTaskForm (
         </DialogContent>
         <DialogActions>
           <Button onClick={closeDialog}>Cancel</Button>
-          <Button type="submit">{isCreate ? 'Create' : 'Edit'}</Button>
+          <Button type="submit">{isCreate ? 'Create' : 'Save'}</Button>
         </DialogActions>
       </Box>
     </Dialog>
