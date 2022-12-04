@@ -63,6 +63,7 @@ class TestRegister(APITestCase):
         data = {
             "username": "test",
             "email": "test@email.com",
+            "company_name": "test_company",
             "password": "correct",
             "is_influencer": False,
         }
