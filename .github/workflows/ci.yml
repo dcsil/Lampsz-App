@@ -26,6 +26,7 @@ jobs:
       # postgres://user:password@host:port/database
       DATABASE_URL: "postgres://postgres:postgres@localhost:5432/postgres"
       GOOGLE_CLIENT_SECRETS: "{}"
+      GOOGLE_API_KEY: "test"
 
     steps:
       - uses: actions/checkout@v3

@@ -1,5 +1,6 @@
 from typing import Any
 
+import requests
 from django.conf import settings
 from django.contrib.auth import login
 from django.core.handlers.wsgi import WSGIRequest
@@ -134,3 +135,42 @@ def get_youtube_channel_details(
         "thumbnail": snippet["thumbnails"]["default"]["url"],
         "country": snippet.get("country", ""),
     }
+
+
+def get_youtube_channel_detail(data: dict, channel_id: str) -> None:
+    url = (
+        "https://youtube.googleapis.com/youtube/v3/channels?"
+        f"part=contentDetails%2Cstatistics&id={channel_id}&key={settings.GOOGLE_API_KEY}"
+    )
+    channel_data = requests.get(url).json()
+    subscribers, views, videos = 0, 0, 0
+    for item in channel_data["items"]:
+        subscribers += int(item["statistics"]["subscriberCount"])
+        views += int(item["statistics"]["viewCount"])
+        videos += int(item["statistics"]["videoCount"])
+    data["subscribers"] = subscribers
+    data["views"] = views
+    data["videos"] = videos
+    get_youtube_playlist_detail(
+        data,
+        [
+            i["contentDetails"]["relatedPlaylists"]["uploads"]
+            for i in channel_data["items"]
+        ],
+    )
+
+
+def get_youtube_playlist_detail(data: dict, playlist_ids: list) -> None:
+    video_lists = []
+    for playlist_id in playlist_ids:
+        url = (
+            "https://youtube.googleapis.com/youtube/v3/playlistItems?"
+            f"part=snippet&playlistId={playlist_id}&key={settings.GOOGLE_API_KEY}"
+        )
+        playlist_data = requests.get(url).json()
+        for item in playlist_data["items"]:
+            video_lists.append(
+                "https://www.youtube.com/watch?v="
+                + item["snippet"]["resourceId"]["videoId"]
+            )
+    data["video_lists"] = video_lists
