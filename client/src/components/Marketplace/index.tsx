@@ -18,7 +18,7 @@ export default function Marketplace (): JSX.Element {
   }, [])
 
   return (
-    <Container component="main" maxWidth="lg" sx={containerStyle.contentContainer}>
+    <Container component="main" maxWidth={false} sx={{width: '90%'}}>
       <Box display="flex" sx={{ mb: 3 }}>
         <Typography variant="h4" gutterBottom>Marketplace</Typography>
       </Box>

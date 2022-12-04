@@ -7,6 +7,7 @@ import { Box } from "@mui/material";
 import { Button} from "@mui/material";
 import axios from "axios";
 import Cookies from 'js-cookie'
+import { getRequestConfig } from "../../utils/utils";
 
 export function SearchBar({setTasks} : {setTasks:Function}): JSX.Element {
   const [query, setQuery ] = useState("");
@@ -31,11 +32,7 @@ export function SearchBar({setTasks} : {setTasks:Function}): JSX.Element {
 
   const search = () => {
     axios
-        .post(("/api/get_tasks/"), {"query": query, "location": location} ,{
-        headers: {
-            'X-CSRFTOKEN': Cookies.get('csrftoken')
-        }
-        })
+        .post(("/api/get_tasks/"), {"query": query, "location": location}, getRequestConfig())
         .then(response => {
             console.log(response.data)
             setTasks(response.data["tasks"])
@@ -47,10 +44,6 @@ export function SearchBar({setTasks} : {setTasks:Function}): JSX.Element {
     width: 33,
     height: 33
   }
-  const boxStyle =  {
-    "margin-top": 20,
-    "margin-bottom": 20
-  }
 
   const buttonMargins = {
     "margin-left": 17,
@@ -59,7 +52,7 @@ export function SearchBar({setTasks} : {setTasks:Function}): JSX.Element {
 
   return (
     <div className="search">
-        <Box sx={boxStyle}>
+        <Box marginTop={1} marginBottom={5}>
             <IconButton >
                 <SearchIcon style={iconStyle}/>
             </IconButton>

@@ -1,9 +1,7 @@
-from django.db.models import Q
 from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
-from rest_framework.response import Response
 
 from lampsz.apis import models, serializers, utils
 
@@ -106,25 +104,3 @@ def company_detail_view(request, user_id):
         company_serializer.update(company, company_data)
         return JsonResponse(company_serializer.data, status=status.HTTP_200_OK)
     return JsonResponse(company_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(["POST"])
-def get_marketing_tasks(request):
-    query = request.data["query"]
-    location = request.data["location"]
-
-    qs = models.MarketingTask.objects.filter(
-        Q(title__contains=query)
-        | Q(description__contains=query)
-        | Q(deliverables__contains=query)
-    )
-    if location != "":
-        qs = qs.filter(location=location)
-
-    results = []
-    for task in qs:
-        serializer = serializers.MarketingTaskSerializer(task)
-        results.append(serializer.data)
-
-    print(results)
-    return Response({"tasks": results}, status=200)

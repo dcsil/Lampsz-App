@@ -1,6 +1,9 @@
 from django.contrib import messages
+from django.db.models import Q
 from django.http import Http404
 from rest_framework import generics
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 from lampsz.apis.models import MarketingTask
 from lampsz.apis.serializers import MarketingTaskSerializer
@@ -41,3 +44,25 @@ class MarketingTaskDetail(generics.RetrieveUpdateDestroyAPIView):
         except Http404:
             messages.error(self.request, "Trying to access non-existent marketing task")
             raise Http404
+
+
+@api_view(["POST"])
+def get_marketing_tasks(request):
+    query = request.data["query"]
+    location = request.data["location"]
+
+    qs = MarketingTask.objects.filter(
+        Q(title__contains=query)
+        | Q(description__contains=query)
+        | Q(deliverables__contains=query)
+    )
+    if location != "":
+        qs = qs.filter(location=location)
+
+    results = []
+    for task in qs:
+        serializer = MarketingTaskSerializer(task)
+        results.append(serializer.data)
+
+    print(results)
+    return Response({"tasks": results}, status=200)
