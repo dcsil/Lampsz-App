@@ -23,14 +23,17 @@ def public_user_detail(request, user_id):
     if user.get_user_type() == utils.UserType.INFLUENCER:
         influencer_serializer = serializers.InfluencerSerializer(influencer, many=False)
         data = dict(influencer_serializer.data)
-        data.update({"user_type": user.get_user_type().value})
+        data["user_type"] = user.get_user_type().value
         data.update(services.get_youtube_channel_detail_by_id(influencer.channel_id))
         return Response(data, status=status.HTTP_200_OK)
     else:
         company_serializer = serializers.CompanySerializer(company, many=False)
         data = dict(company_serializer.data)
-        data["userType"] = user.get_user_type().value
-        data["marketing_task"] = company.marketingtask_set.all()
+        data["user_type"] = user.get_user_type().value
+        marketing_task_serializer = serializers.MarketingTaskSerializer(
+            company.marketingtask_set.all(), many=True
+        )
+        data["marketing_task"] = marketing_task_serializer.data
         return Response(data, status=status.HTTP_200_OK)
 
 
