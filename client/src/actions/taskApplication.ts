@@ -37,7 +37,7 @@ export const createApplication = (userId: number, taskId: number, callback: Void
  */
 export const deleteApplication = (userId: number, taskId: number, callback: VoidFunction): void => {
   axios
-    .delete(`/api/applications/${userId}/${taskId}`, getRequestConfig())
+    .delete(`/api/applications/${taskId}/${userId}`, getRequestConfig())
     .then(_ => callback())
     .catch(error => console.log(error))
 }
@@ -51,7 +51,14 @@ export const deleteApplication = (userId: number, taskId: number, callback: Void
  */
 export const getApplication = (userId: number, taskId: number, setApplied: SetState<boolean>): void => {
   axios
-    .get(`/api/applications/${userId}/${taskId}`, getRequestConfig())
+    .get(`/api/applications/${taskId}/${userId}`, getRequestConfig())
     .then(_ => setApplied(true))
     .catch(_ => setApplied(false))
+}
+
+export const getMarketingTaskApplicants = (taskId: number, callback: VoidFunction): void => {
+  axios
+    .get(`/api/application/${taskId}`, getRequestConfig())
+    .then(response => console.log(response))
+    .catch(error => console.log(error))
 }
