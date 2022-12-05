@@ -4,14 +4,17 @@ import Grid from '@mui/material/Grid'
 import MarketingTaskCard from '../Shared/MarketingTaskCard'
 import { MarketingTask } from '../../utils/types'
 
-export default function TasksBox ({ tasks }: { tasks: MarketingTask[] }): JSX.Element {
+export default function TasksBox ({ tasks, appliedOn }: { tasks: MarketingTask[], appliedOn?: string[] }): JSX.Element {
   return (
     <Box sx={{ display: 'flex' }}>
       <Grid container spacing={5}>
         {tasks.map((taskData, index) =>
           (
             <Grid item xs={12} md={4} lg={3} key={index}>
-              <MarketingTaskCard taskData={taskData}/>
+              <MarketingTaskCard
+                taskData={taskData}
+                appliedDate={appliedOn ? appliedOn[index] : undefined}
+              />
             </Grid>
           )
         )}

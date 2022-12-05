@@ -59,6 +59,7 @@ export interface TaskApplication {
   id: number
   influencer: number
   marketingTask: MarketingTask
+  appliedOn: string
 }
 
 // Enums
