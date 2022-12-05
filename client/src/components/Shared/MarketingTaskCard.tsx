@@ -6,37 +6,53 @@ import CardMedia from '@mui/material/CardMedia'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { MarketingTask } from '../../utils/types'
+import { CardHeader, Stack } from '@mui/material'
+import Avatar from '@mui/material/Avatar'
+import { Link } from 'react-router-dom'
+import Grid from '@mui/material/Grid'
 
-export default function MarketingTaskCard ({ taskData }: { taskData: MarketingTask }): JSX.Element {
+interface MarketingTaskCardProps {
+  taskData: MarketingTask
+  appliedDate?: string
+}
+
+export default function MarketingTaskCard ({ taskData, appliedDate }: MarketingTaskCardProps): JSX.Element {
   return (
-    <Card sx={{ width: '100%' }}>
-      <CardMedia
-        component="img"
-        height={200}
-        image={taskData.image}
+    <Card variant="outlined" sx={{ width: '100%' }}>
+      <CardHeader
+        component={Link}
+        to={`/profile/${taskData.company.user.id}`}
+        avatar={<Avatar/>}
+        title={taskData.company.companyName}
+        subheader={`${taskData.location} - ${taskData.postedDate}`}
       />
+      <CardMedia component="img" height={200} image={taskData.image}/>
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography gutterBottom variant="h6" component="div" textTransform="capitalize">
           {taskData.title}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {taskData.description}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {taskData.location}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {taskData.compensation}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {taskData.postedDate}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {taskData.endDate}
-        </Typography>
+        <Stack sx={{ mt: 1 }} spacing={1}>
+          <Typography variant="body2" color="text.secondary">
+            <strong>End date: </strong> {taskData.endDate}
+          </Typography>
+          {appliedDate &&
+            <Typography variant="body2" color="text.secondary">
+              <strong>Applied on: </strong> {appliedDate}
+            </Typography>
+          }
+        </Stack>
       </CardContent>
       <CardActions>
-        <Button size="small" href={`/tasks/${taskData.id}`}>View Details</Button>
+        <Grid container alignItems="center">
+          <Grid item xs>
+            <Button size="small" href={`/tasks/${taskData.id}`}>View Details</Button>
+          </Grid>
+          <Grid item>
+            <Typography gutterBottom variant="h6" mr={1}>
+              ${taskData.compensation}
+            </Typography>
+          </Grid>
+        </Grid>
       </CardActions>
     </Card>
   )

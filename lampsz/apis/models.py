@@ -79,3 +79,11 @@ class TaskApplication(models.Model):
     influencer = models.ForeignKey(Influencer, on_delete=models.CASCADE)
     marketing_task = models.ForeignKey(MarketingTask, on_delete=models.CASCADE)
     applied_on = models.DateField(default=datetime.date.today)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["influencer", "marketing_task"],
+                name="unique_influencer_marketing_task",
+            )
+        ]

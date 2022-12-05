@@ -1,19 +1,20 @@
 import * as React from 'react'
-import Link from '@mui/material/Link'
-import PanelTitle from '../Shared/PanelTitle'
-import { Stack } from '@mui/material'
-import Paper from '@mui/material/Paper'
-import { containerStyle } from '../../utils/utils'
+import { useState } from 'react'
+import { TaskApplication } from '../../utils/types'
+import { getAllApplications } from '../../actions/taskApplication'
+import TasksBox from '../Shared/TasksBox'
+import ListDisplay from './ListDisplay'
 
 export default function ApplicationList (): JSX.Element {
+  const [applications, setApplications] = useState<TaskApplication[]>([])
+  React.useEffect(() => getAllApplications(setApplications), [])
+
   return (
-    <Paper sx={containerStyle.contentPaper}>
-      <PanelTitle variant="h5">Your Applications</PanelTitle>
-      <Stack direction="row" spacing={2} marginTop={3}>
-      </Stack>
-      <Link color="primary" href="/applications" sx={{ mt: 3 }}>
-        See all your applications
-      </Link>
-    </Paper>
+    <ListDisplay title="Your Applications" content="applications" link="/applications">
+      <TasksBox
+        tasks={applications.slice(0, 4).map(a => a.marketingTask)}
+        appliedOn={applications.splice(0, 4).map(a => a.appliedOn)}
+      />
+    </ListDisplay>
   )
 }

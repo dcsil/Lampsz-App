@@ -55,6 +55,13 @@ export interface MarketingTask {
   active: boolean
 }
 
+export interface TaskApplication {
+  id: number
+  influencer: number
+  marketingTask: MarketingTask
+  appliedOn: string
+}
+
 // Enums
 export enum UserType {
   NONE,

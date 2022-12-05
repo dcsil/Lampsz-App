@@ -1,6 +1,7 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
+from lampsz.apis.mixins import MultipleFieldLookupMixin
 from lampsz.apis.models import TaskApplication
 from lampsz.apis.serializers import TaskApplicationSerializer
 
@@ -19,7 +20,7 @@ class TaskApplicationList(generics.ListCreateAPIView):
         return influencer.taskapplication_set.all()
 
 
-class TaskApplicationDelete(generics.DestroyAPIView):
+class TaskApplicationDelete(MultipleFieldLookupMixin, generics.RetrieveDestroyAPIView):
     """
     Generic view for deleting specific task application.
     """
@@ -27,3 +28,4 @@ class TaskApplicationDelete(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]
     queryset = TaskApplication.objects.all()
     serializer_class = TaskApplicationSerializer
+    lookup_fields = ("influencer", "marketing_task")

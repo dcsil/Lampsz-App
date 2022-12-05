@@ -19,11 +19,6 @@ export const containerStyle = {
     flexDirection: 'column',
     alignItems: 'center'
   },
-  contentPaper: {
-    p: 2,
-    display: 'flex',
-    flexDirection: 'column'
-  },
   contentContainer: {
     mt: 6,
     mb: 6

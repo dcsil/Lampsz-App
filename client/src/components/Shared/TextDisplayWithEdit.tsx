@@ -31,7 +31,7 @@ export default function TextDisplayWithEdit (props: TextDisplayWithEditProps): J
         )}
       </Box>
       <Box p={2}>
-        <Typography variant="body1" color="text.secondary" fontWeight="light">
+        <Typography variant="body1" color="text.secondary" fontWeight="light" sx={{ wordBreak: 'break-word' }}>
           {props.text}
         </Typography>
       </Box>

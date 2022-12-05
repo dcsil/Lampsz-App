@@ -1,5 +1,4 @@
 import * as React from 'react'
-import PanelTitle from '../Shared/PanelTitle'
 import { Typography } from '@mui/material'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
@@ -23,7 +22,9 @@ export default function ProfileDescription ({ description, editMode }: ProfileDe
     <Card sx={styles.card}>
       <CardContent>
         <Container>
-          <PanelTitle variant="h5">Description</PanelTitle>
+          <Typography variant="h5" color="primary" gutterBottom>
+            Description
+          </Typography>
           {
             editMode
               ? <TextField required id="Description" label="Required" defaultValue={description}/>
