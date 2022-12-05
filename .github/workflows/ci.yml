@@ -66,6 +66,7 @@ jobs:
         run: |
           source .venv/bin/activate
           coverage run --source='.' manage.py test --settings=lampsz.settings.local
+          coverage xml
 
       - name: Set up nodejs
         uses: actions/setup-node@v3
