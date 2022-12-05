@@ -28,10 +28,13 @@ def create_test_influencer_user(num: int = 0) -> tuple[User, Influencer]:
     return influencer_user, influencer
 
 
-def create_test_marketing_task(company: Company) -> MarketingTask:
+def create_test_marketing_task(company: Company = None) -> MarketingTask:
     """
     Returns a test marketing test using given Company object.
     """
+    if not company:
+        _, company = create_test_company_user()
+
     return MarketingTask.objects.create(
         company=company,
         title="Test Task",

@@ -59,4 +59,9 @@ urlpatterns += [
         task_application.TaskApplicationDetail.as_view(),
         name="task_application_detail",
     ),
+    path(
+        "applications/<int:marketing_task>",
+        task_application.MarketingTaskApplicants.as_view(),
+        name="task_applicant_list",
+    ),
 ]

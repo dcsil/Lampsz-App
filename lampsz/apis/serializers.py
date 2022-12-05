@@ -9,6 +9,7 @@ __all__ = [
     "CompanySerializer",
     "MarketingTaskSerializer",
     "TaskApplicationSerializer",
+    "TaskApplicationInfluencerSerializer",
 ]
 
 
@@ -86,6 +87,14 @@ class TaskApplicationSerializer(serializers.ModelSerializer):
     marketing_task_id = serializers.PrimaryKeyRelatedField(
         queryset=MarketingTask.objects.all(), write_only=True, source="marketing_task"
     )
+
+    class Meta:
+        model = TaskApplication
+        fields = "__all__"
+
+
+class TaskApplicationInfluencerSerializer(serializers.ModelSerializer):
+    influencer = InfluencerSerializer(read_only=True)
 
     class Meta:
         model = TaskApplication
