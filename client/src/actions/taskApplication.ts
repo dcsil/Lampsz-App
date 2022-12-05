@@ -19,18 +19,39 @@ export const getAllApplications = (setApplications: SetState<TaskApplication[]>)
  *
  * @param userId the user ID of currently authenticated user.
  * @param taskId the ID of the task that the user is applying.
+ * @param callback callback function for successful API call.
  */
-export const createApplication = (userId: number, taskId: number): void => {
+export const createApplication = (userId: number, taskId: number, callback: VoidFunction): void => {
   axios
     .post('/api/applications/', { influencer: userId, marketingTaskId: taskId }, getRequestConfig())
-    .then(response => console.log(response))
+    .then(_ => callback())
     .catch(error => console.log(error))
 }
 
-export const deleteApplication = (): void => {
-
+/**
+ * Remove current application for task with given ID.
+ *
+ * @param userId the user ID of currently authenticated user.
+ * @param taskId the ID of the task that the user is applying.
+ * @param callback callback function for successful API call.
+ */
+export const deleteApplication = (userId: number, taskId: number, callback: VoidFunction): void => {
+  axios
+    .delete(`/api/applications/${userId}/${taskId}`, getRequestConfig())
+    .then(_ => callback())
+    .catch(error => console.log(error))
 }
 
-export const getApplication = (): void => {
-
+/**
+ * Calls API server to determine whether user applied to task with given ID or not.
+ *
+ * @param userId the user ID of currently authenticated user.
+ * @param taskId the ID of the task that the user is applying.
+ * @param setApplied
+ */
+export const getApplication = (userId: number, taskId: number, setApplied: SetState<boolean>): void => {
+  axios
+    .get(`/api/applications/${userId}/${taskId}`, getRequestConfig())
+    .then(_ => setApplied(true))
+    .catch(_ => setApplied(false))
 }

@@ -13,7 +13,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContentText from '@mui/material/DialogContentText'
-import { createApplication, deleteApplication } from '../../actions/taskApplication'
+import { createApplication, deleteApplication, getApplication } from '../../actions/taskApplication'
 
 enum Actions {
   CLOSE,
@@ -101,17 +101,24 @@ function TaskOwnerActionButtons ({ onClick }: { onClick: (action: Actions) => vo
 }
 
 function InfluencerActionButtons (): JSX.Element {
-  const auth = useAuth()
+  const { userId } = useAuth()
+  const navigate = useNavigate()
   const { id } = useLoaderData() as MarketingTask
+  const [applied, setApplied] = React.useState(false)
 
   React.useEffect(() => {
-
+    getApplication(userId, id, setApplied)
   }, [])
+
+  const applyOnClick = (): void => createApplication(userId, id, () => navigate(0))
+  const unapplyOnClick = (): void => deleteApplication(userId, id, () => navigate(0))
 
   return (
     <Stack p={1} spacing={1}>
-      <Button variant="contained" color="info" onClick={() => createApplication(auth.userId, id)}>Apply</Button>
-      <Button variant="contained" color="error" onClick={() => deleteApplication()}>Unapply</Button>
+      {applied
+        ? <Button variant="contained" color="error" onClick={unapplyOnClick}>Unapply</Button>
+        : <Button variant="contained" color="info" onClick={applyOnClick}>Apply</Button>
+      }
     </Stack>
   )
 }
