@@ -9,10 +9,7 @@ import TasksBox from '../Shared/TasksBox'
 
 export default function MyApplications (): JSX.Element {
   const [applications, setApplications] = useState<TaskApplication[]>([])
-
-  React.useEffect(() => {
-    getAllApplications(setApplications)
-  }, [])
+  React.useEffect(() => getAllApplications(setApplications), [])
 
   return (
     <Container component="main" maxWidth="lg" sx={containerStyle.contentContainer}>
