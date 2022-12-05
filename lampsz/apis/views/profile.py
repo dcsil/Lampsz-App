@@ -19,9 +19,9 @@ def public_user_detail(request, user_id):
         models.User.DoesNotExist,
         models.Influencer.DoesNotExist,
         models.Company.DoesNotExist,
-    ) as error:
+    ):
         return Response(
-            {"message": "The User does not exist", "error": error},
+            {"message": "The User does not exist"},
             status=status.HTTP_404_NOT_FOUND,
         )
     if user.get_user_type() == utils.UserType.INFLUENCER:
