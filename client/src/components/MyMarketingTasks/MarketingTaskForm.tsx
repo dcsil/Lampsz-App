@@ -72,34 +72,30 @@ export default function MarketingTaskForm (
             <Grid item md={6}>
               <FormTextField
                 id="name" autoFocus label="Task Title"
-                value={title} margin="dense"
-                onChange={(evt) => setTitle(evt.target.value)}
+                value={title} margin="dense" setField={setTitle}
               />
             </Grid>
             <Grid item md={6}>
               <FormTextField
                 id="compensation" label="Task Compensation" margin="dense"
                 value={compensation.toString()} type="number"
-                onChange={(evt) => setCompensation(parseInt(evt.target.value))}
+                setField={(value) => setCompensation(parseInt(value))}
               />
             </Grid>
             <Grid item lg={12}>
               <FormTextField
                 id="description" label="Task Description" multiline rows={4}
-                value={description} margin="dense"
-                onChange={(evt) => setDescription(evt.target.value)}
+                value={description} margin="dense" setField={setDescription}
               />
               <FormTextField
                 id="deliverables" label="Task Deliverables" multiline rows={4}
-                value={deliverables} margin="dense"
-                onChange={(evt) => setDeliverables(evt.target.value)}
+                value={deliverables} margin="dense" setField={setDeliverables}
               />
             </Grid>
             <Grid item md={6}>
               <FormTextField
                 id="location" label="Location"
-                value={location} margin="dense"
-                onChange={(evt) => setLocation(evt.target.value)}
+                value={location} margin="dense" setField={setLocation}
               />
             </Grid>
             <Grid item md={6}>

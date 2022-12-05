@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
 import { useNavigate } from 'react-router-dom'
-import { containerStyle, formFieldOnChange, hasError } from '../../utils/utils'
+import { containerStyle, hasError } from '../../utils/utils'
 import AuthTitle from './AuthTitle'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
@@ -53,27 +53,27 @@ export default function BusinessSignup (): JSX.Element {
         <FormTextField
           id="username" label="Username" autoComplete="username"
           error={hasError(error)} autoFocus value={username}
-          onChange={formFieldOnChange(setUsername, setError)}
+          setField={setUsername} setError={setError}
         />
         <FormTextField
           id="company-name" label="Company Name"
           error={hasError(error)} value={companyName}
-          onChange={formFieldOnChange(setCompanyName, setError)}
+          setField={setCompanyName} setError={setError}
         />
         <FormTextField
           id="email" label="Email Address" autoComplete="email"
           error={hasError(error)} value={email}
-          onChange={formFieldOnChange(setEmail, setError)}
+          setField={setEmail} setError={setError}
         />
         <FormTextField
           id="password" label="Password" autoComplete="new-password" type="password"
           error={hasError(error)} value={password}
-          onChange={formFieldOnChange(setPassword, setError)}
+          setField={setPassword} setError={setError}
         />
         <FormTextField
           id="confirm-password" label="Confirm Password" type="password"
           error={hasError(error)} value={confirmPassword} errorMsg={error}
-          onChange={formFieldOnChange(setConfirmPassword, setError)}
+          setField={setConfirmPassword} setError={setError}
         />
         <Button type="submit" fullWidth variant="contained" sx={styles.signinButton}>
           Sign Up

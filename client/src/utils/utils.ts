@@ -58,22 +58,6 @@ export const isAuthenticated = (userType: UserType): boolean => {
 }
 
 /**
- * Returns a functions that handles form field value change.
- *
- * @param setField state update function for form field.
- * @param setError state update function for error message.
- */
-export const formFieldOnChange = (
-  setField: SetState<string>,
-  setError: SetState<string>
-): (event: FormFieldEvent) => void => {
-  return (event) => {
-    setError('')
-    setField(event.target.value)
-  }
-}
-
-/**
  * Utility function to determine whether there is error or not.
  */
 export const hasError = (error: string): boolean => error !== ''
