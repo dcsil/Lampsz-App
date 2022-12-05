@@ -15,9 +15,13 @@ def public_user_detail(request, user_id):
             influencer = models.Influencer.objects.filter(user=user).first()
         else:
             company = models.Company.objects.filter(user=user).first()
-    except models.Influencer.DoesNotExist or models.Company.DoesNotExist or models.User.DoesNotExist:
+    except (
+        models.User.DoesNotExist,
+        models.Influencer.DoesNotExist,
+        models.Company.DoesNotExist,
+    ) as error:
         return Response(
-            {"message": "The User does not exist"},
+            {"message": "The User does not exist", "error": error},
             status=status.HTTP_404_NOT_FOUND,
         )
     if user.get_user_type() == utils.UserType.INFLUENCER:
@@ -30,6 +34,7 @@ def public_user_detail(request, user_id):
         company_serializer = serializers.CompanySerializer(company, many=False)
         data = dict(company_serializer.data)
         data["userType"] = user.get_user_type().value
+        services.get_company_marketing_tasks(data, company)
         return Response(data, status=status.HTTP_200_OK)
 
 
@@ -49,9 +54,14 @@ def influencer_edit_view(request, user_id):
             {"message": "This user is not authorized to access this data"},
             status=status.HTTP_401_UNAUTHORIZED,
         )
-    influencer_data = request.data
+    data = request.data
+    authorized_data = {
+        "location": data["location"],
+        "age": data["age"],
+        "description": data["description"],
+    }
     influencer_serializer = serializers.InfluencerSerializer(influencer, many=False)
-    influencer_serializer.update(influencer, influencer_data)
+    influencer_serializer.update(influencer, authorized_data)
     return Response(influencer_serializer.data, status=status.HTTP_200_OK)
 
 
@@ -70,7 +80,8 @@ def company_edit_view(request, user_id):
             {"message": "This user is not authorized to access this data"},
             status=status.HTTP_401_UNAUTHORIZED,
         )
-    company_data = request.data
+    data = request.data
+    authorized_data = {"location": data["location"], "industry": data["industry"]}
     company_serializer = serializers.CompanySerializer(company, many=False)
-    company_serializer.update(company, company_data)
+    company_serializer.update(company, authorized_data)
     return Response(company_serializer.data, status=status.HTTP_200_OK)

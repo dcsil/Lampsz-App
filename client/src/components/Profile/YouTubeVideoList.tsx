@@ -3,20 +3,9 @@ import { useEffect, useState } from 'react'
 import axios, { AxiosError, AxiosResponse } from 'axios'
 import { Stack } from '@mui/material'
 
-export default function YouTubeVideoList (): JSX.Element {
-  // get influencerId
-  const [urls, setUrls] = useState([])
-  useEffect(() => {
-    axios
-      .get('/api/youtubeVideos')
-      .then((response: AxiosResponse) => setUrls(response.data))
-      .catch((error: AxiosError) => console.log(error))
-  })
-  if (urls.length === 0) {
-    return <div></div>
-  }
+export default function YouTubeVideoList (urls: any): JSX.Element {
   return <div>
-    {urls.map((url, index) => (
+    {urls.map((url:any, index:any) => (
       <Stack direction="row" spacing={2} marginTop={3}>
         <iframe src={url}>
         </iframe>

@@ -8,7 +8,8 @@ from google.auth.credentials import Credentials
 from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 
-from lampsz.apis.models import User
+from lampsz.apis.models import Company, MarketingTask, User
+from lampsz.apis.serializers import MarketingTaskSerializer
 
 # Constants
 YOUTUBE_SERVICE_NAME = "youtube"
@@ -144,6 +145,12 @@ def get_youtube_channel_detail(data: dict, channel_id: str) -> None:
     )
     channel_data = requests.get(url).json()
     subscribers, views, videos = 0, 0, 0
+    if "items" not in channel_data:
+        data["subscribers"] = subscribers
+        data["views"] = views
+        data["videos"] = videos
+        data["videoList"] = []
+        return None
     for item in channel_data["items"]:
         subscribers += int(item["statistics"]["subscriberCount"])
         views += int(item["statistics"]["viewCount"])
@@ -173,4 +180,11 @@ def get_youtube_playlist_detail(data: dict, playlist_ids: list) -> None:
                 "https://www.youtube.com/watch?v="
                 + item["snippet"]["resourceId"]["videoId"]
             )
-    data["video_lists"] = video_lists
+    data["videoList"] = video_lists
+
+
+def get_company_marketing_tasks(data: dict, company: Company) -> None:
+    serializer = MarketingTaskSerializer(
+        MarketingTask.objects.filter(company=company), many=True
+    )
+    data["marketingTask"] = serializer.data
