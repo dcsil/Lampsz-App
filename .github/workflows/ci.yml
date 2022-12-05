@@ -80,7 +80,7 @@ jobs:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
           ./cc-test-reporter format-coverage -t lcov -o coverage/codeclimate.jest.json coverage/jest/lcov.info
-          ./cc-test-reporter format-coverage -t coverage.py -o coverage/codeclimate.python.json coverage/python/coverage.xml
+          ./cc-test-reporter format-coverage -t coverage -o coverage/codeclimate.python.json coverage/python/coverage.xml
           # Combine the test coverage reports
           ./cc-test-reporter sum-coverage coverage/codeclimate.*.json
           # Attempt to submit the coverage report, but don't fail the build if this fails (`|| true`)
