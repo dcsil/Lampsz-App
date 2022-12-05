@@ -1,4 +1,4 @@
-name: Django CI
+name: Lampsz CI
 
 on:
   push:
@@ -31,6 +31,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - run:
+          name: Setup Code Climate test-reporter
+          command: |
+            # download test reporter as a static binary
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+            ./cc-test-reporter before-build
+
       - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
@@ -55,14 +63,27 @@ jobs:
         run: |
           poetry install --no-interaction --no-root
 
-      - name: Run Test
+      - name: Run backend tests
         run: |
           source .venv/bin/activate
           coverage run --source='.' manage.py test --settings=lampsz.settings.local
 
-      - name: Publish code coverage to codeclimate
-        uses: paambaati/codeclimate-action@v3.2.0
+      - name: Set up nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+      - run: npm ci
+      - run: npm test
+
+      - name: CodeClimate combine and upload coverage
+        if: ${{ github.event_name == 'push' }}
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        with:
-          coverageCommand: poetry run coverage xml
+        run: |
+          ./cc-test-reporter format-coverage -t lcov -o coverage/codeclimate.jest.json coverage/jest/lcov.info
+          ./cc-test-reporter format-coverage -t coverage.py -o coverage/codeclimate.python.json coverage/python/coverage.xml
+          # Combine the test coverage reports
+          ./cc-test-reporter sum-coverage coverage/codeclimate.*.json
+          # Attempt to submit the coverage report, but don't fail the build if this fails (`|| true`)
+          ./cc-test-reporter upload-coverage || true
