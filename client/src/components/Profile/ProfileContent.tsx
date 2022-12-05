@@ -13,5 +13,4 @@ export default function ProfileContent ({user}: ProfileContentProps): JSX.Elemen
     }else{
         return <TasksBox tasks={user.marketingTask}/>
     }
-    return <></>
   }

@@ -8,8 +8,7 @@ from google.auth.credentials import Credentials
 from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 
-from lampsz.apis.models import Company, MarketingTask, User
-from lampsz.apis.serializers import MarketingTaskSerializer
+from lampsz.apis.models import User
 
 # Constants
 YOUTUBE_SERVICE_NAME = "youtube"
@@ -138,7 +137,8 @@ def get_youtube_channel_details(
     }
 
 
-def get_youtube_channel_detail(data: dict, channel_id: str) -> None:
+def get_youtube_channel_detail_by_id(channel_id: str) -> dict:
+    data = {}
     url = (
         "https://youtube.googleapis.com/youtube/v3/channels?"
         f"part=contentDetails%2Cstatistics&id={channel_id}&key={settings.GOOGLE_API_KEY}"
@@ -150,7 +150,7 @@ def get_youtube_channel_detail(data: dict, channel_id: str) -> None:
         data["views"] = views
         data["videos"] = videos
         data["videoList"] = []
-        return None
+        return data
     for item in channel_data["items"]:
         subscribers += int(item["statistics"]["subscriberCount"])
         views += int(item["statistics"]["viewCount"])
@@ -158,16 +158,19 @@ def get_youtube_channel_detail(data: dict, channel_id: str) -> None:
     data["subscribers"] = subscribers
     data["views"] = views
     data["videos"] = videos
-    get_youtube_playlist_detail(
-        data,
-        [
-            i["contentDetails"]["relatedPlaylists"]["uploads"]
-            for i in channel_data["items"]
-        ],
+    data.update(
+        get_youtube_playlist_detail(
+            [
+                i["contentDetails"]["relatedPlaylists"]["uploads"]
+                for i in channel_data["items"]
+            ],
+        )
     )
+    return data
 
 
-def get_youtube_playlist_detail(data: dict, playlist_ids: list) -> None:
+def get_youtube_playlist_detail(playlist_ids: list) -> dict:
+    data = {}
     video_lists = []
     for playlist_id in playlist_ids:
         url = (
@@ -180,11 +183,5 @@ def get_youtube_playlist_detail(data: dict, playlist_ids: list) -> None:
                 "https://www.youtube.com/watch?v="
                 + item["snippet"]["resourceId"]["videoId"]
             )
-    data["videoList"] = video_lists
-
-
-def get_company_marketing_tasks(data: dict, company: Company) -> None:
-    serializer = MarketingTaskSerializer(
-        MarketingTask.objects.filter(company=company), many=True
-    )
-    data["marketingTask"] = serializer.data
+    data["video_list"] = video_lists
+    return data
