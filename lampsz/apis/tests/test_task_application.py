@@ -4,7 +4,6 @@ from rest_framework.test import APITestCase
 
 from lampsz.apis.models import TaskApplication
 from lampsz.apis.tests.utils import (
-    create_test_company_user,
     create_test_influencer_user,
     create_test_marketing_task,
 )
@@ -12,8 +11,7 @@ from lampsz.apis.tests.utils import (
 
 class TestTaskApplicationList(APITestCase):
     def setUp(self) -> None:
-        _, company = create_test_company_user()
-        self.test_task = create_test_marketing_task(company)
+        self.test_task = create_test_marketing_task()
         self.user, self.influencer = create_test_influencer_user()
         self.application = TaskApplication.objects.create(
             influencer=self.influencer, marketing_task=self.test_task
@@ -61,10 +59,9 @@ class TestTaskApplicationList(APITestCase):
         self.assertEqual(TaskApplication.objects.count(), 2)
 
 
-class TestTaskApplicationDelete(APITestCase):
+class TestTaskApplicationDetail(APITestCase):
     def setUp(self) -> None:
-        _, company = create_test_company_user()
-        self.test_task = create_test_marketing_task(company)
+        self.test_task = create_test_marketing_task()
         user, self.influencer = create_test_influencer_user()
         self.application = TaskApplication.objects.create(
             influencer=self.influencer, marketing_task=self.test_task
@@ -76,7 +73,7 @@ class TestTaskApplicationDelete(APITestCase):
         Ensure that application get API correctly queries using multiple fields.
         """
         url = reverse(
-            "task_application_delete",
+            "task_application_detail",
             kwargs={
                 "influencer": self.influencer.pk,
                 "marketing_task": self.test_task.pk,
@@ -90,7 +87,7 @@ class TestTaskApplicationDelete(APITestCase):
         Ensure that application delete API correctly deletes the application.
         """
         url = reverse(
-            "task_application_delete",
+            "task_application_detail",
             kwargs={
                 "influencer": self.influencer.pk,
                 "marketing_task": self.test_task.pk,
@@ -98,3 +95,38 @@ class TestTaskApplicationDelete(APITestCase):
         )
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+
+class TestMarketingTaskApplicants(APITestCase):
+    def setUp(self) -> None:
+        self.test_task = create_test_marketing_task()
+        user, self.influencer = create_test_influencer_user()
+        self.application = TaskApplication.objects.create(
+            influencer=self.influencer, marketing_task=self.test_task
+        )
+        self.client.force_login(user)
+
+    def test_get_task_applicants(self) -> None:
+        """
+        Ensure that API correctly returns all the applicants for the marketing
+        task.
+        """
+        url = reverse(
+            "task_applicant_list", kwargs={"marketing_task": self.test_task.pk}
+        )
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(
+            response.data[0]["influencer"]["channel_name"], self.influencer.channel_name
+        )
+
+    def test_get_task_applicants_of_nonexistent_task(self) -> None:
+        """
+        Ensure that API correctly returns 404 if task doesn't exist.
+        """
+        url = reverse(
+            "task_applicant_list", kwargs={"marketing_task": self.test_task.pk + 1}
+        )
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)

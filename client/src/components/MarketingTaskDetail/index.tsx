@@ -11,6 +11,7 @@ import { useLoaderData } from 'react-router-dom'
 import { MarketingTask } from '../../utils/types'
 import useAuth from '../../hooks/AuthHook'
 import Alert from '@mui/material/Alert'
+import ApplicantTable from './ApplicantTable'
 
 export default function MarketingTaskDetail (): JSX.Element {
   const [tabValue, setTabValue] = React.useState(0)
@@ -47,7 +48,7 @@ export default function MarketingTaskDetail (): JSX.Element {
         <TaskAboutCompany/>
       </TabPanel>
       <TabPanel value={tabValue} index={2}>
-        Item Three
+        <ApplicantTable/>
       </TabPanel>
     </Container>
   )

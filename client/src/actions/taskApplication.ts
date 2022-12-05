@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { getRequestConfig } from '../utils/utils'
-import { SetState, TaskApplication } from '../utils/types'
+import { SetState, TaskApplicant, TaskApplication } from '../utils/types'
 
 /**
  * Calls API server to retrieve all task applications of current user.
@@ -37,7 +37,7 @@ export const createApplication = (userId: number, taskId: number, callback: Void
  */
 export const deleteApplication = (userId: number, taskId: number, callback: VoidFunction): void => {
   axios
-    .delete(`/api/applications/${userId}/${taskId}`, getRequestConfig())
+    .delete(`/api/applications/${taskId}/${userId}`, getRequestConfig())
     .then(_ => callback())
     .catch(error => console.log(error))
 }
@@ -51,7 +51,17 @@ export const deleteApplication = (userId: number, taskId: number, callback: Void
  */
 export const getApplication = (userId: number, taskId: number, setApplied: SetState<boolean>): void => {
   axios
-    .get(`/api/applications/${userId}/${taskId}`, getRequestConfig())
+    .get(`/api/applications/${taskId}/${userId}`, getRequestConfig())
     .then(_ => setApplied(true))
     .catch(_ => setApplied(false))
+}
+
+export const getMarketingTaskApplicants = (taskId: number, setApplicants: SetState<TaskApplicant[]>): void => {
+  axios
+    .get(`/api/applications/${taskId}`, getRequestConfig())
+    .then(response => {
+      console.log(response.data)
+      setApplicants(response.data)
+    })
+    .catch(error => console.log(error))
 }

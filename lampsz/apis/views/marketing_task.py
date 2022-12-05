@@ -11,6 +11,8 @@ from lampsz.apis.serializers import MarketingTaskSerializer
 
 __all__ = ["MarketingTaskList", "MarketingTaskDetail", "get_marketing_tasks"]
 
+from lampsz.apis.utils import access_nonexistent
+
 
 class MarketingTaskList(generics.ListCreateAPIView):
     """
@@ -45,7 +47,7 @@ class MarketingTaskDetail(generics.RetrieveUpdateDestroyAPIView):
         try:
             return super().get(request, *args, **kwargs)
         except Http404:
-            messages.error(self.request, "Trying to access non-existent marketing task")
+            messages.error(self.request, access_nonexistent)
             raise Http404
 
 

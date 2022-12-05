@@ -2,6 +2,9 @@ from enum import IntEnum
 
 from rest_framework.exceptions import ErrorDetail
 
+# Messages
+access_nonexistent = "Trying to access non-existent marketing task"
+
 # Types
 ValidationErrors = dict[str, list[ErrorDetail]]
 

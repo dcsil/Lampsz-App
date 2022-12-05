@@ -36,7 +36,9 @@
       "\\.(css|less)$": "<rootDir>/client/__mocks__/styleMock.js"
     },
     "collectCoverage": true,
-    "collectCoverageFrom": ["./client/src/**"]
+    "collectCoverageFrom": [
+      "./client/src/**"
+    ]
   },
   "browserslist": {
     "production": [
@@ -77,6 +79,7 @@
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.12",
+    "@mui/x-data-grid": "^5.17.14",
     "@mui/x-date-pickers": "^5.0.9",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

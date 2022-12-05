@@ -55,8 +55,13 @@ urlpatterns += [
         name="task_application_list",
     ),
     path(
-        "applications/<int:influencer>/<int:marketing_task>",
-        task_application.TaskApplicationDelete.as_view(),
-        name="task_application_delete",
+        "applications/<int:marketing_task>",
+        task_application.MarketingTaskApplicants.as_view(),
+        name="task_applicant_list",
+    ),
+    path(
+        "applications/<int:marketing_task>/<int:influencer>",
+        task_application.TaskApplicationDetail.as_view(),
+        name="task_application_detail",
     ),
 ]
