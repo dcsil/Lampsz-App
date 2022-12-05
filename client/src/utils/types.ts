@@ -41,6 +41,19 @@ export interface CompanyData {
   categories: string[]
 }
 
+export interface InfluencerData {
+  user: UserData
+  platform: string
+  description: string
+  channelName: string
+  homePage: string
+  thumbnailUrl: string
+  location: string
+  age: number
+  shortBio: string
+  channelId: string
+}
+
 export interface MarketingTask {
   company: CompanyData
   id: number
@@ -59,6 +72,13 @@ export interface TaskApplication {
   id: number
   influencer: number
   marketingTask: MarketingTask
+  appliedOn: string
+}
+
+export interface TaskApplicant {
+  id: number
+  marketingTask: number
+  influencer: InfluencerData
   appliedOn: string
 }
 
