@@ -20,7 +20,7 @@ class TaskApplicationList(generics.ListCreateAPIView):
         return influencer.taskapplication_set.all()
 
 
-class TaskApplicationDelete(MultipleFieldLookupMixin, generics.RetrieveDestroyAPIView):
+class TaskApplicationDetail(MultipleFieldLookupMixin, generics.RetrieveDestroyAPIView):
     """
     Generic view for deleting specific task application.
     """

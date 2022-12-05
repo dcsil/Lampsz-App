@@ -76,7 +76,7 @@ class TestTaskApplicationDelete(APITestCase):
         Ensure that application get API correctly queries using multiple fields.
         """
         url = reverse(
-            "task_application_delete",
+            "task_application_detail",
             kwargs={
                 "influencer": self.influencer.pk,
                 "marketing_task": self.test_task.pk,
@@ -90,7 +90,7 @@ class TestTaskApplicationDelete(APITestCase):
         Ensure that application delete API correctly deletes the application.
         """
         url = reverse(
-            "task_application_delete",
+            "task_application_detail",
             kwargs={
                 "influencer": self.influencer.pk,
                 "marketing_task": self.test_task.pk,

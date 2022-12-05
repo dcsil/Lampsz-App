@@ -56,7 +56,7 @@ urlpatterns += [
     ),
     path(
         "applications/<int:influencer>/<int:marketing_task>",
-        task_application.TaskApplicationDelete.as_view(),
-        name="task_application_delete",
+        task_application.TaskApplicationDetail.as_view(),
+        name="task_application_detail",
     ),
 ]
