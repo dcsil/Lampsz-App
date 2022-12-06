@@ -1,9 +1,9 @@
 import { IconButton, Menu, MenuItem, Typography } from '@mui/material'
 import { AccountCircle } from '@mui/icons-material'
 import * as React from 'react'
-import useAuth from '../../hooks/AuthHook'
+import { useAuth } from '../../hooks/AuthHook'
 import { useNavigate } from 'react-router-dom'
-import useToast from '../../hooks/ToastHook'
+import { useToast } from '../../hooks/ToastHook'
 
 export default function UserMenu (): JSX.Element {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)

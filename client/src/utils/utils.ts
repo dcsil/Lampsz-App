@@ -1,4 +1,4 @@
-import { FormFieldEvent, NavItem, SetState, UserType } from './types'
+import { NavItem, UserType } from './types'
 import Cookies from 'js-cookie'
 
 export const containerStyle = {
@@ -55,22 +55,6 @@ export const getNavItems = (userType: UserType): NavItem[] => {
 
 export const isAuthenticated = (userType: UserType): boolean => {
   return userType !== UserType.NONE
-}
-
-/**
- * Returns a functions that handles form field value change.
- *
- * @param setField state update function for form field.
- * @param setError state update function for error message.
- */
-export const formFieldOnChange = (
-  setField: SetState<string>,
-  setError: SetState<string>
-): (event: FormFieldEvent) => void => {
-  return (event) => {
-    setError('')
-    setField(event.target.value)
-  }
 }
 
 /**

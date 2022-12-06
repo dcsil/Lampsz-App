@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { UserType } from '../../utils/types'
 import { isAuthenticated } from '../../utils/utils'
-import useAuth from '../../hooks/AuthHook'
+import { useAuth } from '../../hooks/AuthHook'
 import MarketingTaskList from './MarketingTaskList'
 import HomePageGrid from './HomePageGrid'
 import ApplicationList from './ApplicationList'

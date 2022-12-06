@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import TasksBox from '../Shared/TasksBox'
-import useAuth from '../../hooks/AuthHook'
+import { useAuth } from '../../hooks/AuthHook'
 import { Container } from '@mui/system'
 import { MarketingTask } from '../../utils/types'
 import Box from '@mui/material/Box'

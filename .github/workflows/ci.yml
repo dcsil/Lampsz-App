@@ -74,9 +74,12 @@ jobs:
           node-version: 18
           cache: 'npm'
       - run: npm ci
-      - run: npm test
+      - name: Test frontend
+        if: ${{ github.event_name == 'push' }}
+        run: npm test
 
       - name: CodeClimate combine and upload coverage
+        if: ${{ github.event_name == 'push' }}
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |

@@ -42,6 +42,6 @@ export function ToastProvider ({ children }: { children: React.ReactNode }): JSX
   )
 }
 
-export default function useToast (): ToastContextType {
+export function useToast (): ToastContextType {
   return React.useContext(ToastContext)
 }

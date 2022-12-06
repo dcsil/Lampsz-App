@@ -1,6 +1,6 @@
 import { Container, Stack } from '@mui/material'
 import * as React from 'react'
-import useAuth from '../../hooks/AuthHook'
+import { useAuth } from '../../hooks/AuthHook'
 import MarketingTaskForm from './MarketingTaskForm'
 import { MarketingTask } from '../../utils/types'
 import Button from '@mui/material/Button'
