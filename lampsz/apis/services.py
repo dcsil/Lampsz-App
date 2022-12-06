@@ -180,7 +180,7 @@ def get_youtube_playlist_detail(playlist_ids: list) -> dict:
         playlist_data = requests.get(url).json()
         for item in playlist_data["items"]:
             video_lists.append(
-                "https://www.youtube.com/embed?v="
+                "https://www.youtube.com/embed/"
                 + item["snippet"]["resourceId"]["videoId"]
             )
     data["video_list"] = video_lists
