@@ -14,7 +14,7 @@ export default function Marketplace (): JSX.Element {
   const [tasks, setTasks] = useState<MarketingTask[]>([])
   const [query, setQuery] = useState('')
 
-  useEffect(() => getTasks(auth.userId, setTasks), [])
+  useEffect(() => getTasks(0, setTasks), [])
 
   return (
     <Container component="main" maxWidth="lg" sx={containerStyle.contentContainer}>
