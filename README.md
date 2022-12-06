@@ -24,6 +24,9 @@ directory and fill in the content.
 
 Also obtain the `client_secret.json` file from Google developer console and update the `GOOGLE_CLIENT_SECRETS` field with the content of the file.
 
+Also obtain `API KEY` from Google developer console and update the
+`GOOGLE_API_KEY` field with the string of the api key
+
 To get started with local development:
 
 1. Install required Python dependencies:
