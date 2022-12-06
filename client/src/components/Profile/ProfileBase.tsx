@@ -8,7 +8,9 @@ import Grid from '@mui/material/Grid'
 import { Stack } from '@mui/material'
 import ProfileInfo from './ProfileInfo'
 import ProfileDescription from './ProfileDescription'
+import ProfileContent from './ProfileContent'
 import Button from '@mui/material/Button'
+import { UserType } from '../../utils/types'
 
 interface ProfileBaseProps {
   items: string[]
@@ -54,7 +56,8 @@ export default function ProfileBase (
           </Stack>
         </Grid>
         <Grid item md={6}>
-          <p>Old marketing tasks</p>
+          {user.userType === UserType.INFLUENCER? <p>Youtube videos</p>: <p>My marketing tasks</p>}
+          <ProfileContent user={user}/>
         </Grid>
       </Grid>
     </Container>

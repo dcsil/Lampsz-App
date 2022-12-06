@@ -31,9 +31,13 @@ urlpatterns += [
 ]
 
 urlpatterns += [
-    path("profile/<int:user_id>", profile.public_user_detail),
-    path("influencer/<int:user_id>", profile.influencer_edit_view),
-    path("company/<int:user_id>", profile.company_edit_view),
+    path(
+        "profile/<int:user_id>", profile.public_user_detail, name="public_user_detail"
+    ),
+    path(
+        "influencer/<int:user_id>", profile.influencer_edit_view, name="influencer_edit"
+    ),
+    path("company/<int:user_id>", profile.company_edit_view, name="company_edit"),
 ]
 
 urlpatterns += [

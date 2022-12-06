@@ -15,7 +15,7 @@ def public_user_detail(request, user_id):
             influencer = models.Influencer.objects.filter(user=user).first()
         else:
             company = models.Company.objects.filter(user=user).first()
-    except models.Influencer.DoesNotExist or models.Company.DoesNotExist or models.User.DoesNotExist:
+    except models.User.DoesNotExist:
         return Response(
             {"message": "The User does not exist"},
             status=status.HTTP_404_NOT_FOUND,
@@ -23,13 +23,17 @@ def public_user_detail(request, user_id):
     if user.get_user_type() == utils.UserType.INFLUENCER:
         influencer_serializer = serializers.InfluencerSerializer(influencer, many=False)
         data = dict(influencer_serializer.data)
-        data["userType"] = user.get_user_type().value
-        services.get_youtube_channel_detail(data, influencer.channel_id)
+        data["user_type"] = user.get_user_type().value
+        data.update(services.get_youtube_channel_detail_by_id(influencer.channel_id))
         return Response(data, status=status.HTTP_200_OK)
     else:
         company_serializer = serializers.CompanySerializer(company, many=False)
         data = dict(company_serializer.data)
-        data["userType"] = user.get_user_type().value
+        data["user_type"] = user.get_user_type().value
+        marketing_task_serializer = serializers.MarketingTaskSerializer(
+            company.marketingtask_set.all(), many=True
+        )
+        data["marketing_task"] = marketing_task_serializer.data
         return Response(data, status=status.HTTP_200_OK)
 
 
@@ -49,9 +53,14 @@ def influencer_edit_view(request, user_id):
             {"message": "This user is not authorized to access this data"},
             status=status.HTTP_401_UNAUTHORIZED,
         )
-    influencer_data = request.data
+    data = request.data
+    authorized_data = {
+        "location": data["location"],
+        "age": data["age"],
+        "description": data["description"],
+    }
     influencer_serializer = serializers.InfluencerSerializer(influencer, many=False)
-    influencer_serializer.update(influencer, influencer_data)
+    influencer_serializer.update(influencer, authorized_data)
     return Response(influencer_serializer.data, status=status.HTTP_200_OK)
 
 
@@ -70,7 +79,8 @@ def company_edit_view(request, user_id):
             {"message": "This user is not authorized to access this data"},
             status=status.HTTP_401_UNAUTHORIZED,
         )
-    company_data = request.data
+    data = request.data
+    authorized_data = {"location": data["location"], "industry": data["industry"]}
     company_serializer = serializers.CompanySerializer(company, many=False)
-    company_serializer.update(company, company_data)
+    company_serializer.update(company, authorized_data)
     return Response(company_serializer.data, status=status.HTTP_200_OK)

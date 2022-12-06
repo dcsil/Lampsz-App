@@ -36,22 +36,6 @@ class InfluencerSerializer(serializers.ModelSerializer):
         fields = "__all__"
         depth = 2
 
-    def create(self, validated_data):
-        user_data = validated_data.pop("user")
-        user = User.objects.create(**user_data)
-        influencer = Influencer.objects.create(user=user, **validated_data)
-        return influencer
-
-    def update(self, instance, validated_data):
-        instance.location = validated_data.pop("location")
-        instance.description = validated_data.pop("description")
-        instance.age = validated_data.pop("age")
-        instance.subscribers = validated_data.pop("subscribers")
-        instance.likes = validated_data.pop("likes")
-        instance.shortBio = validated_data.pop("shortBio")
-        instance.save()
-        return instance
-
 
 class CompanySerializer(serializers.ModelSerializer):
     user = PublicUserSerializer(required=True)
