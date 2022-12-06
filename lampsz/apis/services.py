@@ -137,13 +137,20 @@ def get_youtube_channel_details(
     }
 
 
-def get_youtube_channel_detail(data: dict, channel_id: str) -> None:
+def get_youtube_channel_detail_by_id(channel_id: str) -> dict:
+    data = {}
     url = (
         "https://youtube.googleapis.com/youtube/v3/channels?"
         f"part=contentDetails%2Cstatistics&id={channel_id}&key={settings.GOOGLE_API_KEY}"
     )
     channel_data = requests.get(url).json()
     subscribers, views, videos = 0, 0, 0
+    if "items" not in channel_data:
+        data["subscribers"] = subscribers
+        data["views"] = views
+        data["videos"] = videos
+        data["videoList"] = []
+        return data
     for item in channel_data["items"]:
         subscribers += int(item["statistics"]["subscriberCount"])
         views += int(item["statistics"]["viewCount"])
@@ -151,16 +158,19 @@ def get_youtube_channel_detail(data: dict, channel_id: str) -> None:
     data["subscribers"] = subscribers
     data["views"] = views
     data["videos"] = videos
-    get_youtube_playlist_detail(
-        data,
-        [
-            i["contentDetails"]["relatedPlaylists"]["uploads"]
-            for i in channel_data["items"]
-        ],
+    data.update(
+        get_youtube_playlist_detail(
+            [
+                i["contentDetails"]["relatedPlaylists"]["uploads"]
+                for i in channel_data["items"]
+            ],
+        )
     )
+    return data
 
 
-def get_youtube_playlist_detail(data: dict, playlist_ids: list) -> None:
+def get_youtube_playlist_detail(playlist_ids: list) -> dict:
+    data = {}
     video_lists = []
     for playlist_id in playlist_ids:
         url = (
@@ -170,7 +180,8 @@ def get_youtube_playlist_detail(data: dict, playlist_ids: list) -> None:
         playlist_data = requests.get(url).json()
         for item in playlist_data["items"]:
             video_lists.append(
-                "https://www.youtube.com/watch?v="
+                "https://www.youtube.com/embed?v="
                 + item["snippet"]["resourceId"]["videoId"]
             )
-    data["video_lists"] = video_lists
+    data["video_list"] = video_lists
+    return data

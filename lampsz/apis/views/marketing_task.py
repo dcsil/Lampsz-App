@@ -69,5 +69,4 @@ def get_marketing_tasks(request):
         serializer = MarketingTaskSerializer(task)
         results.append(serializer.data)
 
-    print(results)
     return Response({"tasks": results}, status=200)
