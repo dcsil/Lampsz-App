@@ -2,10 +2,11 @@ import * as React from 'react'
 import Box from '@mui/material/Box'
 import { DataGrid, GridRenderCellParams, GridToolbarQuickFilter } from '@mui/x-data-grid'
 import { MarketingTask, TaskApplicant } from '../../utils/types'
-import { useLoaderData } from 'react-router-dom'
+import { Link, useLoaderData } from 'react-router-dom'
 import { getMarketingTaskApplicants } from '../../actions/taskApplication'
 import { GridColumns } from '@mui/x-data-grid/models/colDef/gridColDef'
 import Avatar from '@mui/material/Avatar'
+import { Typography } from '@mui/material'
 
 const applicantTableColumns: GridColumns = [
   {
@@ -13,8 +14,16 @@ const applicantTableColumns: GridColumns = [
     headerName: 'Avatar',
     valueGetter: (params: any) => params.row.influencer,
     renderCell: ({ value }: GridRenderCellParams) => (
-      <Avatar src={value.thumbnailUrl} component='a' href={value.homePage}/>
+      <Avatar src={value.thumbnailUrl} component={Link} to={`/profile/${value.user.id}`}/>
     ),
+    align: 'center',
+    headerAlign: 'center',
+    sortable: false
+  },
+  {
+    field: 'similarity',
+    headerName: 'Similarity Score',
+    width: 200,
     align: 'center',
     headerAlign: 'center'
   },
@@ -44,7 +53,8 @@ const applicantTableColumns: GridColumns = [
   {
     field: 'platform',
     headerName: 'Platform',
-    valueGetter: (params: any) => params.row.influencer.platform,
+    valueGetter: (params: any) => params.row.influencer,
+    renderCell: ({ value }: GridRenderCellParams) => <a href={value.homePage}>{value.platform}</a>,
     align: 'center',
     headerAlign: 'center'
   },

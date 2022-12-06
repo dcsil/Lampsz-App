@@ -12,6 +12,8 @@ __all__ = [
     "TaskApplicationInfluencerSerializer",
 ]
 
+from lampsz.apis.services import get_similarity_score
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -65,6 +67,16 @@ class MarketingTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = MarketingTask
         fields = "__all__"
+
+    def update(self, instance, validated_data):
+        # Update the similarity score if description is updated
+        if "description" in validated_data:
+            for application in instance.taskapplication_set.all():
+                influencer = Influencer.objects.get(pk=application.influencer)
+                application.similarity = get_similarity_score(instance, influencer)
+                application.save()
+
+        return super().update(instance, validated_data)
 
 
 class TaskApplicationSerializer(serializers.ModelSerializer):
