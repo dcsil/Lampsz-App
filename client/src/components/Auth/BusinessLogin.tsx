@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/AuthHook'
 import AuthTitle from './AuthTitle'
 import { FormTextField } from '../Shared/FormTextField'
-import useToast from '../../hooks/ToastHook'
+import { useToast } from '../../hooks/ToastHook'
 
 const styles = {
   avatar: {

@@ -39,7 +39,8 @@
     "testEnvironment": "jsdom",
     "collectCoverageFrom": [
       "./client/src/components/**",
-      "./client/src/utils/**"
+      "./client/src/utils/**",
+      "./client/src/App.tsx"
     ]
   },
   "browserslist": {

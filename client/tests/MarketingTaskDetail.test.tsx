@@ -1,9 +1,11 @@
-import { cleanup, fireEvent, render } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import * as React from 'react'
 import MarketingTaskDetail from '../src/components/MarketingTaskDetail'
 import { UserType } from '../src/utils/types'
+import '@testing-library/jest-dom/extend-expect'
 
 // Mocks
+const mock = { active: false, userType: UserType.BUSINESS }
 jest.mock('react-router-dom', () => ({
   useLoaderData: () => {
     return {
@@ -11,7 +13,7 @@ jest.mock('react-router-dom', () => ({
         user: { id: 1 },
         companyName: 'TestName'
       },
-      active: false,
+      active: mock.active,
       compensation: 0,
       title: 'TestTitle'
     }
@@ -20,8 +22,17 @@ jest.mock('react-router-dom', () => ({
   }
 }))
 
+jest.mock('../src/actions/taskApplication', () => ({
+  changeMarketingTaskState: () => {
+  },
+  getMarketingTaskApplicants: () => {
+  },
+  deleteMarketingTask: () => {
+  }
+}))
+
 jest.mock('../src/hooks/AuthHook', () => ({
-  useAuth: () => ({ userId: 1, userType: UserType.BUSINESS })
+  useAuth: () => ({ userId: 1, userType: mock.userType })
 }))
 
 // Tests
@@ -38,6 +49,36 @@ describe('Test MarketingTaskDetail page', () => {
     titles.forEach(title => expect(headings.map(h => h.textContent)).toContain(title))
   })
 
+  test('Re-open task button works correctly', () => {
+    mock.active = false
+    const { getByRole } = render(<MarketingTaskDetail/>)
+
+    const reopenButton = getByRole('button', { name: 'Re-open Task' })
+    expect(reopenButton).toBeInTheDocument()
+    fireEvent.click(reopenButton)
+    fireEvent.click(screen.getByRole('button', { name: 'Continue' }))
+  })
+
+  test('Close task button works correctly', () => {
+    mock.active = true
+    const { getByRole } = render(<MarketingTaskDetail/>)
+
+    const closeButton = getByRole('button', { name: 'Close Task' })
+    expect(closeButton).toBeInTheDocument()
+    fireEvent.click(closeButton)
+    fireEvent.click(screen.getByRole('button', { name: 'Continue' }))
+  })
+
+  test('Delete task button works correctly', () => {
+    mock.active = true
+    const { getByRole } = render(<MarketingTaskDetail/>)
+
+    const closeButton = getByRole('button', { name: 'Delete Task' })
+    expect(closeButton).toBeInTheDocument()
+    fireEvent.click(closeButton)
+    fireEvent.click(screen.getByRole('button', { name: 'Continue' }))
+  })
+
   test('components renders about company tab properly', () => {
     const { getByRole, getAllByRole } = render(<MarketingTaskDetail/>)
 
@@ -52,5 +93,6 @@ describe('Test MarketingTaskDetail page', () => {
     fireEvent.click(getByRole('tab', { name: 'Applicants' }))
     const headings = getAllByRole('heading')
     expect(headings).toHaveLength(2)
+    expect(document.getElementsByClassName('MuiDataGrid-main')).toHaveLength(1)
   })
 })

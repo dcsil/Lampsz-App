@@ -8,7 +8,7 @@ import Button from '@mui/material/Button'
 import Link from '@mui/material/Link'
 import { useAuth } from '../../hooks/AuthHook'
 import { FormTextField } from '../Shared/FormTextField'
-import useToast from '../../hooks/ToastHook'
+import { useToast } from '../../hooks/ToastHook'
 
 const styles = {
   form: {

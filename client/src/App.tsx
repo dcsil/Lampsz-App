@@ -7,7 +7,7 @@ import CssBaseline from '@mui/material/CssBaseline'
 import './App.css'
 import Alert from '@mui/material/Alert'
 import Snackbar from '@mui/material/Snackbar'
-import useToast from './hooks/ToastHook'
+import { useToast } from './hooks/ToastHook'
 
 const theme = createTheme({
   palette: {
