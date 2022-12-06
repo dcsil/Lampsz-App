@@ -22,7 +22,7 @@ jest.mock('react-router-dom', () => ({
   }
 }))
 
-jest.mock('../src/actions/taskApplication', () => ({
+jest.mock('../src/actions/marketingTask', () => ({
   changeMarketingTaskState: () => {
   },
   getMarketingTaskApplicants: () => {
