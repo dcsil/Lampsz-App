@@ -9,6 +9,7 @@ from lampsz.apis.serializers import (
     TaskApplicationInfluencerSerializer,
     TaskApplicationSerializer,
 )
+from lampsz.apis.services import get_similarity_score
 from lampsz.apis.utils import access_nonexistent
 
 
@@ -24,6 +25,12 @@ class TaskApplicationList(generics.ListCreateAPIView):
     def get_queryset(self):
         influencer = self.request.user.influencer
         return influencer.taskapplication_set.all()
+
+    def create(self, request, *args, **kwargs):
+        influencer = self.request.user.influencer
+        task = MarketingTask.objects.get(pk=request.data["marketing_task_id"])
+        request.data["similarity"] = get_similarity_score(task, influencer)
+        return super().create(request, *args, **kwargs)
 
 
 class TaskApplicationDetail(MultipleFieldLookupMixin, generics.RetrieveDestroyAPIView):
@@ -52,4 +59,4 @@ class MarketingTaskApplicants(generics.ListAPIView):
             messages.error(self.request, access_nonexistent)
             raise Http404
 
-        return task.taskapplication_set.all()
+        return task.taskapplication_set.all().order_by("-similarity")

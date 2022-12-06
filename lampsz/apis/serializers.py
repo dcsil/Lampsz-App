@@ -30,6 +30,7 @@ class PublicUserSerializer(serializers.ModelSerializer):
 
 class InfluencerSerializer(serializers.ModelSerializer):
     user = PublicUserSerializer(required=True)
+    platform = serializers.CharField(source="get_platform_display")
 
     class Meta:
         model = Influencer
