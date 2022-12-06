@@ -1,4 +1,4 @@
-import { FormFieldEvent, NavItem, SetState, UserType } from './types'
+import { NavItem, UserType } from './types'
 import Cookies from 'js-cookie'
 
 export const containerStyle = {

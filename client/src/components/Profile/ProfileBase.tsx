@@ -1,5 +1,5 @@
 import * as React from 'react'
-import useAuth from '../../hooks/AuthHook'
+import { useAuth } from '../../hooks/AuthHook'
 import { editProfile } from '../../actions/profile'
 import Cookies from 'js-cookie'
 import Container from '@mui/material/Container'

@@ -9,7 +9,7 @@ import TaskHeader from './TaskHeader'
 import TaskAboutCompany from './TaskAboutCompany'
 import { useLoaderData } from 'react-router-dom'
 import { MarketingTask } from '../../utils/types'
-import useAuth from '../../hooks/AuthHook'
+import { useAuth } from '../../hooks/AuthHook'
 import Alert from '@mui/material/Alert'
 import ApplicantTable from './ApplicantTable'
 

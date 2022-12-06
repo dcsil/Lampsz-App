@@ -8,7 +8,7 @@ import Button from '@mui/material/Button'
 import { StyledTitle } from '../Shared/StyledTitle'
 import UserMenu from './UserMenu'
 import { getNavItems, isAuthenticated } from '../../utils/utils'
-import useAuth from '../../hooks/AuthHook'
+import { useAuth } from '../../hooks/AuthHook'
 
 const styles = {
   xsBox: {

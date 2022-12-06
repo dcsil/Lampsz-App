@@ -6,7 +6,7 @@ import AuthTitle from './AuthTitle'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
 import Link from '@mui/material/Link'
-import useAuth from '../../hooks/AuthHook'
+import { useAuth } from '../../hooks/AuthHook'
 import { FormTextField } from '../Shared/FormTextField'
 import useToast from '../../hooks/ToastHook'
 

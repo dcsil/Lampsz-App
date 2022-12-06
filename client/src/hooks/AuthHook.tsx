@@ -101,6 +101,6 @@ export function AuthProvider ({ children }: { children: React.ReactNode }): JSX.
   )
 }
 
-export default function useAuth (): AuthContextType {
+export function useAuth (): AuthContextType {
   return React.useContext(AuthContext)
 }

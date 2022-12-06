@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { MarketingTask } from '../../utils/types'
 import { getTasks } from '../../actions/marketingTask'
-import useAuth from '../../hooks/AuthHook'
+import { useAuth } from '../../hooks/AuthHook'
 import TasksBox from '../Shared/TasksBox'
 import ListDisplay from './ListDisplay'
 
