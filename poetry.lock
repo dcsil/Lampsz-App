@@ -193,6 +193,21 @@ optional = false
 python-versions = ">=3.5"
 
 [[package]]
+name = "en-core-web-sm"
+version = "3.4.1"
+description = "English pipeline optimized for CPU. Components: tok2vec, tagger, parser, senter, ner, attribute_ruler, lemmatizer."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+spacy = ">=3.4.0,<3.5.0"
+
+[package.source]
+type = "url"
+url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.4.1/en_core_web_sm-3.4.1.tar.gz"
+
+[[package]]
 name = "filelock"
 version = "3.8.0"
 description = "A platform independent file lock."
@@ -1059,7 +1074,7 @@ brotli = ["Brotli"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "cca4066e069f80527a36561491b1774de2728d9df6c8ecae8d036b45f126ea09"
+content-hash = "78f40052cd38f46f1879b9310e03f47e5cbfe4fb945bbdc4c0af8d22714e5ac7"
 
 [metadata.files]
 asgiref = [
@@ -1252,6 +1267,7 @@ djangorestframework = [
 djangorestframework-camel-case = [
     {file = "djangorestframework-camel-case-1.3.0.tar.gz", hash = "sha256:df591362ffa448c8f0a354c56ae8a53fb7abbb15e222951d0c6f5f781633907e"},
 ]
+en-core-web-sm = []
 filelock = [
     {file = "filelock-3.8.0-py3-none-any.whl", hash = "sha256:617eb4e5eedc82fc5f47b6d61e4d11cb837c56cb4544e39081099fa17ad109d4"},
     {file = "filelock-3.8.0.tar.gz", hash = "sha256:55447caa666f2198c5b6b13a26d2084d26fa5b115c00d065664b2124680c4edc"},
