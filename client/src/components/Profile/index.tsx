@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { useEffect } from 'react'
 import { UserType } from '../../utils/types'
 import { useParams } from 'react-router-dom'
 import { getUserProfile } from '../../actions/profile'
@@ -12,7 +11,7 @@ export default function Profile (): JSX.Element {
   const influencerItems = ['Location', 'Age', 'Subscribers', 'Likes', 'Description']
   const businessItems = ['Location', 'Industry', 'Description']
 
-  useEffect(() => {
+  React.useEffect(() => {
     getUserProfile(parseInt(userId!), setUser)
   }, [])
 

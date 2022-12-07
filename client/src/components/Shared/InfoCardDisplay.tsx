@@ -5,9 +5,7 @@ import Typography from '@mui/material/Typography'
 interface InfoCardDisplayProps {
   children: React.ReactNode
   title: string
-  noDataText: string
   actionButtons?: JSX.Element
-  hasElement: boolean
 }
 
 export default function InfoCardDisplay (props: InfoCardDisplayProps): JSX.Element {
@@ -19,10 +17,7 @@ export default function InfoCardDisplay (props: InfoCardDisplayProps): JSX.Eleme
         </Box>
         {props.actionButtons}
       </Box>
-      {props.hasElement
-        ? props.children
-        : <Typography>{props.noDataText}</Typography>
-      }
+      {props.children}
     </React.Fragment>
   )
 }

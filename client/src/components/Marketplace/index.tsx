@@ -22,7 +22,7 @@ export default function Marketplace (): JSX.Element {
         <Typography variant="h4" gutterBottom>Marketplace</Typography>
       </Box>
       <SearchBar setTasks={setTasks}></SearchBar>
-      <TasksBox tasks={tasks}></TasksBox>
+      <TasksBox tasks={tasks} noDataText="No Marketing Task available."></TasksBox>
     </Container>
   )
 }

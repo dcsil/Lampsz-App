@@ -4,7 +4,7 @@ import { checkSession, loginAction, logoutAction, registerAction, RegisterInfo }
 
 interface AuthContextType {
   // States
-  username: string
+  displayName: string
   userType: UserType
   userId: number
   csrf: string
@@ -22,7 +22,7 @@ interface AuthContextType {
 const AuthContext = React.createContext<AuthContextType>(null!)
 
 export function AuthProvider ({ children }: { children: React.ReactNode }): JSX.Element {
-  const [username, setUsername] = React.useState<string>('')
+  const [displayName, setDisplayName] = React.useState<string>('')
   const [userType, setUserType] = React.useState<UserType>(UserType.NONE)
   const [userId, setUserId] = React.useState<number>(-1)
   const [csrf, setCsrf] = React.useState<string>('')
@@ -34,8 +34,8 @@ export function AuthProvider ({ children }: { children: React.ReactNode }): JSX.
    * @param callback callback called after success API server call (e.g., use for navigation).
    */
   const createAuthCallback = (callback?: VoidFunction): AuthCallback => {
-    return (hasError: boolean, _username?: string, _userId?: number, _userType?: UserType): void => {
-      setUsername(_username ?? '')
+    return (hasError: boolean, _displayName?: string, _userId?: number, _userType?: UserType): void => {
+      setDisplayName(_displayName ?? '')
       setUserId(_userId ?? -1)
       setUserType(_userType ?? UserType.NONE)
       setIsReadingCookie(false)
@@ -89,7 +89,7 @@ export function AuthProvider ({ children }: { children: React.ReactNode }): JSX.
   }
 
   // APIs provided by the hook
-  const states = { username, userType, userId, csrf, isReadingCookie }
+  const states = { displayName, userType, userId, csrf, isReadingCookie }
   const setStates = { setCsrf, setUserType }
   const custom = { login, register, session, logout }
   const value = { ...states, ...setStates, ...custom }

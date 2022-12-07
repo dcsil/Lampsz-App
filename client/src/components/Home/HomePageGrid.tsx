@@ -16,7 +16,7 @@ export default function HomePageGrid ({ listComp }: { listComp: JSX.Element }): 
         <Grid container spacing={3}>
           {/* Profile Link */}
           <Grid item lg={6} xs={12}>
-            <ProfileLink username={auth.username}/>
+            <ProfileLink displayName={auth.displayName}/>
           </Grid>
           {/* Marketplace Link */}
           <Grid item lg={6} xs={12}>

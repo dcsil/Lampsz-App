@@ -22,12 +22,13 @@ export default function ProfileDescription ({ description, editMode }: ProfileDe
     <Card sx={styles.card}>
       <CardContent>
         <Container>
-          <Typography variant="h5" color="primary" gutterBottom>
-            Description
-          </Typography>
+          <Typography variant="h5" color="primary" gutterBottom>Description</Typography>
           {
             editMode
-              ? <TextField required id="Description" label="Required" defaultValue={description}/>
+              ? <TextField
+                id="description" label="Required" defaultValue={description}
+                multiline rows={4} required fullWidth
+              />
               : <Typography variant="body1">
                 {description || 'No description'}
               </Typography>
