@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { UserType } from '../../utils/types'
 import { Theme } from '@mui/material'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
@@ -17,10 +16,11 @@ import SubscriptionsIcon from '@mui/icons-material/Subscriptions'
 import FactoryIcon from '@mui/icons-material/Factory'
 import TextField from '@mui/material/TextField'
 import VisibilityIcon from '@mui/icons-material/Visibility'
+import { useLoaderData } from 'react-router-dom'
 
 const styles = {
   card: {
-    borderRadius: 8,
+    borderRadius: 6,
     textAlign: 'center',
     border: '1px solid grey'
   },
@@ -46,28 +46,28 @@ const styles = {
   }
 }
 
-function getDisplayItems (user: any): any[] {
-  if (user.userType === UserType.INFLUENCER) {
+function getDisplayItems (data: any): any[] {
+  if (data.user.isInfluencer) {
     return [
       {
         icon: <LocationOnIcon/>,
         label: 'Location',
-        value: user.location ? user.location : 'No Location'
+        value: data.location ? data.location : 'No Location'
       },
       {
         icon: <BoyIcon/>,
         label: 'Age',
-        value: user.age ? user.age : 'No data'
+        value: data.age ? data.age : 'No data'
       },
       {
         icon: <SubscriptionsIcon/>,
         label: 'Subscribers',
-        value: user.subscribers
+        value: data.subscribers
       },
       {
         icon: <VisibilityIcon/>,
         label: 'Views',
-        value: user.views
+        value: data.views
       }
     ]
   } else {
@@ -75,29 +75,30 @@ function getDisplayItems (user: any): any[] {
       {
         icon: <LocationOnIcon/>,
         label: 'Location',
-        value: user.location ? user.location : 'No Location'
+        value: data.location ? data.location : 'No Location'
       },
       {
         icon: <FactoryIcon/>,
         label: 'Industry',
-        value: user.industry ? user.industry : 'No Industry'
+        value: data.industry ? data.industry : 'No Industry'
       }
     ]
   }
 }
 
-export default function ProfileInfo ({ user, editMode }: { user: any, editMode: boolean }): JSX.Element {
-  const items = getDisplayItems(user)
+export default function ProfileInfo ({ editMode }: { editMode: boolean }): JSX.Element {
+  const data = useLoaderData() as any
+  const items = getDisplayItems(data)
 
   return (
     <Card sx={styles.card}>
       <CardContent>
-        <Avatar sx={styles.avatar} src={user.thumbnailUrl} alt="avatar"/>
+        <Avatar sx={styles.avatar} src={data.thumbnailUrl} alt="avatar"/>
         <Typography sx={styles.heading} variant="h5">
-          {user.userType === UserType.INFLUENCER ? user.channelName : user.companyName}
+          {data.user.isInfluencer ? data.channelName : data.companyName}
         </Typography>
         <Typography component="span" sx={styles.subheader} variant="h6">
-          {user.shortBio ? user.shortBio : 'No Short Bio Provided'}
+          {data.shortBio ? data.shortBio : 'No Short Bio Provided'}
         </Typography>
 
         <Divider variant="middle" flexItem sx={{ my: 2 }}/>

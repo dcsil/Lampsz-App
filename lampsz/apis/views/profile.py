@@ -1,9 +1,10 @@
+from django.contrib import messages
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
-from lampsz.apis import models, serializers, services, utils
+from lampsz.apis import models, serializers, services
 
 
 @api_view(["GET"])
@@ -11,38 +12,35 @@ from lampsz.apis import models, serializers, services, utils
 def public_user_detail(request, user_id):
     try:
         user = models.User.objects.get(id=user_id)
-        if user.is_influencer:
-            influencer = models.Influencer.objects.filter(user=user).first()
-        else:
-            company = models.Company.objects.filter(user=user).first()
     except models.User.DoesNotExist:
+        messages.error(request, "User does not exist!")
         return Response(
             {"message": "The User does not exist"},
             status=status.HTTP_404_NOT_FOUND,
         )
-    if user.get_user_type() == utils.UserType.INFLUENCER:
+
+    if user.is_influencer:
+        influencer = models.Influencer.objects.get(user=user)
         influencer_serializer = serializers.InfluencerSerializer(influencer, many=False)
         data = dict(influencer_serializer.data)
-        data["user_type"] = user.get_user_type().value
-        data.update(services.get_youtube_channel_detail_by_id(influencer.channel_id))
-        return Response(data, status=status.HTTP_200_OK)
+        data.update(services.get_youtube_channel_video_info(influencer.channel_id))
     else:
+        company = models.Company.objects.get(user=user)
         company_serializer = serializers.CompanySerializer(company, many=False)
         data = dict(company_serializer.data)
-        data["user_type"] = user.get_user_type().value
         marketing_task_serializer = serializers.MarketingTaskSerializer(
             company.marketingtask_set.all(), many=True
         )
         data["marketing_task"] = marketing_task_serializer.data
-        return Response(data, status=status.HTTP_200_OK)
+
+    return Response(data, status=status.HTTP_200_OK)
 
 
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 def influencer_edit_view(request, user_id):
     try:
-        user = models.User.objects.get(id=user_id)
-        influencer = models.Influencer.objects.filter(user=user).first()
+        influencer = models.Influencer.objects.get(pk=user_id)
     except models.Influencer.DoesNotExist:
         return Response(
             {"message": "The Influencer does not exist"},
@@ -68,12 +66,12 @@ def influencer_edit_view(request, user_id):
 @permission_classes([IsAuthenticated])
 def company_edit_view(request, user_id):
     try:
-        user = models.User.objects.get(id=user_id)
-        company = models.Company.objects.filter(user=user).first()
+        company = models.Company.objects.get(pk=user_id)
     except models.Company.DoesNotExist:
         return Response(
             {"message": "The Company does not exist"}, status=status.HTTP_404_NOT_FOUND
         )
+
     if company.user.id != request.user.id:
         return Response(
             {"message": "This user is not authorized to access this data"},

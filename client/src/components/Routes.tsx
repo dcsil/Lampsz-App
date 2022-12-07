@@ -17,6 +17,7 @@ import InfluencerAuthTab from './Auth/InfluencerAuthTab'
 import AuthTabs from './Auth/AuthTabs'
 import BusinessLogin from './Auth/BusinessLogin'
 import { getMarketingTaskData } from '../actions/marketingTask'
+import { getUserProfile } from '../actions/profile'
 
 const router = createBrowserRouter([
   {
@@ -78,7 +79,14 @@ const router = createBrowserRouter([
       <RequireAuth>
         <Profile/>
       </RequireAuth>
-    )
+    ),
+    loader: async ({ params }) => {
+      try {
+        return await getUserProfile(parseInt(params.userId!))
+      } catch (_) {
+        return redirect('/')
+      }
+    }
   },
   {
     path: '/applications',

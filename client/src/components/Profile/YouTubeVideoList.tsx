@@ -1,13 +1,17 @@
 import * as React from 'react'
-import { Stack } from '@mui/material'
+import Typography from '@mui/material/Typography'
+import Grid from '@mui/material/Grid'
 
-export default function YouTubeVideoList ({ urls }: any): JSX.Element {
-  return <div>
-    {urls.map((url: any, index: any) => (
-      <Stack direction="row" spacing={2} marginTop={3} key={index}>
-        <iframe width="420" height="315" src={url} frameBorder="0" allowFullScreen>
-        </iframe>
-      </Stack>
-    ))}
-  </div>
+export default function YouTubeVideoList ({ urls }: { urls: string[] }): JSX.Element {
+  return urls.length > 0
+    ? (
+      <Grid container spacing={5}>
+        {urls.map((url, index) => (
+          <Grid item xs={12} lg={6} key={index}>
+            <iframe src={url} width='280' height='280' allowFullScreen/>
+          </Grid>
+        ))}
+      </Grid>
+      )
+    : <Typography>No Youtube Videos available.</Typography>
 }

@@ -9,42 +9,42 @@ import ProfileInfo from './ProfileInfo'
 import ProfileDescription from './ProfileDescription'
 import ProfileContent from './ProfileContent'
 import Button from '@mui/material/Button'
-import { UserType } from '../../utils/types'
+import { useLoaderData, useNavigate } from 'react-router-dom'
 
-interface ProfileBaseProps {
-  items: string[]
-  user: any
-  userId: number
-}
-
-export default function ProfileBase ({ user, items, userId }: ProfileBaseProps): JSX.Element {
+export default function ProfileBase ({ items }: { items: string[] }): JSX.Element {
   const auth = useAuth()
+  const navigate = useNavigate()
+  const data = useLoaderData() as any
   const [editMode, setEditMode] = React.useState(false)
 
   const flipEditMode = (): void => {
     setEditMode(!editMode)
   }
 
-  const editRequest = (): void => {
+  const editRequest = (event: React.MouseEvent): void => {
+    event.preventDefault()
+
     items.forEach((item: string) => {
-      user[item.toLowerCase()] = (document.getElementById(item)! as HTMLInputElement).value
+      data[item.toLowerCase()] = (document.getElementById(item)! as HTMLInputElement).value
     })
-    editProfile(auth.userId, user)
-    flipEditMode()
+    editProfile(data.user.id, data, () => {
+      flipEditMode()
+      navigate(0)
+    })
   }
 
   return (
     <Container component="main" maxWidth="lg" sx={containerStyle.contentContainer}>
       <Grid container spacing={5}>
         <Grid item md={5}>
-          <Stack spacing={3}>
-            <ProfileInfo user={user} editMode={editMode}/>
-            <ProfileDescription description={user.description} editMode={editMode}/>
+          <Stack spacing={3} component="form">
+            <ProfileInfo editMode={editMode}/>
+            <ProfileDescription editMode={editMode}/>
             <Stack spacing={1} direction="row">
-              {userId === auth.userId && (
+              {data.user.id === auth.userId && (
                 editMode
                   ? <React.Fragment>
-                    <Button variant="outlined" onClick={editRequest}>Save</Button>
+                    <Button type="submit" variant="outlined" onClick={editRequest}>Save</Button>
                     <Button variant="outlined" onClick={flipEditMode}>Cancel</Button>
                   </React.Fragment>
                   : <Button variant="outlined" onClick={flipEditMode}>Edit</Button>
@@ -54,9 +54,8 @@ export default function ProfileBase ({ user, items, userId }: ProfileBaseProps):
         </Grid>
         <Grid item md={7}>
           <ProfileContent
-            user={user}
-            title={user.userType === UserType.INFLUENCER ? 'Youtube Videos' : 'Marketing tasks'}
-            link={user.userId === UserType.INFLUENCER ? user.homePage : '/marketplace'}
+            title={data.user.isInfluencer ? 'Youtube Videos' : 'Marketing tasks'}
+            link={data.user.isInfluencer ? data.homePage : '/marketplace'}
           />
         </Grid>
       </Grid>

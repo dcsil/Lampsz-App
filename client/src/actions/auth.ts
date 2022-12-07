@@ -12,7 +12,7 @@ export interface RegisterInfo {
   email: string
   password: string
   confirmPassword: string
-  is_influencer: boolean
+  isInfluencer: boolean
 }
 
 /**

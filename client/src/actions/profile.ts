@@ -1,21 +1,19 @@
-import axios, { AxiosError, AxiosResponse } from 'axios'
-import { SetState, UserType } from '../utils/types'
+import axios, { AxiosError } from 'axios'
 import { getRequestConfig } from '../utils/utils'
 
-export const getUserProfile = (userId: number, setInfluencer: SetState<{ username: string, userType: number }>): void => {
-  axios
-    .get(`/api/profile/${userId}`)
-    .then((response: AxiosResponse) => {
-      setInfluencer(response.data)
-    })
-    .catch((error: AxiosError) => console.log(error))
+/**
+ * Calls API server to retrieve user profile data.
+ *
+ * @param userId the ID of the user.
+ */
+export const getUserProfile = async (userId: number): Promise<any> => {
+  return (await axios.get(`/api/profile/${userId}`)).data
 }
 
-export const editProfile = (userId: number, body: any): void => {
-  const url = body.userType === UserType.BUSINESS ? `/api/company/${userId}` : `/api/influencer/${userId}`
+export const editProfile = (userId: number, body: any, callback: VoidFunction): void => {
+  const url = body.user.isInfluencer ? `/api/influencer/${userId}` : `/api/company/${userId}`
   axios
     .put(url, body, getRequestConfig())
-    .then((response: AxiosResponse) => {
-    })
+    .then(_ => callback())
     .catch((error: AxiosError) => console.log(error))
 }

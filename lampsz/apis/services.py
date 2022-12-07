@@ -17,6 +17,10 @@ YOUTUBE_API_VERSION = "v3"
 OAUTH_SERVICE_NAME = "oauth2"
 OAUTH_API_VERSION = "v2"
 
+CHANNEL_URL = "https://youtube.googleapis.com/youtube/v3/channels?part=contentDetails%2Cstatistics"
+PLAY_LIST_URL = "https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet"
+VIDEO_EMBED_URL = "https://www.youtube.com/embed/"
+
 SCOPES = [
     "https://www.googleapis.com/auth/youtube.readonly",
     "https://www.googleapis.com/auth/userinfo.email",
@@ -116,7 +120,7 @@ def get_google_user_info(
     return oauth2.userinfo().get().execute()
 
 
-def get_youtube_channel_details(
+def get_youtube_channel_info(
     credentials: Credentials,
 ) -> dict[str, Any]:  # pragma: no cover
     """Get YouTube channel info associated with the given OAuth credential.
@@ -141,56 +145,57 @@ def get_youtube_channel_details(
     }
 
 
-def get_youtube_channel_detail_by_id(channel_id: str) -> dict:  # pragma: no cover
-    data = {}
-    url = (
-        "https://youtube.googleapis.com/youtube/v3/channels?"
-        f"part=contentDetails%2Cstatistics&id={channel_id}&key={settings.GOOGLE_API_KEY}"
-    )
+def get_youtube_channel_video_info(
+    channel_id: str, max_videos: int = 4
+) -> dict[str, Any]:  # pragma: no cover
+    """Get YouTube channel video info given channel ID.
+
+    :param channel_id: the ID of the YouTube channel to query info for.
+    :param max_videos: the maximum number of videos to return in video list.
+    :return: a dictionary consisting subscribers, views, videos and video list.
+    """
+    url = f"{CHANNEL_URL}&id={channel_id}&key={settings.GOOGLE_API_KEY}"
     channel_data = requests.get(url).json()
-    subscribers, views, videos = 0, 0, 0
     if "items" not in channel_data:
-        data["subscribers"] = subscribers
-        data["views"] = views
-        data["videos"] = videos
-        data["videoList"] = []
-        return data
+        return {"subscribers": 0, "views": 0, "videos": 0, "video_list": []}
+
+    subscribers, views, videos = 0, 0, 0
     for item in channel_data["items"]:
         subscribers += int(item["statistics"]["subscriberCount"])
         views += int(item["statistics"]["viewCount"])
         videos += int(item["statistics"]["videoCount"])
-    data["subscribers"] = subscribers
-    data["views"] = views
-    data["videos"] = videos
-    data.update(
-        get_youtube_playlist_detail(
-            [
-                i["contentDetails"]["relatedPlaylists"]["uploads"]
-                for i in channel_data["items"]
-            ],
-        )
-    )
-    return data
+
+    video_list = []
+    for item in channel_data["items"]:
+        if len(video_list) >= max_videos:
+            break
+
+        playlist_id = item["contentDetails"]["relatedPlaylists"]["uploads"]
+        video_list.extend(get_youtube_playlist_detail(playlist_id))
+
+    return {
+        "subscribers": subscribers,
+        "views": views,
+        "videos": videos,
+        "video_list": video_list,
+    }
 
 
-def get_youtube_playlist_detail(playlist_ids: list) -> dict:  # pragma: no cover
-    data = {}
-    video_lists = []
-    for playlist_id in playlist_ids:
-        url = (
-            "https://youtube.googleapis.com/youtube/v3/playlistItems?"
-            f"part=snippet&playlistId={playlist_id}&key={settings.GOOGLE_API_KEY}"
-        )
-        playlist_data = requests.get(url).json()
-        if "error" in playlist_data:
-            continue
-        for item in playlist_data["items"]:
-            video_lists.append(
-                "https://www.youtube.com/embed/"
-                + item["snippet"]["resourceId"]["videoId"]
-            )
-    data["video_list"] = video_lists
-    return data
+def get_youtube_playlist_detail(playlist_id: str) -> list[str]:  # pragma: no cover
+    """Get YouTube playlist details given the playlist ID.
+
+    :param playlist_id: the ID of the YouTube playlist.
+    :return: a list of video embed URL from the playlist.
+    """
+    url = f"{PLAY_LIST_URL}&playlistId={playlist_id}&key={settings.GOOGLE_API_KEY}"
+    playlist_data = requests.get(url).json()
+    if "error" in playlist_data:
+        return []
+
+    return [
+        f'{VIDEO_EMBED_URL}{item["snippet"]["resourceId"]["videoId"]}'
+        for item in playlist_data["items"]
+    ]
 
 
 def get_similarity_score(task: MarketingTask, influencer: Influencer) -> float:
