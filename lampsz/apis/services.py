@@ -133,7 +133,7 @@ def get_youtube_channel_details(
     snippet = item["snippet"]
     return {
         "id": item["id"],
-        "title": snippet["title"],
+        "channel_name": snippet["title"],
         "description": snippet["description"],
         "channel_url": f"https://www.youtube.com/{snippet['customUrl']}",
         "thumbnail": snippet["thumbnails"]["default"]["url"],
