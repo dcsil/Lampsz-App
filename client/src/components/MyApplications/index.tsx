@@ -13,14 +13,11 @@ export default function MyApplications (): JSX.Element {
 
   return (
     <Container component="main" maxWidth="lg" sx={containerStyle.contentContainer}>
-      <InfoCardDisplay
-        title="My Applications"
-        noDataText="No Marketing Task Applications."
-        hasElement={applications.length > 0}
-      >
+      <InfoCardDisplay title="My Applications">
         <TasksBox
           tasks={applications.map(a => a.marketingTask)}
           appliedOn={applications.map(a => a.appliedOn)}
+          noDataText="No Marketing Task Applications."
         />
       </InfoCardDisplay>
     </Container>

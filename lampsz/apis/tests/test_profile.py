@@ -37,16 +37,16 @@ class TestInfluencerDetail(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_put_influencer(self) -> None:
+    def test_update_influencer(self) -> None:
         """
-        Ensure put influencer detail API correctly update the influencer with given ID
+        Ensure patch influencer detail API correctly update the influencer with given ID
         """
         self.client.force_login(self.influencer_user)
-        url = reverse("influencer_edit", kwargs={"user_id": self.influencer_user.id})
-        data = {"location": "Toronto", "age": 20, "description": "test_description"}
-        response = self.client.put(url, data, format="json")
+        url = reverse("influencer_edit", kwargs={"pk": self.influencer_user.id})
+        data = {"age": 20, "description": "test_description"}
+        response = self.client.patch(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["location"], "Toronto")
+        self.assertEqual(response.data["description"], "test_description")
         self.assertEqual(response.data["age"], 20)
 
 
@@ -76,18 +76,18 @@ class TestCompanyDetail(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_put_company(self) -> None:
+    def test_update_company(self) -> None:
         """
-        Ensure put company detail API correctly update the company with given ID
+        Ensure update company detail API correctly update the company with given ID
         """
         self.client.force_login(self.company_user)
-        url = reverse("company_edit", kwargs={"user_id": self.company_user.id})
+        url = reverse("company_edit", kwargs={"pk": self.company_user.id})
         data = {
             "industry": "Food",
             "location": "Toronto",
             "description": "test_description",
         }
-        response = self.client.put(url, data, format="json")
+        response = self.client.patch(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["location"], "Toronto")
         self.assertEqual(response.data["industry"], "Food")

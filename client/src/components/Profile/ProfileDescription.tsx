@@ -4,33 +4,24 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Container from '@mui/material/Container'
 import TextField from '@mui/material/TextField'
+import { useLoaderData } from 'react-router-dom'
 
-interface ProfileDescriptionProps {
-  description: string
-  editMode: boolean
-}
+export default function ProfileDescription ({ editMode }: { editMode: boolean }): JSX.Element {
+  const { description } = useLoaderData() as any
 
-const styles = {
-  card: {
-    borderRadius: 8,
-    border: '1px solid grey'
-  }
-}
-
-export default function ProfileDescription ({ description, editMode }: ProfileDescriptionProps): JSX.Element {
   return (
-    <Card sx={styles.card}>
+    <Card sx={{ borderRadius: 6, border: '1px solid grey' }}>
       <CardContent>
         <Container>
-          <Typography variant="h5" color="primary" gutterBottom>
-            Description
-          </Typography>
-          {
-            editMode
-              ? <TextField required id="Description" label="Required" defaultValue={description}/>
-              : <Typography variant="body1">
-                {description || 'No description'}
-              </Typography>
+          <Typography variant="h5" color="primary" gutterBottom>Description</Typography>
+          {editMode
+            ? <TextField
+              id="Description" label="Required" defaultValue={description}
+              multiline rows={4} required fullWidth
+            />
+            : <Typography variant="body1">
+              {description || 'No description'}
+            </Typography>
           }
         </Container>
       </CardContent>

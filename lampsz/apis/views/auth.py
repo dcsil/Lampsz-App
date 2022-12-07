@@ -14,7 +14,7 @@ from rest_framework.decorators import (
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from lampsz.apis.models import Company
+from lampsz.apis.models import Company, Influencer, User
 from lampsz.apis.serializers import UserSerializer
 from lampsz.apis.services import login_user
 from lampsz.apis.utils import UserType, has_unique_error
@@ -112,12 +112,22 @@ def get_auth_messages_view(request):
 
 
 # Utility functions for auth.py
+def get_user_display_name(user: User) -> str:
+    """
+    Returns the display name (e.g., company name, channel name) of the user.
+    """
+    if user.is_influencer:
+        return Influencer.objects.get(pk=user.pk).channel_name
+    else:
+        return Company.objects.get(pk=user.pk).company_name
+
+
 def get_auth_success_data(request: WSGIRequest) -> dict[str, Any]:
     """
     Returns success response data for authentication APIs.
     """
     return {
-        "userId": request.user.id,
-        "username": request.user.username,
-        "userType": request.session.get("user_type", UserType.NONE),
+        "user_id": request.user.id,
+        "display_name": get_user_display_name(request.user),
+        "user_type": request.session.get("user_type", UserType.NONE),
     }

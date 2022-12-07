@@ -39,7 +39,7 @@ export default function BusinessSignup (): JSX.Element {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
-    const registerInfo = { username, companyName, email, password, confirmPassword, is_influencer: false }
+    const registerInfo = { username, companyName, email, password, confirmPassword, isInfluencer: false }
     auth.register(registerInfo, setError, () => {
       navigate('/')
       toast.getToastMessage()

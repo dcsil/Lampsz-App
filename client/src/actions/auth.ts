@@ -12,7 +12,7 @@ export interface RegisterInfo {
   email: string
   password: string
   confirmPassword: string
-  is_influencer: boolean
+  isInfluencer: boolean
 }
 
 /**
@@ -110,6 +110,6 @@ export const getMessagesAction = (callback: (message: string, level: AlertColor)
 // Utility functions
 const successAuthResponse = (authCallback: AuthCallback): (response: AxiosResponse) => void => {
   return (response: AxiosResponse<AuthResponse>) => {
-    authCallback(false, response.data.username, response.data.userId, response.data.userType)
+    authCallback(false, response.data.displayName, response.data.userId, response.data.userType)
   }
 }

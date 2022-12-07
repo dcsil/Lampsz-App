@@ -1,16 +1,18 @@
 import * as React from 'react'
-import { UserType } from '../../utils/types'
 import TasksBox from '../Shared/TasksBox'
 import YouTubeVideoList from './YouTubeVideoList'
+import ListDisplay from '../Shared/ListDisplay'
+import { useLoaderData } from 'react-router-dom'
 
-interface ProfileContentProps {
-  user: any
-}
+export default function ProfileContent ({ title, link }: { title: string, link: string }): JSX.Element {
+  const data = useLoaderData() as any
 
-export default function ProfileContent ({ user }: ProfileContentProps): JSX.Element {
-  if (user.userType === UserType.INFLUENCER) {
-    return <YouTubeVideoList urls={user.videoList}/>
-  } else {
-    return <TasksBox tasks={user.marketingTask}/>
-  }
+  return (
+    <ListDisplay title={title} content={title} link={link}>
+      {data.user.isInfluencer
+        ? <YouTubeVideoList urls={data.videoList}/>
+        : <TasksBox tasks={data.marketingTask.slice(0, 4)} noDataText="No Active Marketing Task." shrink/>
+      }
+    </ListDisplay>
+  )
 }

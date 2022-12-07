@@ -27,11 +27,11 @@ class UserSerializer(serializers.ModelSerializer):
 class PublicUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username"]
+        fields = ["id", "username", "is_influencer"]
 
 
 class InfluencerSerializer(serializers.ModelSerializer):
-    user = PublicUserSerializer(required=True)
+    user = PublicUserSerializer(read_only=True)
     platform = serializers.CharField(source="get_platform_display")
 
     class Meta:
@@ -41,20 +41,11 @@ class InfluencerSerializer(serializers.ModelSerializer):
 
 
 class CompanySerializer(serializers.ModelSerializer):
-    user = PublicUserSerializer(required=True)
+    user = PublicUserSerializer(read_only=True)
 
     class Meta:
         model = Company
-        fields = [
-            "user",
-            "location",
-            "categories",
-            "description",
-            "industry",
-            "short_bio",
-            "industry",
-            "company_name",
-        ]
+        fields = "__all__"
         depth = 2
 
 

@@ -22,25 +22,19 @@ export default function MyMarketingTasks (): JSX.Element {
     <Container component="main" maxWidth="lg" sx={containerStyle.contentContainer}>
       <InfoCardDisplay
         title="My Marketing Tasks"
-        noDataText="No Active Marketing Task."
-        hasElement={activeTasks.length > 0}
         actionButtons={
           <Stack p={1} spacing={1}>
             <Button variant="outlined" onClick={() => setOpen(true)}>Create New Task</Button>
           </Stack>
         }
       >
-        <TasksBox tasks={activeTasks}></TasksBox>
+        <TasksBox tasks={activeTasks} noDataText="No Active Marketing Task."></TasksBox>
       </InfoCardDisplay>
 
       <Divider sx={{ mt: 4, mb: 4 }}/>
 
-      <InfoCardDisplay
-        title="Inactive/Past Tasks"
-        noDataText="No Inactive/Past Marketing Task."
-        hasElement={inactiveTasks.length > 0}
-      >
-        <TasksBox tasks={inactiveTasks}></TasksBox>
+      <InfoCardDisplay title="Inactive/Past Tasks">
+        <TasksBox tasks={inactiveTasks} noDataText="No Inactive/Past Marketing Task."></TasksBox>
       </InfoCardDisplay>
 
       <MarketingTaskForm open={open} closeDialog={() => setOpen(false)} isCreate={true}/>

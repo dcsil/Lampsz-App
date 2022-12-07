@@ -3,7 +3,7 @@ import { MarketingTask } from '../../utils/types'
 import { getTasks } from '../../actions/marketingTask'
 import { useAuth } from '../../hooks/AuthHook'
 import TasksBox from '../Shared/TasksBox'
-import ListDisplay from './ListDisplay'
+import ListDisplay from '../Shared/ListDisplay'
 
 export default function MarketingTaskList (): JSX.Element {
   const auth = useAuth()
@@ -12,7 +12,7 @@ export default function MarketingTaskList (): JSX.Element {
 
   return (
     <ListDisplay title="Your Marketing Tasks" content="marketing tasks" link="/tasks">
-      <TasksBox tasks={tasks.slice(0, 4)}></TasksBox>
+      <TasksBox tasks={tasks.slice(0, 4)} noDataText="No Active Marketing Task."></TasksBox>
     </ListDisplay>
   )
 }

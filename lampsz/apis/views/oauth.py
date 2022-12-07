@@ -10,7 +10,7 @@ from lampsz.apis.services import (
     get_access_token,
     get_authorization_url,
     get_google_user_info,
-    get_youtube_channel_details,
+    get_youtube_channel_info,
     login_user,
 )
 from lampsz.apis.utils import ensure_https_url
@@ -50,7 +50,7 @@ def oauth2callback(request):  # pragma: no cover
 
         # Get Google user info and Youtube channel detail
         user_info = get_google_user_info(credentials)
-        channel_detail = get_youtube_channel_details(credentials)
+        channel_detail = get_youtube_channel_info(credentials)
     except (AccessDeniedError, HttpError):
         messages.error(request, failed_consent)
         # Redirect back to login page if user doesn't give consent
@@ -74,6 +74,7 @@ def oauth2callback(request):  # pragma: no cover
             thumbnail_url=channel_detail["thumbnail"],
             location=channel_detail["country"],
             channel_id=channel_detail["id"],
+            channel_name=channel_detail["channel_name"],
         )
         influencer.save()
 

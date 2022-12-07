@@ -1,29 +1,18 @@
 import * as React from 'react'
-import { useEffect } from 'react'
-import { UserType } from '../../utils/types'
-import { useParams } from 'react-router-dom'
-import { getUserProfile } from '../../actions/profile'
+import { useLoaderData } from 'react-router-dom'
 import ProfileBase from './ProfileBase'
-import Loading from '../Loading'
 
 export default function Profile (): JSX.Element {
-  const [user, setUser] = React.useState({ username: '', userType: UserType.NONE })
-  const { userId } = useParams()
-  const influencerItems = ['Location', 'Age', 'Subscribers', 'Likes', 'Description']
-  const businessItems = ['Location', 'Industry', 'Description']
+  const data = useLoaderData() as any
+  const influencerItems = ['ShortBio', 'Description']
+  const businessItems = ['ShortBio', 'Location', 'Industry', 'Description']
 
-  useEffect(() => {
-    getUserProfile(parseInt(userId!), setUser)
-  }, [])
-
-  return user.userType === UserType.NONE
-    ? <Loading/>
-    : (
-      <React.Fragment>
-        {user.userType === UserType.BUSINESS
-          ? <ProfileBase items={businessItems} user={user} userId={parseInt(userId!)}/>
-          : <ProfileBase items={influencerItems} user={user} userId={parseInt(userId!)}/>
-        }
-      </React.Fragment>
-      )
+  return (
+    <React.Fragment>
+      {data.user.isInfluencer
+        ? <ProfileBase items={influencerItems}/>
+        : <ProfileBase items={businessItems}/>
+      }
+    </React.Fragment>
+  )
 }

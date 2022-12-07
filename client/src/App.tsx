@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { ReactElement, useEffect } from 'react'
+import { ReactElement } from 'react'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Routes from './components/Routes'
 import { blue, indigo } from '@mui/material/colors'
@@ -37,9 +37,7 @@ function App (): ReactElement {
     toast.setToastOpen(false)
   }
 
-  useEffect(() => {
-    toast.getToastMessage()
-  }, [])
+  React.useEffect(() => toast.getToastMessage(), [])
 
   return (
     <ThemeProvider theme={theme}>

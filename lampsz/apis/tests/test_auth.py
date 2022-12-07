@@ -10,7 +10,7 @@ from lampsz.apis.views.auth import bad_credentials, logout_success
 
 class TestLogin(APITestCase):
     def setUp(self) -> None:
-        self.company_user, _ = create_test_company_user()
+        self.company_user, self.company = create_test_company_user()
 
     def tearDown(self) -> None:
         self.client.logout()
@@ -23,8 +23,8 @@ class TestLogin(APITestCase):
         data = {"username": "test_c", "password": "correct"}
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["userId"], self.company_user.id)
-        self.assertEqual(response.data["username"], self.company_user.username)
+        self.assertEqual(response.data["user_id"], self.company_user.id)
+        self.assertEqual(response.data["display_name"], self.company.company_name)
         self.assertEqual(self.client.session["user_type"], UserType.BUSINESS)
 
     def test_company_login_incorrect_credentials(self) -> None:
@@ -141,7 +141,7 @@ class TestRegister(APITestCase):
 
 class TestAuthMisc(APITestCase):
     def setUp(self) -> None:
-        self.company_user, _ = create_test_company_user()
+        self.company_user, self.company = create_test_company_user()
 
     def test_get_session_when_unauthenticated(self) -> None:
         """
@@ -161,8 +161,8 @@ class TestAuthMisc(APITestCase):
         url = reverse("session")
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["userType"], 0)
-        self.assertEqual(response.data["username"], self.company_user.username)
+        self.assertEqual(response.data["user_type"], 0)
+        self.assertEqual(response.data["display_name"], self.company.company_name)
 
     def test_logout_view(self) -> None:
         """
@@ -174,7 +174,7 @@ class TestAuthMisc(APITestCase):
         url = reverse("logout")
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertFalse("userType" in self.client.session)
+        self.assertFalse("user_type" in self.client.session)
 
     def test_get_messages_view_after_logout(self) -> None:
         """

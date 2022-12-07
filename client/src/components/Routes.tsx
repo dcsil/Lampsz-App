@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { useEffect } from 'react'
 import { createBrowserRouter, Navigate, redirect, RouterProvider, useLocation } from 'react-router-dom'
 import Home from './Home'
 import Marketplace from './Marketplace'
@@ -17,6 +16,7 @@ import InfluencerAuthTab from './Auth/InfluencerAuthTab'
 import AuthTabs from './Auth/AuthTabs'
 import BusinessLogin from './Auth/BusinessLogin'
 import { getMarketingTaskData } from '../actions/marketingTask'
+import { getUserProfile } from '../actions/profile'
 
 const router = createBrowserRouter([
   {
@@ -78,7 +78,14 @@ const router = createBrowserRouter([
       <RequireAuth>
         <Profile/>
       </RequireAuth>
-    )
+    ),
+    loader: async ({ params }) => {
+      try {
+        return await getUserProfile(parseInt(params.userId!))
+      } catch (_) {
+        return redirect('/')
+      }
+    }
   },
   {
     path: '/applications',
@@ -101,9 +108,7 @@ const router = createBrowserRouter([
 export default function Router (): JSX.Element {
   const auth = useAuth()
 
-  useEffect(() => {
-    auth.session()
-  }, [])
+  React.useEffect(() => auth.session(), [])
 
   return auth.isReadingCookie ? <Loading/> : <RouterProvider router={router}/>
 }

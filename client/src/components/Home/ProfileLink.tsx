@@ -5,17 +5,13 @@ import Button from '@mui/material/Button'
 import { containerStyle } from '../../utils/utils'
 import { useAuth } from '../../hooks/AuthHook'
 
-interface ProfileLinkProps {
-  username: string
-}
-
-export default function ProfileLink ({ username }: ProfileLinkProps): JSX.Element {
+export default function ProfileLink ({ displayName }: { displayName: string }): JSX.Element {
   const auth = useAuth()
   return (
     <Paper sx={containerStyle.centeredPaper}>
       <Stack direction='column'>
         <Typography variant="h5">
-          Welcome {username}!
+          Welcome {displayName}!
         </Typography>
         <Button href={`/profile/${auth.userId}`}>View Profile</Button>
       </Stack>
