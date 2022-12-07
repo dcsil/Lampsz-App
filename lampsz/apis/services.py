@@ -182,6 +182,8 @@ def get_youtube_playlist_detail(playlist_ids: list) -> dict:  # pragma: no cover
             f"part=snippet&playlistId={playlist_id}&key={settings.GOOGLE_API_KEY}"
         )
         playlist_data = requests.get(url).json()
+        if "error" in playlist_data:
+            continue
         for item in playlist_data["items"]:
             video_lists.append(
                 "https://www.youtube.com/embed/"
