@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.http import Http404
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from lampsz.apis.mixins import MultipleFieldLookupMixin
 from lampsz.apis.models import MarketingTask, TaskApplication
@@ -19,7 +19,7 @@ class TaskApplicationList(generics.ListCreateAPIView):
     application.
     """
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = TaskApplicationSerializer
 
     def get_queryset(self):
@@ -38,7 +38,7 @@ class TaskApplicationDetail(MultipleFieldLookupMixin, generics.RetrieveDestroyAP
     Generic view for deleting specific task application.
     """
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = TaskApplication.objects.all()
     serializer_class = TaskApplicationSerializer
     lookup_fields = ("influencer", "marketing_task")
@@ -49,7 +49,7 @@ class MarketingTaskApplicants(generics.ListAPIView):
     Generic view for retrieving all applicants of a given market task.
     """
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = TaskApplicationInfluencerSerializer
 
     def get_queryset(self):
