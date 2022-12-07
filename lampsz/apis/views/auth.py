@@ -24,7 +24,6 @@ __all__ = [
     "csrf_set",
     "login_success",
     "logout_success",
-    "failed_consent",
     "login_view",
     "register_view",
     "logout_view",
@@ -38,7 +37,6 @@ csrf_set = "CSRF cookie set"
 login_success = "Login successful!"
 logout_success = "Logout successful!"
 register_success = "Successfully register and login!"
-failed_consent = "Failed to login due to denied consent."
 
 
 @api_view(["POST"])

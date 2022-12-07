@@ -14,7 +14,11 @@ from lampsz.apis.services import (
     login_user,
 )
 from lampsz.apis.utils import ensure_https_url
-from lampsz.apis.views.auth import failed_consent, login_success
+from lampsz.apis.views.auth import login_success
+
+# Response messages
+failed_consent = "Failed to login due to denied consent."
+no_youtube_account = "You do not have a YouTube account!"
 
 
 def authorize(request):  # pragma: no cover
@@ -54,6 +58,11 @@ def oauth2callback(request):  # pragma: no cover
     except (AccessDeniedError, HttpError):
         messages.error(request, failed_consent)
         # Redirect back to login page if user doesn't give consent
+        return redirect("/login")
+
+    # Redirect back to login page if user doesn't have a YouTube account
+    if not channel_detail:
+        messages.error(request, no_youtube_account)
         return redirect("/login")
 
     # Log user in if user associated with the Google account already exists,
