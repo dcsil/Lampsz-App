@@ -23,7 +23,10 @@ def create_test_influencer_user(num: int = 0) -> tuple[User, Influencer]:
         username=f"test_i{num}", email=f"test_i{num}@email.com", is_influencer=True
     )
     influencer = Influencer.objects.create(
-        user=influencer_user, channel_name="TestChannel", channel_id="1"
+        user=influencer_user,
+        channel_name="TestChannel",
+        channel_id="1",
+        description="testing",
     )
     return influencer_user, influencer
 

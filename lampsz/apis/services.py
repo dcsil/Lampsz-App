@@ -141,7 +141,7 @@ def get_youtube_channel_details(
     }
 
 
-def get_youtube_channel_detail_by_id(channel_id: str) -> dict:
+def get_youtube_channel_detail_by_id(channel_id: str) -> dict:  # pragma: no cover
     data = {}
     url = (
         "https://youtube.googleapis.com/youtube/v3/channels?"
@@ -173,7 +173,7 @@ def get_youtube_channel_detail_by_id(channel_id: str) -> dict:
     return data
 
 
-def get_youtube_playlist_detail(playlist_ids: list) -> dict:
+def get_youtube_playlist_detail(playlist_ids: list) -> dict:  # pragma: no cover
     data = {}
     video_lists = []
     for playlist_id in playlist_ids:
