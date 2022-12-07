@@ -1,6 +1,6 @@
 from typing import Any
 
-import en_core_web_lg
+import en_core_web_sm
 import requests
 from django.conf import settings
 from django.contrib.auth import login
@@ -28,7 +28,7 @@ SCOPES = [
 ]
 
 # Load spacy
-nlp = en_core_web_lg.load()
+nlp = en_core_web_sm.load()
 
 
 def login_user(request: WSGIRequest, user: User) -> None:
