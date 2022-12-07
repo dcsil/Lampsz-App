@@ -5,7 +5,7 @@ import ProfileBase from './ProfileBase'
 export default function Profile (): JSX.Element {
   const data = useLoaderData() as any
   const influencerItems = ['ShortBio', 'Description']
-  const businessItems = ['Location', 'Industry', 'Description']
+  const businessItems = ['ShortBio', 'Location', 'Industry', 'Description']
 
   return (
     <React.Fragment>
