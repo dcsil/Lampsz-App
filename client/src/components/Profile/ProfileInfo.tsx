@@ -14,9 +14,9 @@ import Container from '@mui/material/Container'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import BoyIcon from '@mui/icons-material/Boy'
 import SubscriptionsIcon from '@mui/icons-material/Subscriptions'
-import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 import FactoryIcon from '@mui/icons-material/Factory'
 import TextField from '@mui/material/TextField'
+import VisibilityIcon from '@mui/icons-material/Visibility'
 
 const styles = {
   card: {
@@ -62,12 +62,12 @@ function getDisplayItems (user: any): any[] {
       {
         icon: <SubscriptionsIcon/>,
         label: 'Subscribers',
-        value: user.subscribers ? user.subscribers : 'No data'
+        value: user.subscribers
       },
       {
-        icon: <ThumbUpIcon/>,
-        label: 'Likes',
-        value: user.likes ? user.likes : 'No data'
+        icon: <VisibilityIcon/>,
+        label: 'Views',
+        value: user.views
       }
     ]
   } else {
@@ -92,7 +92,7 @@ export default function ProfileInfo ({ user, editMode }: { user: any, editMode: 
   return (
     <Card sx={styles.card}>
       <CardContent>
-        <Avatar sx={styles.avatar} src="" alt="avatar"/>
+        <Avatar sx={styles.avatar} src={user.thumbnailUrl} alt="avatar"/>
         <Typography sx={styles.heading} variant="h5">
           {user.userType === UserType.INFLUENCER ? user.channelName : user.companyName}
         </Typography>
