@@ -46,55 +46,55 @@ const styles = {
   }
 }
 
-function getDisplayItems (data: any): any[] {
-  if (data.user.isInfluencer) {
-    return [
-      {
-        icon: <BoyIcon/>,
-        label: 'Age',
-        value: data.age ? data.age : 'No data',
-        allowEdit: true
-      },
-      {
-        icon: <LocationOnIcon/>,
-        label: 'Location',
-        value: data.location ? data.location : 'No Location',
-        allowEdit: false
-      },
-      {
-        icon: <SubscriptionsIcon/>,
-        label: 'Subscribers',
-        value: data.subscribers,
-        allowEdit: false
-      },
-      {
-        icon: <VisibilityIcon/>,
-        label: 'Views',
-        value: data.views,
-        allowEdit: false
-      }
-    ]
-  } else {
-    return [
-      {
-        icon: <LocationOnIcon/>,
-        label: 'Location',
-        value: data.location ? data.location : 'No Location',
-        allowEdit: true
-      },
-      {
-        icon: <FactoryIcon/>,
-        label: 'Industry',
-        value: data.industry ? data.industry : 'No Industry',
-        allowEdit: true
-      }
-    ]
-  }
+function getInfluencerDisplayItems (data: any): any[] {
+  return [
+    {
+      icon: <BoyIcon/>,
+      label: 'Age',
+      value: data.age ? data.age : 'No data',
+      allowEdit: true
+    },
+    {
+      icon: <LocationOnIcon/>,
+      label: 'Location',
+      value: data.location ? data.location : 'No Location',
+      allowEdit: false
+    },
+    {
+      icon: <SubscriptionsIcon/>,
+      label: 'Subscribers',
+      value: data.subscribers,
+      allowEdit: false
+    },
+    {
+      icon: <VisibilityIcon/>,
+      label: 'Views',
+      value: data.views,
+      allowEdit: false
+    }
+  ]
+}
+
+function getBusinessDisplayItems (data: any): any[] {
+  return [
+    {
+      icon: <LocationOnIcon/>,
+      label: 'Location',
+      value: data.location ? data.location : 'No Location',
+      allowEdit: true
+    },
+    {
+      icon: <FactoryIcon/>,
+      label: 'Industry',
+      value: data.industry ? data.industry : 'No Industry',
+      allowEdit: true
+    }
+  ]
 }
 
 export default function ProfileInfo ({ editMode }: { editMode: boolean }): JSX.Element {
   const data = useLoaderData() as any
-  const items = getDisplayItems(data)
+  const items = data.user.isInfluencer ? getInfluencerDisplayItems(data) : getBusinessDisplayItems(data)
 
   return (
     <Card sx={styles.card}>

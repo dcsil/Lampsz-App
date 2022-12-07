@@ -70,14 +70,18 @@ jobs:
           coverage xml
 
       - name: Set up nodejs
+        if: ${{ github.event_name == 'push' }}
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: 'npm'
-      - run: npm ci
-      - run: npm test
+      - if: ${{ github.event_name == 'push' }}
+        run: npm ci
+      - if: ${{ github.event_name == 'push' }}
+        run: npm test
 
       - name: CodeClimate combine and upload coverage
+        if: ${{ github.event_name == 'push' }}
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
