@@ -57,12 +57,13 @@ def get_marketing_tasks(request):
     location = request.data["location"]
 
     qs = MarketingTask.objects.filter(
-        Q(title__contains=query)
-        | Q(description__contains=query)
-        | Q(deliverables__contains=query)
+        Q(title__icontains=query)
+        | Q(description__icontains=query)
+        | Q(deliverables__icontains=query)
+        | Q(company__company_name__icontains=query)
     )
     if location != "":
-        qs = qs.filter(location=location)
+        qs = qs.filter(location__contains=location)
 
     results = []
     for task in qs:
