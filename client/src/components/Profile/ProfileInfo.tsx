@@ -50,24 +50,28 @@ function getDisplayItems (data: any): any[] {
   if (data.user.isInfluencer) {
     return [
       {
-        icon: <LocationOnIcon/>,
-        label: 'Location',
-        value: data.location ? data.location : 'No Location'
-      },
-      {
         icon: <BoyIcon/>,
         label: 'Age',
-        value: data.age ? data.age : 'No data'
+        value: data.age ? data.age : 'No data',
+        allowEdit: true
+      },
+      {
+        icon: <LocationOnIcon/>,
+        label: 'Location',
+        value: data.location ? data.location : 'No Location',
+        allowEdit: false
       },
       {
         icon: <SubscriptionsIcon/>,
         label: 'Subscribers',
-        value: data.subscribers
+        value: data.subscribers,
+        allowEdit: false
       },
       {
         icon: <VisibilityIcon/>,
         label: 'Views',
-        value: data.views
+        value: data.views,
+        allowEdit: false
       }
     ]
   } else {
@@ -75,12 +79,14 @@ function getDisplayItems (data: any): any[] {
       {
         icon: <LocationOnIcon/>,
         label: 'Location',
-        value: data.location ? data.location : 'No Location'
+        value: data.location ? data.location : 'No Location',
+        allowEdit: true
       },
       {
         icon: <FactoryIcon/>,
         label: 'Industry',
-        value: data.industry ? data.industry : 'No Industry'
+        value: data.industry ? data.industry : 'No Industry',
+        allowEdit: true
       }
     ]
   }
@@ -97,15 +103,18 @@ export default function ProfileInfo ({ editMode }: { editMode: boolean }): JSX.E
         <Typography sx={styles.heading} variant="h5">
           {data.user.isInfluencer ? data.channelName : data.companyName}
         </Typography>
-        <Typography component="span" sx={styles.subheader} variant="h6">
-          {data.shortBio ? data.shortBio : 'No Short Bio Provided'}
-        </Typography>
+        {editMode
+          ? <TextField fullWidth required size="small" id="ShortBio" label="Required" defaultValue={data.shortBio}/>
+          : <Typography component="span" sx={styles.subheader} variant="h6">
+            {data.shortBio ? data.shortBio : 'No Short Bio Provided'}
+          </Typography>
+        }
 
         <Divider variant="middle" flexItem sx={{ my: 2 }}/>
 
         <Container sx={{ textAlign: 'center' }}>
           <List>
-            {items.map(({ icon, label, value }) => (
+            {items.map(({ icon, label, allowEdit, value }) => (
               <ListItem key={label}>
                 <ListItemIcon sx={styles.profileStatItem}>
                   {icon}
@@ -113,10 +122,9 @@ export default function ProfileInfo ({ editMode }: { editMode: boolean }): JSX.E
                 <ListItemText sx={{ mr: 4 }}>
                   <b>{label}</b>
                 </ListItemText>
-                {
-                  editMode
-                    ? <TextField required size="small" id={label} label="Required" defaultValue={value}/>
-                    : <Typography variant="body1">{value}</Typography>
+                {(editMode && allowEdit)
+                  ? <TextField required size="small" id={label} label="Required" defaultValue={value}/>
+                  : <Typography variant="body1">{value}</Typography>
                 }
               </ListItem>
             ))}

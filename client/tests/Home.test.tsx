@@ -5,7 +5,7 @@ import '@testing-library/jest-dom/extend-expect'
 
 const mock = { userType: UserType.NONE }
 jest.mock('../src/hooks/AuthHook', () => ({
-  useAuth: () => ({ userId: 1, userType: mock.userType, username: 'TestUser' })
+  useAuth: () => ({ userId: 1, userType: mock.userType, displayName: 'TestUser' })
 }))
 
 jest.mock('../src/actions/marketingTask', () => ({

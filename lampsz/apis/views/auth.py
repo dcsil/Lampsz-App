@@ -129,5 +129,5 @@ def get_auth_success_data(request: WSGIRequest) -> dict[str, Any]:
     return {
         "user_id": request.user.id,
         "display_name": get_user_display_name(request.user),
-        "userType": request.session.get("user_type", UserType.NONE),
+        "user_type": request.session.get("user_type", UserType.NONE),
     }

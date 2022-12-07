@@ -4,12 +4,12 @@ import ProfileBase from './ProfileBase'
 
 export default function Profile (): JSX.Element {
   const data = useLoaderData() as any
-  const influencerItems = ['Location', 'Age', 'Subscribers', 'Views', 'Description']
+  const influencerItems = ['ShortBio', 'Description']
   const businessItems = ['Location', 'Industry', 'Description']
 
   return (
     <React.Fragment>
-      {data.user.is_influencer
+      {data.user.isInfluencer
         ? <ProfileBase items={influencerItems}/>
         : <ProfileBase items={businessItems}/>
       }
