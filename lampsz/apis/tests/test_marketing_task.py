@@ -2,8 +2,12 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from lampsz.apis.models import MarketingTask
-from lampsz.apis.tests.utils import create_test_company_user, create_test_marketing_task
+from lampsz.apis.models import MarketingTask, TaskApplication
+from lampsz.apis.tests.utils import (
+    create_test_company_user,
+    create_test_influencer_user,
+    create_test_marketing_task,
+)
 
 
 class TestMarketingTaskList(APITestCase):
@@ -81,9 +85,9 @@ class TestMarketingTaskDetail(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_put_task_detail(self) -> None:
+    def test_patch_task_detail(self) -> None:
         """
-        Ensure put task detail API correctly update the task with given ID
+        Ensure patch task detail API correctly update the task with given ID
         """
         url = reverse("marketing_task_detail", kwargs={"pk": self.test_task.pk})
         data = {"compensation": 170.0, "end_date": "2022-12-04", "location": "Ottawa"}
@@ -92,3 +96,21 @@ class TestMarketingTaskDetail(APITestCase):
         self.assertEqual(response.data["compensation"], 170.0)
         self.assertEqual(response.data["end_date"], "2022-12-04")
         self.assertEqual(response.data["location"], "Ottawa")
+
+    def test_update_detail_calculate_similarity(self) -> None:
+        """
+        Ensure updating task description updates similarity scores for
+        task applications.
+        """
+        _, influencer = create_test_influencer_user()
+        application = TaskApplication.objects.create(
+            influencer=influencer, marketing_task=self.test_task
+        )
+        old_similarity = application.similarity
+
+        url = reverse("marketing_task_detail", kwargs={"pk": self.test_task.pk})
+        data = {"description": "updating this"}
+        response = self.client.patch(url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        new_similarity = TaskApplication.objects.get(pk=application.pk).similarity
+        self.assertNotEqual(old_similarity, new_similarity)

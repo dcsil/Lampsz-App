@@ -80,6 +80,7 @@ export interface TaskApplicant {
   marketingTask: number
   influencer: InfluencerData
   appliedOn: string
+  similarity: number
 }
 
 // Enums

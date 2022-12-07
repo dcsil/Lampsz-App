@@ -1,6 +1,7 @@
 from typing import Any
 
 import requests
+import spacy
 from django.conf import settings
 from django.contrib.auth import login
 from django.core.handlers.wsgi import WSGIRequest
@@ -8,7 +9,7 @@ from google.auth.credentials import Credentials
 from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 
-from lampsz.apis.models import User
+from lampsz.apis.models import Influencer, MarketingTask, User
 
 # Constants
 YOUTUBE_SERVICE_NAME = "youtube"
@@ -21,6 +22,9 @@ SCOPES = [
     "https://www.googleapis.com/auth/userinfo.email",
     "https://www.googleapis.com/auth/userinfo.profile",
 ]
+
+# Load spacy
+nlp = spacy.load("en_core_web_lg")
 
 
 def login_user(request: WSGIRequest, user: User) -> None:
@@ -137,7 +141,7 @@ def get_youtube_channel_details(
     }
 
 
-def get_youtube_channel_detail_by_id(channel_id: str) -> dict:
+def get_youtube_channel_detail_by_id(channel_id: str) -> dict:  # pragma: no cover
     data = {}
     url = (
         "https://youtube.googleapis.com/youtube/v3/channels?"
@@ -169,7 +173,7 @@ def get_youtube_channel_detail_by_id(channel_id: str) -> dict:
     return data
 
 
-def get_youtube_playlist_detail(playlist_ids: list) -> dict:
+def get_youtube_playlist_detail(playlist_ids: list) -> dict:  # pragma: no cover
     data = {}
     video_lists = []
     for playlist_id in playlist_ids:
@@ -185,3 +189,18 @@ def get_youtube_playlist_detail(playlist_ids: list) -> dict:
             )
     data["video_list"] = video_lists
     return data
+
+
+def get_similarity_score(task: MarketingTask, influencer: Influencer) -> float:
+    """Compute the text similarity score between a marketing task an influencer.
+
+    :param task: the marketing task object
+    :param influencer: the influencer object
+    :return: a similarity score based on description, location and title texts.
+    """
+    location_sim = nlp(task.location).similarity(nlp(influencer.location))
+
+    task_data = f"{task.title} {task.description}"
+    application_data = f"{influencer.description}"
+    description_sim = nlp(task_data).similarity(nlp(application_data))
+    return location_sim + description_sim

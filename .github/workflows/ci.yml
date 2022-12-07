@@ -61,6 +61,7 @@ jobs:
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: |
           poetry install --no-interaction --no-root
+          poetry run python -m spacy download en_core_web_lg
 
       - name: Run backend tests
         run: |

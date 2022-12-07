@@ -79,8 +79,10 @@ class TaskApplication(models.Model):
     influencer = models.ForeignKey(Influencer, on_delete=models.CASCADE)
     marketing_task = models.ForeignKey(MarketingTask, on_delete=models.CASCADE)
     applied_on = models.DateField(default=datetime.date.today)
+    similarity = models.FloatField(default=0.0)
 
     class Meta:
+        ordering = ("similarity",)
         constraints = [
             models.UniqueConstraint(
                 fields=["influencer", "marketing_task"],
