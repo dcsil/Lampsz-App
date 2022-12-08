@@ -51,15 +51,11 @@ To get started with local development:
         $ export OAUTHLIB_RELAX_TOKEN_SCOPE=1
         $ export OAUTHLIB_INSECURE_TRANSPORT=1
 
-6. Install spacy NPL library:
-
-        $ python -m spacy download en_core_web_sm
-
-7. Apply Django database migrations:
+6. Apply Django database migrations:
 
         $ python manage.py migrate
 
-8. To start django development server:
+7. To start django development server:
 
         $ python manage.py runserver
 
