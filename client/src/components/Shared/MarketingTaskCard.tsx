@@ -26,7 +26,7 @@ export default function MarketingTaskCard ({ taskData, appliedDate }: MarketingT
         title={taskData.company.companyName}
         subheader={`${taskData.location} - ${taskData.postedDate}`}
       />
-      <CardMedia component="img" height={200} image={taskData.image}/>
+      <CardMedia component="img" height={200} image={taskData.image ? taskData.image : '/static/No-Photo-Available.jpg'}/>
       <CardContent>
         <Typography gutterBottom variant="h6" component="div" textTransform="capitalize">
           {taskData.title}
