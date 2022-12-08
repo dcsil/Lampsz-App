@@ -6,8 +6,11 @@ import MarketplaceLink from './MarketplaceLink'
 import Container from '@mui/material/Container'
 import { useAuth } from '../../hooks/AuthHook'
 import Box from '@mui/material/Box'
+import { UserType } from '../../utils/types'
+import ApplicationList from './ApplicationList'
+import MarketingTaskList from './MarketingTaskList'
 
-export default function HomePageGrid ({ listComp }: { listComp: JSX.Element }): JSX.Element {
+export default function HomePageGrid (): JSX.Element {
   const auth = useAuth()
 
   return (
@@ -23,7 +26,7 @@ export default function HomePageGrid ({ listComp }: { listComp: JSX.Element }): 
             <MarketplaceLink/>
           </Grid>
           <Grid item xs={12}>
-            {listComp}
+            {auth.userType === UserType.INFLUENCER ? <ApplicationList/> : <MarketingTaskList/>}
           </Grid>
         </Grid>
       </Container>
