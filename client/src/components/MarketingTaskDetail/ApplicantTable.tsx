@@ -6,7 +6,7 @@ import { Link, useLoaderData } from 'react-router-dom'
 import { getMarketingTaskApplicants } from '../../actions/taskApplication'
 import { GridColumns } from '@mui/x-data-grid/models/colDef/gridColDef'
 import Avatar from '@mui/material/Avatar'
-import { Typography } from '@mui/material'
+import Paper from '@mui/material/Paper'
 
 const applicantTableColumns: GridColumns = [
   {
@@ -85,11 +85,11 @@ export default function ApplicantTable (): JSX.Element {
   }, [])
 
   return (
-    <Box sx={{ height: 500, width: 1 }}>
+    <Paper sx={{ height: 500, width: 1 }}>
       <DataGrid
         {...{ rows: applicants, columns: applicantTableColumns }}
         components={{ Toolbar: QuickSearchToolbar }}
       />
-    </Box>
+    </Paper>
   )
 }

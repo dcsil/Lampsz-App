@@ -1,6 +1,7 @@
 import TextField from '@mui/material/TextField'
 import * as React from 'react'
 import { FormFieldEvent, SetState } from '../../utils/types'
+import { InputProps as StandardInputProps } from '@mui/material/Input/Input'
 
 interface FormTextFieldProps {
   id: string
@@ -16,6 +17,7 @@ interface FormTextFieldProps {
   errorMsg?: string
   setField: SetState<any>
   setError?: SetState<string>
+  InputProps?: Partial<StandardInputProps>
 }
 
 /**
@@ -54,6 +56,7 @@ export function FormTextField (props: FormTextFieldProps): JSX.Element {
       rows={props.rows}
       onChange={formFieldOnChange(props.setField, props.setError)}
       helperText={props.errorMsg}
+      InputProps={props.InputProps}
     />
   )
 }

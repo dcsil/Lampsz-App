@@ -29,6 +29,7 @@ export default function MarketingTaskCard ({ taskData, appliedDate }: MarketingT
       <CardMedia
         component="img"
         height={200}
+        alt="task-media"
         image={taskData.image ? taskData.image : '/static/public/No-Photo-Available.jpg'}
       />
       <CardContent>

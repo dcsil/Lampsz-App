@@ -2,7 +2,6 @@ import * as React from 'react'
 import { ReactElement } from 'react'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Routes from './components/Routes'
-import { blue, indigo } from '@mui/material/colors'
 import CssBaseline from '@mui/material/CssBaseline'
 import './App.css'
 import Alert from '@mui/material/Alert'
@@ -12,10 +11,11 @@ import { useToast } from './hooks/ToastHook'
 const theme = createTheme({
   palette: {
     secondary: {
-      main: blue[900]
+      main: '#283593'
     },
     primary: {
-      main: indigo[700]
+      // main: indigo[700]
+      main: '#00695c'
     },
     background: {
       default: '#f7f7f7'
