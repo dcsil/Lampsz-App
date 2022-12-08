@@ -1,5 +1,6 @@
 import datetime
 
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -71,7 +72,7 @@ class MarketingTask(models.Model):
     posted_date = models.DateField(null=False, blank=False)
     end_date = models.DateField(null=True, blank=True)
     location = models.CharField(max_length=100, blank=True)
-    image = models.ImageField(upload_to="images/", default="", blank=True)
+    image = models.ImageField(upload_to=settings.MEDIA_IMAGES, default="", blank=True)
     active = models.BooleanField(default=True)
 
 
