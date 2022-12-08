@@ -155,6 +155,7 @@ LOGGING = {
 
 
 MEDIA_ROOT = BASE_DIR / "media"
-if not os.path.exists(MEDIA_ROOT):
-    os.mkdir(MEDIA_ROOT)
+MEDIA_IMAGES = MEDIA_ROOT / "images/"
+if not os.path.exists(MEDIA_IMAGES):
+    os.makedirs(MEDIA_IMAGES)
 MEDIA_URL = "/media/"
