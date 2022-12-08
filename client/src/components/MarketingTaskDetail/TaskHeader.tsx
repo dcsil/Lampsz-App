@@ -57,7 +57,7 @@ function ConfirmationDialog (
       case Actions.DELETE:
         deleteMarketingTask(id, () => {
           handleClose()
-          navigate('/tasks/')
+          navigate('/tasks')
         })
         break
       case Actions.REOPEN:

@@ -18,6 +18,7 @@ import Box from '@mui/material/Box'
 import { updateMarketingTask } from '../../actions/marketingTask'
 import { MarketingTask } from '../../utils/types'
 import { useNavigate } from 'react-router-dom'
+import { InputAdornment } from '@mui/material'
 
 interface MarketingTaskFormProp {
   closeDialog: VoidFunction
@@ -80,6 +81,9 @@ export default function MarketingTaskForm (
                 id="compensation" label="Task Compensation" margin="dense"
                 value={compensation.toString()} type="number"
                 setField={(value) => setCompensation(parseInt(value))}
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">$</InputAdornment>
+                }}
               />
             </Grid>
             <Grid item lg={12}>

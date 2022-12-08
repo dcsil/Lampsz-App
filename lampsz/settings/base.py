@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "storages",
+    "django_cleanup.apps.CleanupConfig",
     "lampsz.apis.apps.ApisConfig",
     "lampsz.frontend.apps.FrontendConfig",
 ]
