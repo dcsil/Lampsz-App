@@ -18,7 +18,7 @@ export default function Marketplace (): JSX.Element {
       <Box display="flex" sx={{ mb: 3 }}>
         <Typography variant="h4" gutterBottom>Marketplace</Typography>
       </Box>
-      <SearchBar setTasks={setTasks}></SearchBar>
+      <SearchBar setTasks={setTasks}/>
       <TasksBox tasks={tasks} noDataText="No Marketing Task available."></TasksBox>
     </Container>
   )

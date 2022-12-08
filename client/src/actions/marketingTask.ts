@@ -15,13 +15,27 @@ export const getTasks = (
   setInactiveTasks?: SetState<MarketingTask[]>
 ): void => {
   axios
-    .get((`/api/tasks?user_id=${userId}`), getRequestConfig())
+    .get(`/api/tasks?user_id=${userId}`, getRequestConfig())
     .then((response: AxiosResponse<MarketingTask[]>) => {
       setActiveTasks(response.data.filter(task => task.active))
       if (setInactiveTasks) {
         setInactiveTasks(response.data.filter(task => !task.active))
       }
     })
+    .catch(error => console.log(error))
+}
+
+/**
+ * Searches for marketing task based on given query.
+ *
+ * @param query the search query string.
+ * @param location the location search string.
+ * @param setTasks set state method that sets marketing tasks.
+ */
+export const search = (query: string, location: string, setTasks: SetState<MarketingTask[]>): void => {
+  axios
+    .post('/api/get_tasks/', { query, location }, getRequestConfig())
+    .then(response => setTasks(response.data.tasks))
     .catch(error => console.log(error))
 }
 

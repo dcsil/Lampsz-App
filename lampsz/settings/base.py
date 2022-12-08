@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
-import os
 from pathlib import Path
 
 import environ
@@ -31,6 +30,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "storages",
     "lampsz.apis.apps.ApisConfig",
     "lampsz.frontend.apps.FrontendConfig",
 ]
@@ -119,14 +119,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATIC_URL = "static/"
-STATICFILES_DIRS = [("public", "client/public")]
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
@@ -154,12 +146,38 @@ LOGGING = {
 }
 
 
-MEDIA_ROOT = BASE_DIR / "media"
+# The following configs determine if files get served from the server or an S3 storage
+S3_ENABLED = env.bool("S3_ENABLED", default=False)
+LOCAL_SERVE_MEDIA_FILES = env.bool("LOCAL_SERVE_MEDIA_FILES", default=not S3_ENABLED)
 
-if not os.path.exists(MEDIA_ROOT):
-    os.mkdir(MEDIA_ROOT)
+if not LOCAL_SERVE_MEDIA_FILES and not S3_ENABLED:
+    raise ValueError(
+        "S3_ENABLED must be true if either media or static files are not served locally"
+    )
 
-if not os.path.exists(MEDIA_ROOT / "images/"):
-    os.mkdir(MEDIA_ROOT / "images/")
+if S3_ENABLED:
+    # AWS settings
+    AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
+    AWS_STORAGE_BUCKET_NAME = env("BUCKET_NAME")
+    AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME")
+    AWS_DEFAULT_ACL = None
+    AWS_S3_SIGNATURE_VERSION = env("S3_SIGNATURE_VERSION", default="s3v4")
+    AWS_S3_CUSTOM_DOMAIN = (
+        f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com"
+    )
+    AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
+    PUBLIC_MEDIA_LOCATION = "media"
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/"
+    DEFAULT_FILE_STORAGE = "lampsz.apis.storage_backends.PublicMediaStorage"
+else:
+    MEDIA_ROOT = BASE_DIR / "media"
+    MEDIA_URL = "/media/"
 
-MEDIA_URL = "/media/"
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.1/howto/static-files/
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_URL = "static/"
+STATICFILES_DIRS = [("public", "client/public")]
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"

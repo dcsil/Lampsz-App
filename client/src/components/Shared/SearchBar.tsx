@@ -5,10 +5,15 @@ import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import axios from 'axios'
-import { getRequestConfig } from '../../utils/utils'
+import { search } from '../../actions/marketingTask'
+import { MarketingTask, SetState } from '../../utils/types'
 
-export function SearchBar ({ setTasks }: { setTasks: Function }): JSX.Element {
+const iconStyle = {
+  width: 33,
+  height: 33
+}
+
+export function SearchBar ({ setTasks }: { setTasks: SetState<MarketingTask[]> }): JSX.Element {
   const [query, setQuery] = useState('')
   const [location, setLocation] = useState('')
 
@@ -23,30 +28,10 @@ export function SearchBar ({ setTasks }: { setTasks: Function }): JSX.Element {
   }
 
   const listenEnter = (event: any): void => {
-    // If the key pressed is enter, do the search.
+    // If the key pressed is entered, do the search.
     if (event.keyCode === 13) {
-      search()
+      search(query, location, setTasks)
     }
-  }
-
-  const search = (): void => {
-    axios
-      .post(('/api/get_tasks/'), { query, location }, getRequestConfig())
-      .then(response => {
-        console.log(response.data)
-        setTasks(response.data.tasks)
-      })
-      .catch(error => console.log(error))
-  }
-
-  const iconStyle = {
-    width: 33,
-    height: 33
-  }
-
-  const buttonMargins = {
-    'margin-left': 17,
-    'margin-top': 4
   }
 
   return (
@@ -62,7 +47,13 @@ export function SearchBar ({ setTasks }: { setTasks: Function }): JSX.Element {
         </IconButton>
         <TextField label="Location" onChange={handleLocation} onKeyDown={listenEnter}></TextField>
 
-        <Button variant="outlined" sx={buttonMargins} onClick={search}>Search</Button>
+        <Button
+          variant="outlined"
+          sx={{ ml: 4, mt: 1 }}
+          onClick={() => search(query, location, setTasks)}
+        >
+          Search
+        </Button>
       </Box>
     </div>
   )
