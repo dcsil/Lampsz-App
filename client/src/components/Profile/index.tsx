@@ -7,12 +7,5 @@ export default function Profile (): JSX.Element {
   const influencerItems = ['ShortBio', 'Description']
   const businessItems = ['ShortBio', 'Location', 'Industry', 'Description']
 
-  return (
-    <React.Fragment>
-      {data.user.isInfluencer
-        ? <ProfileBase items={influencerItems}/>
-        : <ProfileBase items={businessItems}/>
-      }
-    </React.Fragment>
-  )
+  return data.user.isInfluencer ? <ProfileBase items={influencerItems}/> : <ProfileBase items={businessItems}/>
 }

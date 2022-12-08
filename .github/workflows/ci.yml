@@ -1,93 +1,93 @@
-#name: Lampsz CI
-#
-#on:
-#  push:
-#    branches: [ "main" ]
-#    paths-ignore: [ "docs/**", ".docker/**", "script/**", "README.md" ]
+name: Lampsz CI
+
+on:
+  push:
+    branches: [ "main" ]
+    paths-ignore: [ "docs/**", ".docker/**", "script/**", "README.md" ]
 #  pull_request:
 #    branches: [ "main" ]
 #    paths-ignore: [ "docs/**", ".docker/**", "script/**", "README.md" ]
-#
-#jobs:
-#  build:
-#
-#    runs-on: ubuntu-latest
-#    timeout-minutes: 10
-#
-#    services:
-#      postgres:
-#        image: postgres
-#        ports:
-#          - 5432:5432
-#        env:
-#          POSTGRES_PASSWORD: postgres
-#
-#    env:
-#      # postgres://user:password@host:port/database
-#      DATABASE_URL: "postgres://postgres:postgres@localhost:5432/postgres"
-#      GOOGLE_CLIENT_SECRETS: "{}"
-#      GOOGLE_API_KEY: "test"
-#
-#    steps:
-#      - uses: actions/checkout@v3
-#
-#      - name: Setup Code Climate test-reporter
-#        run: |
-#          # download test reporter as a static binary
-#          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-#          chmod +x ./cc-test-reporter
-#          ./cc-test-reporter before-build
-#
-#      - name: Set up Python 3.10
-#        uses: actions/setup-python@v4
-#        with:
-#          python-version: 3.10.6
-#
-#      - name: Install Poetry
-#        uses: snok/install-poetry@v1
-#        with:
-#          virtualenvs-create: true
-#          virtualenvs-in-project: true
-#          installer-parallel: true
-#
-#      - name: Load cached venv
-#        id: cached-poetry-dependencies
-#        uses: actions/cache@v3
-#        with:
-#          path: .venv
-#          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
-#
-#      - name: Install dependencies
-#        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-#        run: |
-#          poetry install --no-interaction --no-root
-#          poetry run python -m spacy download en_core_web_lg
-#
-#      - name: Run backend tests
-#        run: |
-#          source .venv/bin/activate
-#          coverage run --source='.' manage.py test --settings=lampsz.settings.local
-#          coverage xml
-#
-#      - name: Set up nodejs
-#        if: ${{ github.event_name == 'push' }}
-#        uses: actions/setup-node@v3
-#        with:
-#          node-version: 18
-#          cache: 'npm'
-#      - if: ${{ github.event_name == 'push' }}
-#        run: npm ci
-#      - if: ${{ github.event_name == 'push' }}
-#        run: npm test
-#
-#      - name: CodeClimate combine and upload coverage
-#        if: ${{ github.event_name == 'push' }}
-#        env:
-#          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-#        run: |
-#          ./cc-test-reporter format-coverage --debug -t lcov -o coverage/codeclimate.jest.json coverage/jest/lcov.info
-#          ./cc-test-reporter format-coverage -t coverage.py -o coverage/codeclimate.python.json coverage/python/coverage.xml
-#          # Combine the test coverage reports
-#          ./cc-test-reporter sum-coverage coverage/codeclimate.*.json
-#          # Attempt to submit the coverage report, but don't fail the build if this fails (`|| true`)
-#          ./cc-test-reporter upload-coverage || true
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    services:
+      postgres:
+        image: postgres
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_PASSWORD: postgres
+
+    env:
+      # postgres://user:password@host:port/database
+      DATABASE_URL: "postgres://postgres:postgres@localhost:5432/postgres"
+      GOOGLE_CLIENT_SECRETS: "{}"
+      GOOGLE_API_KEY: "test"
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Code Climate test-reporter
+        run: |
+          # download test reporter as a static binary
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+          ./cc-test-reporter before-build
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10.6
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
+
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: |
+          poetry install --no-interaction --no-root
+          poetry run python -m spacy download en_core_web_lg
+
+      - name: Run backend tests
+        run: |
+          source .venv/bin/activate
+          coverage run --source='.' manage.py test --settings=lampsz.settings.local
+          coverage xml
+
+      - name: Set up nodejs
+        if: ${{ github.event_name == 'push' }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+      - if: ${{ github.event_name == 'push' }}
+        run: npm ci
+      - if: ${{ github.event_name == 'push' }}
+        run: npm test
+
+      - name: CodeClimate combine and upload coverage
+        if: ${{ github.event_name == 'push' }}
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        run: |
+          ./cc-test-reporter format-coverage --debug -t lcov -o coverage/codeclimate.jest.json coverage/jest/lcov.info
+          ./cc-test-reporter format-coverage -t coverage.py -o coverage/codeclimate.python.json coverage/python/coverage.xml
+          # Combine the test coverage reports
+          ./cc-test-reporter sum-coverage coverage/codeclimate.*.json
+          # Attempt to submit the coverage report, but don't fail the build if this fails (`|| true`)
+          ./cc-test-reporter upload-coverage || true

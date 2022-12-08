@@ -114,6 +114,9 @@ def get_user_display_name(user: User) -> str:
     """
     Returns the display name (e.g., company name, channel name) of the user.
     """
+    if not user.is_authenticated:
+        return ""
+
     if user.is_influencer:
         return Influencer.objects.get(pk=user.pk).channel_name
     else:

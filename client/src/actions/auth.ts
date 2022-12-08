@@ -18,10 +18,9 @@ export interface RegisterInfo {
 /**
  * Check user session status from API server.
  *
- * @param setCsrf set state function for CSRF token.
  * @param callback
  */
-export const checkSession = (setCsrf: SetState<string>, callback: AuthCallback): void => {
+export const checkSession = (callback: AuthCallback): void => {
   axios
     .get('/api/session/')
     .then(successAuthResponse(callback))
@@ -81,10 +80,9 @@ export const registerAction = (info: RegisterInfo, setError: SetState<string>, c
 /**
  * Logout user by calling API server
  *
- * @param setCsrf set state function for CSRF token.
  * @param callback
  */
-export const logoutAction = (setCsrf: SetState<string>, callback: AuthCallback): void => {
+export const logoutAction = (callback: AuthCallback): void => {
   axios
     .get('/api/logout/')
     .then(_ => callback(false))
@@ -92,6 +90,7 @@ export const logoutAction = (setCsrf: SetState<string>, callback: AuthCallback):
 }
 
 /**
+ * Retrieves toast messages from the backend.
  *
  * @param callback
  */
