@@ -57,7 +57,7 @@ export default function ProfileBase ({ items }: { items: string[] }): JSX.Elemen
         <Grid item md={7}>
           <ProfileContent
             title={data.user.isInfluencer ? 'Youtube Videos' : 'Marketing tasks'}
-            link={data.user.isInfluencer ? data.homePage : '/marketplace'}
+            link={data.user.isInfluencer ? data.homePage : '/tasks'}
           />
         </Grid>
       </Grid>
