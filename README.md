@@ -4,6 +4,8 @@
 
 Source code for Lampsz platform
 
+![architecture_diagram](./docs/architecture_diagram.png)
+
 ## Development Setup
 
 Make sure to have the following on your host:
