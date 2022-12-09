@@ -11,6 +11,7 @@ import ProfileContent from './ProfileContent'
 import Button from '@mui/material/Button'
 import { useLoaderData, useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
+import { UserType } from '../../utils/types'
 
 export default function ProfileBase ({ items }: { items: string[] }): JSX.Element {
   const auth = useAuth()
@@ -35,6 +36,7 @@ export default function ProfileBase ({ items }: { items: string[] }): JSX.Elemen
     })
   }
 
+  const businessUrl = auth.userType === UserType.BUSINESS ? '/tasks' : '/marketplace'
   return (
     <Container component="main" maxWidth="lg" sx={containerStyle.contentContainer}>
       <Grid container spacing={5}>
@@ -57,7 +59,7 @@ export default function ProfileBase ({ items }: { items: string[] }): JSX.Elemen
         <Grid item md={7}>
           <ProfileContent
             title={data.user.isInfluencer ? 'Youtube Videos' : 'Marketing tasks'}
-            link={data.user.isInfluencer ? data.homePage : '/marketplace'}
+            link={data.user.isInfluencer ? data.homePage : businessUrl}
           />
         </Grid>
       </Grid>
